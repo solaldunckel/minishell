@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/30 10:51:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2019/12/31 01:08:21 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/14 15:06:20 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	echo_cmd(t_minishell *minishell)
 	while (minishell->split[i])
 	{
 		ft_putstr(minishell->split[i]);
-		i++;
-		if (minishell->split[i])
+		if (ft_strlen(minishell->split[i]) && minishell->split[i + 1])
 			ft_putchar(' ');
+		i++;
 	}
 	if (endl)
 		ft_putchar('\n');

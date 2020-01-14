@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/30 10:51:46 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/14 13:51:00 by sdunckel         ###   ########.fr       */
+/*   Created: 2020/01/14 13:29:33 by sdunckel          #+#    #+#             */
+/*   Updated: 2020/01/14 13:29:38 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd_cmd(t_minishell *minishell)
+void	env_cmd(t_minishell *minishell)
 {
-	char	*to_free;
-	int		count;
+	int		i;
+	t_list	*tmp;
+	char 	**lenv;
 
-	count = count_split(minishell->split);
-	if (count == 1)
+	i = 0;
+	tmp = minishell->env_list;
+	while (tmp)
 	{
-		if (chdir(get_env(minishell, "HOME")))
-			ft_putstr(strerror(errno));
+		lenv = tmp->content;
+		ft_printf("%s=%s\n", lenv[0], lenv[1]);
+		tmp = tmp->next;
 	}
-	else
-	{
-		if (chdir(minishell->split[1]))
-			ft_printf("%s: cd: %s: %s\n", minishell->name, minishell->split[1],
-				strerror(errno));
-	}
-	to_free = minishell->curdir;
-	minishell->curdir = getcwd(NULL, 0);
-	free(to_free);
 }
