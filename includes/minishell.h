@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/14 17:19:18 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/15 17:32:03 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdarg.h>
 # include <string.h>
 # include <stdio.h>
+# include <dirent.h>
 
 # include <curses.h>
 # include <term.h>
@@ -40,6 +41,7 @@ typedef struct	s_minishell
 	char	*line;
 	char	**split;
 	t_list	*env_list;
+	char 	**bin;
 }				t_minishell;
 
 void	echo_cmd(t_minishell *minishell);
@@ -58,6 +60,8 @@ char 	**env_array(t_minishell *minishell);
 char	*get_env(t_minishell *minishell, char *env);
 
 // UTILS
+void	parse_bin(t_minishell *minishell);
+char 	*get_bin(t_minishell *minishell, char *cmd);
 char	**free_split(char **split);
 int		count_split(char **split);
 
