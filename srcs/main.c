@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/14 17:41:34 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/15 16:13:34 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,16 @@ void	exec_commands(t_minishell *minishell, char *cmd)
 	free_split(minishell->split);
 }
 
+void	sighandler(int sig_num)
+{
+	if (sig_num == 2)
+	{
+		write(1, "\n", 1);
+		ft_printf("" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET, g_signal->curdir);
+	}
+	ft_putnbr(sig_num);
+}
+
 void	wait_for_command(t_minishell *minishell)
 {
 	char 	**cmds;
@@ -70,6 +80,7 @@ void	wait_for_command(t_minishell *minishell)
 	while (1)
 	{
 		print_prompt(minishell);
+		signal(SIGINT, sighandler);
 		if (get_next_line(0, &minishell->line))
 		{
 			i = 0;
@@ -81,6 +92,7 @@ void	wait_for_command(t_minishell *minishell)
 			}
 			free_split(cmds);
 			free(minishell->line);
+			minishell->line = NULL;
 		}
 	}
 }
@@ -95,6 +107,7 @@ int		main(int argc, char **argv, char **env)
 	minishell.name = ft_strtrim(argv[0], "./");
 	minishell.curdir = getcwd(NULL, 0);
 	env_init(&minishell, env);
+	g_signal = &minishell;
 	wait_for_command(&minishell);
 	return (0);
 }

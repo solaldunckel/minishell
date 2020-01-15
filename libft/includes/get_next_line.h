@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 11:17:21 by sdunckel          #+#    #+#             */
-/*   Updated: 2019/11/02 15:46:18 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/15 16:16:33 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define ERROR -1
 
 # include "libft.h"
+# include <signal.h>
 
 int		get_next_line(int fd, char **line);
 

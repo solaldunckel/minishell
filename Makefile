@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/01/14 16:27:03 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/01/15 16:21:45 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS_LIST		= \
 					utils.c \
 					env_utils.c \
 					exit.c \
+					bin_path.c \
 					cd.c
 
 SRCS			= $(addprefix ${FOLDER}/, ${SRCS_LIST})
