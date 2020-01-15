@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/14 17:19:18 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/15 16:10:43 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdarg.h>
 # include <string.h>
 # include <stdio.h>
+# include <signal.h>
 
 # include <curses.h>
 # include <term.h>
@@ -33,14 +34,16 @@
 # define EXPORT_CMD "export"
 # define UNSET_CMD "unset"
 
-typedef struct	s_minishell
+typedef struct		s_minishell
 {
 	char	*name;
 	char 	*curdir;
 	char	*line;
 	char	**split;
 	t_list	*env_list;
-}				t_minishell;
+}					t_minishell;
+
+static t_minishell	*g_signal;
 
 void	echo_cmd(t_minishell *minishell);
 void	cd_cmd(t_minishell *minishell);
