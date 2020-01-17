@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 10:57:51 by sdunckel          #+#    #+#             */
-/*   Updated: 2019/11/23 17:41:17 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/17 03:36:44 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void*),
 						void (*del)(void *));
+void				ft_lst_remove_if(t_list **begin_list, void *data,
+						int (*cmp)(), void (*del)());
 
 /*
 ** Other Functions

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/15 16:13:34 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/01/17 11:27:54 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void	print_prompt(t_minishell *minishell)
 {
-	ft_printf("" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET, minishell->curdir);
+	if (minishell->exit == 0)
+		ft_printf("" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET, minishell->curdir);
+	else
+		ft_printf("" BOLDRED "➜ " RESET BOLDCYAN " %s " RESET, minishell->curdir);
 }
 
 void	process_split(t_minishell *minishell)
@@ -26,6 +29,7 @@ void	process_split(t_minishell *minishell)
 	{
 		if (minishell->split[i][0] == '$' && minishell->split[i][1])
 			replace_env(minishell, &minishell->split[i]);
+		minishell->split[i] = ft_strtrim(minishell->split[i], "'\"");
 		i++;
 	}
 }
@@ -53,7 +57,7 @@ int		exec_builtin(t_minishell *minishell)
 
 void	exec_commands(t_minishell *minishell, char *cmd)
 {
-	minishell->split = ft_ssplit(cmd, " ");
+	minishell->split = ft_split_brackets(cmd, " ");
 	if (!minishell->split[0])
 		return ;
 	process_split(minishell);
@@ -64,12 +68,14 @@ void	exec_commands(t_minishell *minishell, char *cmd)
 
 void	sighandler(int sig_num)
 {
-	if (sig_num == 2)
+	write(1, "\n", 1);
+	if (sig_num == SIGQUIT)
+		;
+	else if (sig_num == SIGINT)
 	{
 		write(1, "\n", 1);
-		ft_printf("" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET, g_signal->curdir);
+		print_prompt(g_minishell);
 	}
-	ft_putnbr(sig_num);
 }
 
 void	wait_for_command(t_minishell *minishell)
@@ -79,20 +85,20 @@ void	wait_for_command(t_minishell *minishell)
 
 	while (1)
 	{
-		print_prompt(minishell);
+		signal(SIGQUIT, sighandler);
 		signal(SIGINT, sighandler);
+		print_prompt(minishell);
 		if (get_next_line(0, &minishell->line))
 		{
 			i = 0;
-			cmds = ft_split(minishell->line, ';');
+			cmds = ft_split_brackets(minishell->line, ";");
 			while (cmds[i])
 			{
 				exec_commands(minishell, cmds[i]);
 				i++;
 			}
 			free_split(cmds);
-			free(minishell->line);
-			minishell->line = NULL;
+			ft_strdel(&minishell->line);
 		}
 	}
 }
@@ -107,7 +113,7 @@ int		main(int argc, char **argv, char **env)
 	minishell.name = ft_strtrim(argv[0], "./");
 	minishell.curdir = getcwd(NULL, 0);
 	env_init(&minishell, env);
-	g_signal = &minishell;
+	g_minishell = &minishell;
 	wait_for_command(&minishell);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/30 10:51:46 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/14 13:51:00 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/17 04:08:45 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	cd_cmd(t_minishell *minishell)
 {
-	char	*to_free;
 	int		count;
 
 	count = count_split(minishell->split);
@@ -29,7 +28,6 @@ void	cd_cmd(t_minishell *minishell)
 			ft_printf("%s: cd: %s: %s\n", minishell->name, minishell->split[1],
 				strerror(errno));
 	}
-	to_free = minishell->curdir;
+	ft_strdel(&minishell->curdir);
 	minishell->curdir = getcwd(NULL, 0);
-	free(to_free);
 }

@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2019/11/02 16:25:59 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/01/14 19:40:27 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,12 @@ NAME			= libftprintf.a
 
 SRCS		= \
 					ft_printf.c \
-					ft_parse.c \
-					ft_convert.c \
-					ft_convert_int.c \
-					ft_ft.c \
-					ft_ft2.c
+					parse.c \
+					convert.c \
+					convert_int.c \
+					utils.c \
+					buffer.c \
+					utils2.c
 
 OBJS			= ${SRCS:.c=.o}
 

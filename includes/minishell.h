@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/15 19:34:31 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/17 11:10:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 # include <signal.h>
 
 # include <curses.h>
+# ifdef NCURSES
 # include <term.h>
+# endif
 # include <errno.h>
 
 # define ECHO_CMD "echo"
@@ -35,18 +37,43 @@
 # define EXPORT_CMD "export"
 # define UNSET_CMD "unset"
 
+# define TYPE_NOMRAL 0
+# define TYPE_PIPE 1
+# define TYPE_OUT 2
+# define TYPE_OUT_APND 3
+# define TYPE_IN 4
+
 typedef struct		s_minishell
 {
 	char	*name;
 	char 	*curdir;
+	int		exit;
 	char	*line;
 	char	**split;
+	t_list	*cmd_list;
 	t_list	*env_list;
+	char	**env_array;
 	char 	**bin;
 }					t_minishell;
 
-static t_minishell	*g_signal;
+typedef struct		s_env
+{
+	char	*name;
+	char	*value;
+}					t_env;
 
+typedef struct		s_cmd
+{
+	char			*line;
+	int				type;
+	int				pipe[2];
+	struct s_cmd	*previous;
+	struct s_cmd	*next;
+}					t_cmd;
+
+static t_minishell	*g_minishell;
+
+// BUILTIN
 void	echo_cmd(t_minishell *minishell);
 void	cd_cmd(t_minishell *minishell);
 void	pwd_cmd(t_minishell *minishell);
@@ -54,18 +81,24 @@ void	export_cmd(t_minishell *minishell);
 void	env_cmd(t_minishell *minishell);
 void	exit_cmd(t_minishell *minishell);
 void	unset_cmd(t_minishell *minishell);
+
 void	exec_prog(t_minishell *minishell);
 
 // ENV
-void	replace_env(t_minishell *minishell, char **split);
 void	env_init(t_minishell *minishell, char **env);
-char 	**env_array(t_minishell *minishell);
+t_env	*create_env(t_minishell *minishell, char **split);
 char	*get_env(t_minishell *minishell, char *env);
+void	replace_env(t_minishell *minishell, char **split);
+char 	**env_to_array(t_minishell *minishell);
 
-// UTILS
+// BIN
 void	parse_bin(t_minishell *minishell);
 char 	*get_bin(t_minishell *minishell, char *cmd);
+
+// UTILS
+char	**ft_split_brackets(char const *s, char *set);
 char	**free_split(char **split);
 int		count_split(char **split);
+char	*ft_strjoin_free(char const *s1, char const *s2);
 
 #endif

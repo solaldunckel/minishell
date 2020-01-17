@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 09:29:00 by sdunckel          #+#    #+#             */
-/*   Updated: 2019/11/06 15:26:39 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/14 19:35:44 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 typedef struct	s_printf
 {
 	char			buf[BUFFER_SIZE + 1];
+	int				fd;
 	int				buf_count;
 	int				ret;
 	int				width;
@@ -64,6 +65,7 @@ typedef struct	s_printf
 }				t_printf;
 
 int				ft_printf(const char *str, ...);
+int				ft_dprintf(int fd, const char *str, ...);
 void			ft_init_struct(t_printf *tab);
 void			ft_str_it(va_list ap, t_printf *tab, char *str);
 void			ft_parse(char *str, va_list ap, t_printf *tab);

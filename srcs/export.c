@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:30:51 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/14 15:51:37 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/17 04:03:11 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,29 @@
 
 void	export_cmd(t_minishell *minishell)
 {
-	int		i;
 	t_list	*tmp;
-	char 	**lenv;
 	char 	**tmp_split;
 
-	i = 0;
 	tmp = minishell->env_list;
 	tmp_split = ft_split(minishell->split[1], '=');
+	if (ft_strequ(tmp_split[1], "PATH"))
+		parse_bin(minishell);
 	while (tmp)
 	{
-		lenv = tmp->content;
-		if (ft_strequ(lenv[0], tmp_split[0]))
+		if (ft_strequ(((t_env*)(tmp->content))->name, tmp_split[0]))
 		{
-			free(lenv[1]);
+			free(((t_env*)(tmp->content))->value);
 			if (tmp_split[1])
-				lenv[1] = ft_strdup(tmp_split[1]);
+				((t_env*)(tmp->content))->value = ft_strdup(tmp_split[1]);
 			else
-				lenv[1] = ft_strdup("");
+				((t_env*)(tmp->content))->value = ft_strdup("");
 			free_split(tmp_split);
+			minishell->env_array = env_to_array(minishell);
 			return;
 		}
 		tmp = tmp->next;
 	}
-	ft_lstadd_back(&minishell->env_list, ft_lstnew(tmp_split));
+	minishell->env_array = env_to_array(minishell);
+	ft_lstadd_back(&minishell->env_list, ft_lstnew(create_env(minishell, tmp_split)));
+	free_split(tmp_split);
 }

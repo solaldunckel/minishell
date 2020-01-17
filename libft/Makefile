@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2019/11/23 17:41:30 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/01/17 03:37:04 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRCS_LIST	= \
 				ft_lstmap.c \
 				ft_lstnew.c \
 				ft_lstsize.c \
+				ft_lst_remove_if.c \
 				ft_memalloc.c \
 				ft_memccpy.c \
 				ft_memchr.c \

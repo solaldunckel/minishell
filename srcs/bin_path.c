@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:03:58 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/15 18:51:13 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/17 04:15:27 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 
 void	parse_bin(t_minishell *minishell)
 {
-	char 	**bin;
-	char 	*to_free;
 	int		i;
+	char 	**bin;
 
-	bin = ft_split(get_env(minishell, "PATH"), ':');
 	i = 0;
+	bin = ft_split(get_env(minishell, "PATH"), ':');
 	while (bin[i])
 	{
-		to_free = bin[i];
-		bin[i] = ft_strjoin(bin[i], "/");
-		free(to_free);
+		bin[i] = ft_strjoin_free(bin[i], "/");
 		i++;
 	}
+	if (minishell->bin)
+		free_split(minishell->bin);
 	minishell->bin = bin;
 }
 

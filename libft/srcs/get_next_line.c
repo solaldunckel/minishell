@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 22:14:46 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/15 19:27:36 by haguerni         ###   ########.fr       */
+/*   Updated: 2019/11/22 15:53:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,8 @@ int				get_next_line(int fd, char **line)
 	if (!s[fd] && !(s[fd] = ft_calloc(1, sizeof(char *))))
 		return (ERROR);
 	while ((ft_is_in_stri('\n', s[fd])) < 0 &&
-		(ret = read(fd, buf, BUFFER_SIZE)) >= 0)
+		(ret = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
-		if (ret == 0 && ft_strlen(buf) == 0)
-		{
-			write(1, "exit\n", 5);
-			exit();
-		}
 		buf[ret] = '\0';
 		tmp = s[fd];
 		s[fd] = ft_strjoin(s[fd], buf);

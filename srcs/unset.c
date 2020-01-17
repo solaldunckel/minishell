@@ -6,49 +6,29 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 16:17:35 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/14 17:05:03 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/17 03:38:11 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_env(t_list **begin_list, char *env)
+int		is_env(t_env *env, char *data)
 {
-	t_list	*current;
-	t_list	*next;
-	char 	**lenv;
+	if (ft_strequ(env->name, data))
+		return (0);
+	return (1);
+}
 
-	if (!*begin_list)
-		return ;
-	while (*begin_list)
-	{
-		lenv = (*begin_list)->content;
-		if (ft_strequ(lenv[0], env))
-		{
-			next = (*begin_list)->next;
-			free_split(lenv);
-			free(*begin_list);
-			*begin_list = next;
-		}
-		else
-			break;
-	}
-	if (!*begin_list)
-		return ;
-	current = *begin_list;
-	while (current && current->next)
-	{
-		lenv = current->next->content;
-		if (ft_strequ(lenv[0], env))
-		{
-			next = current->next->next;
-			free_split(lenv);
-			free(current->next);
-			current->next = next;
-		}
-		else
-			current = current->next;
-	}
+void	free_env(t_list *lst)
+{
+	t_env	*env;
+
+	env = lst->content;
+	if (env->name)
+		ft_strdel(&env->name);
+	if (env->value)
+		ft_strdel(&env->value);
+	free(lst);
 }
 
 void	unset_cmd(t_minishell *minishell)
@@ -61,7 +41,8 @@ void	unset_cmd(t_minishell *minishell)
 	{
 		env = get_env(minishell, minishell->split[i]);
 		if (env)
-			remove_env(&minishell->env_list, minishell->split[i]);
+			ft_lst_remove_if(&minishell->env_list, minishell->split[i],
+				is_env, free_env);
 		i++;
 	}
 }

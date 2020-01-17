@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   buffer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/14 13:29:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/17 03:39:27 by sdunckel         ###   ########.fr       */
+/*   Created: 2020/01/14 19:32:42 by sdunckel          #+#    #+#             */
+/*   Updated: 2020/01/14 19:32:56 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "ft_printf.h"
 
-void	env_cmd(t_minishell *minishell)
+void	ft_dump_buffer(t_printf *tab)
+{
+	write(tab->fd, tab->buf, tab->buf_count);
+	tab->buf_count = 0;
+}
+
+void	ft_add_to_buff(t_printf *tab, char *str, int len)
 {
 	int		i;
-	t_list	*tmp;
 
 	i = 0;
-	tmp = minishell->env_list;
-	while (tmp)
+	tab->ret += len;
+	while (i < len)
 	{
-		ft_printf("%s=%s\n", ((t_env*)(tmp->content))->name,
-			((t_env*)(tmp->content))->value);
-		tmp = tmp->next;
+		tab->buf[tab->buf_count] = str[i];
+		tab->buf_count++;
+		if (tab->buf_count == BUFFER_SIZE)
+			ft_dump_buffer(tab);
+		i++;
 	}
 }
