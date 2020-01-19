@@ -6,30 +6,52 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/17 04:46:38 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/18 21:08:37 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	replace_env(t_minishell *minishell, char **split)
+void	replace_env_2(t_minishell *minishell, char *str, char **final)
+{
+	char 	*tmp;
+	char 	**split;
+	int		j;
+
+	j = 0;
+	split = ft_split(str, '$');
+	while (split[j])
+	{
+		tmp = get_env(minishell, split[j]);
+		if (tmp)
+			*final = ft_strjoin_free(*final, tmp);
+		else
+			*final = ft_strjoin_free(*final, "");
+		j++;
+	}
+	free_split(split);
+}
+
+char	*replace_env(t_minishell *minishell, char *line)
 {
 	int		i;
-	char 	*env;
-	char	*new;
-	char 	*to_free;
 	char 	*tmp;
+	char 	*final;
+	char 	**split;
 
-	env = ft_strtrim(*split, "$");
-	tmp = get_env(minishell, env);
-	if (tmp)
-		new = ft_strdup(tmp);
-	else
-		new = ft_strdup("");
-	to_free = *split;
-	*split = new;
-	free(to_free);
-	free(env);
+	i = 0;
+	final = ft_strdup("");
+	split = ft_ssplit(line, " ");
+	while (split[i])
+	{
+		if (ft_is_in_stri('$', split[i]) >= 0)
+			replace_env_2(minishell, split[i], &final);
+		else
+			final = ft_strjoin_free(final, split[i]);
+		i++;
+	}
+	free_split(split);
+	return (final);
 }
 
 t_env	*create_env(t_minishell *minishell, char **split)

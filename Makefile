@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/01/17 10:58:50 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/01/19 19:28:30 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS_LIST		= \
 					bin_path.c \
 					parsing.c \
 					ft_split_brackets.c \
+					errors.c \
 					cd.c
 
 SRCS			= $(addprefix ${FOLDER}/, ${SRCS_LIST})
