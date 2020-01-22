@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/19 19:46:47 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/22 15:56:48 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,6 @@ void	free_cmd(void *cmd);
 char	**free_split(char **split);
 int		count_split(char **split);
 char	*ft_strjoin_free(char const *s1, char const *s2);
+int		get_next_line_no_eof(int fd, char **line);
 
 #endif

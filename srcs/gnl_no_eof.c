@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   gnl_no_eof.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/24 22:14:46 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/22 15:54:38 by haguerni         ###   ########.fr       */
+/*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
+/*   Updated: 2020/01/22 15:58:39 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "minishell.h"
 
 static int		handle_line(char *s[], int fd)
 {
@@ -33,27 +33,29 @@ static int		handle_line(char *s[], int fd)
 	return (SUCCESS);
 }
 
-int				get_next_line(int fd, char **line)
+int				get_next_line_no_eof(int fd, char **line)
 {
 	static char		*s[10240];
-	char			buf[BUFFER_SIZE + 1];
+	char			buf[3];
 	int				ret;
 	char			*tmp;
 
-	if (fd < 0 || !line || BUFFER_SIZE < 1 || read(fd, buf, 0) < 0)
-		return (ERROR);
-	if (!s[fd] && !(s[fd] = ft_calloc(1, sizeof(char *))))
+	if (fd < 0 || !line || BUFFER_SIZE < 1 || read(fd, buf, 0) < 0
+	|| (!s[fd] && !(s[fd] = ft_calloc(1, sizeof(char *)))))
 		return (ERROR);
 	while ((ft_is_in_stri('\n', s[fd])) < 0 &&
-		(ret = read(fd, buf, BUFFER_SIZE)) > 0)
+		(ret = read(fd, buf, 2)) >= 0)
 	{
-		buf[ret] = '\0';
+		if ((buf[ret] = '\0') == 0 && ret == 0 && ft_strlen(s[fd]) == 0)
+		{
+			write(1, " exit\n", 6);
+			exit(0);
+		}
 		tmp = s[fd];
 		s[fd] = ft_strjoin(s[fd], buf);
 		free(tmp);
 	}
-	if (s[fd])
-		*line = ft_substr(s[fd], 0, ft_strlen_c(s[fd], '\n'));
+	s[fd] ? *line = ft_substr(s[fd], 0, ft_strlen_c(s[fd], '\n')) : 0;
 	if (!handle_line(s, fd))
 		return (FINISH);
 	return (SUCCESS);

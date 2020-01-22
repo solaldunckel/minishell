@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/19 19:21:32 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/22 15:54:58 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	redirect(t_minishell *minishell, char **split, int i)
 	if (ft_strequ(split[i], ">"))
 	{
 		minishell->out = 1;
-		minishell->fd_out = open(split[i + 1], O_RDWR | O_CREAT, 0644);
+		minishell->fd_out = open(split[i + 1], O_TRUNC | O_RDWR | O_CREAT, 0644);
 	}
 	else if (ft_strequ(split[i], ">>"))
 	{
@@ -135,13 +135,11 @@ void	exec_commands(t_minishell *minishell, char *cmd)
 
 void	sighandler(int sig_num)
 {
-	write(1, "\n", 1);
-	if (sig_num == SIGQUIT)
-		;
-	else if (sig_num == SIGINT)
+	ft_printf("\b\b  \b\b");
+	if (sig_num == 2)
 	{
-		write(1, "\n", 1);
-		print_prompt(g_minishell);
+		ft_printf("\n" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET,
+		g_minishell->curdir);
 	}
 }
 
@@ -155,7 +153,7 @@ void	wait_for_command(t_minishell *minishell)
 		signal(SIGQUIT, sighandler);
 		signal(SIGINT, sighandler);
 		print_prompt(minishell);
-		if (get_next_line(0, &minishell->line))
+		if (get_next_line_no_eof(0, &minishell->line))
 		{
 			parse_cmds(minishell);
 			tmp = minishell->cmd_list;
