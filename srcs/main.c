@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/27 17:38:22 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/01/27 21:49:54 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,30 +170,41 @@ void	next_bracket(t_minishell *minishell)
 {
 	char	*tmp;
 	char	*tmp2;
-	int		*b;
 
-	*b = 1;
 	write(1, ">", 2);
-	get_next_line_no_eof(0, &tmp, b);
-	tmp2 = ft_strjoin(minishell->line, tmp);
-	ft_strdel(&minishell->line);
-	minishell->line = tmp2;
-	ft_strdel(&tmp);
+	if (get_next_line_no_eof(0, &tmp, 1))
+	{
+		tmp2 = ft_strjoin(minishell->line, tmp);
+		ft_strdel(&minishell->line);
+		minishell->line = tmp2;
+		ft_strdel(&tmp);
+		if (bracket_odd(minishell->line))
+		{
+			tmp = minishell->line;
+			minishell->line = ft_strjoin(minishell->line, "\n");
+			ft_strdel(&tmp);
+		}
+	}
+	if (g_minishell->quit == 2)
+	{
+		ft_strdel(&minishell->line);
+		minishell->line = ft_strjoin("", "");
+		g_minishell->quit = 1;
+	}
 }
 
 void	wait_for_command(t_minishell *minishell)
 {
 	char 	**cmds;
 	t_list	*tmp;
-	int		*b;
 
 	while (1)
 	{
 		signal(SIGQUIT, sighandler);
 		signal(SIGINT, sighandler);
-		print_prompt(minishell);
-		*b = 0;
-		if (get_next_line_no_eof(0, &minishell->line, b))
+		g_minishell->quit == 0 ? print_prompt(minishell) : 0;
+		g_minishell->quit = 0;
+		if (get_next_line_no_eof(0, &minishell->line, 0))
 		{
 			while (bracket_odd(minishell->line))
 				next_bracket(minishell);
@@ -206,7 +217,6 @@ void	wait_for_command(t_minishell *minishell)
 			}
 			ft_lstclear(&minishell->cmd_list, free_cmd);
 			ft_strdel(&minishell->line);
-			g_minishell->quit = 0;
 		}
 	}
 }

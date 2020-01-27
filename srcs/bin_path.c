@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:03:58 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/19 06:34:14 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/27 21:55:01 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	parse_bin(t_minishell *minishell)
 {
 	int		i;
-	char 	**bin;
+	char	**bin;
 
 	i = 0;
 	bin = ft_split(get_env(minishell, "PATH"), ':');
@@ -29,9 +29,9 @@ void	parse_bin(t_minishell *minishell)
 	minishell->bin = bin;
 }
 
-char 	*try_opendir(t_minishell *minishell, char *path, char *cmd)
+char	*try_opendir(t_minishell *minishell, char *path, char *cmd)
 {
-	DIR 			*dir;
+	DIR				*dir;
 	struct dirent	*dent;
 
 	dir = opendir(path);
@@ -48,9 +48,9 @@ char 	*try_opendir(t_minishell *minishell, char *path, char *cmd)
 	return (NULL);
 }
 
-char 	*get_bin(t_minishell *minishell, char *cmd)
+char	*get_bin(t_minishell *minishell, char *cmd)
 {
-	char 	*try;
+	char	*try;
 	int		i;
 
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/01/27 17:52:31 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/01/27 21:42:37 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,24 @@ static int		handle_line(char *s[], int fd)
 	return (SUCCESS);
 }
 
-int				ctrl_d_exit(void)
+int				ctrl_d_exit(int b)
 {
-	write(1, " exit\n", 6);
+	if (b)
+	{
+		ft_dprintf(2, " %s: unexpected EOF while looking for matching"
+		" `\"\'\n%s: syntax error: unexpected end of file\n", g_minishell->name,
+		g_minishell->name);
+		g_minishell->quit = 1;
+	}
+	if (!b)
+	{
+		write(1, " exit\n", 6);
+		exit(0);
+	}
 	return (0);
 }
 
-int				get_next_line_no_eof(int fd, char **line, int *b)
+int				get_next_line_no_eof(int fd, char **line, int b)
 {
 	static char		*s[2];
 	char			buf[2];
@@ -49,18 +60,18 @@ int				get_next_line_no_eof(int fd, char **line, int *b)
 	if (fd < 0 || !line || BUFFER_SIZE < 1 || read(fd, buf, 0) < 0
 	|| (!s[fd] && !(s[fd] = ft_calloc(1, sizeof(char *)))))
 		return (ERROR);
-	while ((ft_is_in_stri('\n', s[fd]) < 0 &&
-		(ret = read(fd, buf, 1)) >= 0))
+	while ((ft_is_in_stri('\n', s[fd]) < 0 && (ret = read(fd, buf, 1)) >= 0))
 	{
 		signal(SIGINT, sighandler);
-		if ((buf[ret] = '\0') == 0 && ret == 0 && ft_strlen(s[fd]) == 0 && !*b)
-			exit(ctrl_d_exit());
-		g_minishell->quit == 1 ? free(s[fd]) : 0;
-		if (g_minishell->quit == 1 && (g_minishell->quit = 0) == 0)
-			s[fd] = ft_calloc(1, sizeof(char *));
+		if ((buf[ret] = '\0') == 0 && ret == 0 && (ft_strlen(s[fd]) == 0 || b))
+			ctrl_d_exit(b);
+		g_minishell->quit == 1 ? ft_strdel(&s[fd]) : 0;
+		g_minishell->quit == 1 ? s[fd] = ft_calloc(1, sizeof(char *)) : 0;
 		tmp = s[fd];
 		s[fd] = ft_strjoin(s[fd], buf);
 		free(tmp);
+		if (g_minishell->quit == 1 && (g_minishell->quit = 2) == 2)
+			return (0);
 	}
 	s[fd] ? *line = ft_substr(s[fd], 0, ft_strlen_c(s[fd], '\n')) : 0;
 	if (!handle_line(s, fd))

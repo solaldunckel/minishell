@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/17 10:52:21 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/23 16:29:05 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/01/27 22:24:01 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ char			**ft_split_brackets(char const *s, char *set)
 			tab[j][k] = s[i];
 			tab[j][++k] = '\0';
 		}
-		if ((in_s(s[i], set) && !in_bracket(s, i) && !in_s(s[i + 1], set) && k > 0) && (k = 0) == 0)
+		if ((in_s(s[i], set) && !in_bracket(s, i) && !in_s(s[i + 1], set)
+			&& k > 0) && (k = 0) == 0)
 			j++;
 	}
-	tab[count_words(s, set)] = NULL;
-	return (tab);
+	return ((tab[count_words(s, set)] = NULL) == NULL ? tab : tab);
 }

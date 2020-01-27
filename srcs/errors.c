@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 19:25:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/19 19:45:23 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/01/27 22:00:03 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_errno(t_minishell *minishell, char *cmd, int type)
 {
-	// printf("%d\n", errno);
+	//printf("%d\n", errno);
 	if (type == 14)
 		ft_printf("%s: %s: %s\n", minishell->name, cmd, "command not found");
 	else
