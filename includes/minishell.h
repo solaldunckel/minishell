@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/22 15:56:48 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/01/27 17:09:31 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct		s_minishell
 	int		fd_in;
 	int		in;
 	int		out;
+	int		quit;
+	char	*tmp;
 	t_list	*cmd_list;
 	t_list	*cmd_list2;
 	t_list	*env_list;
@@ -77,7 +79,7 @@ typedef struct		s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-static t_minishell	*g_minishell;
+t_minishell	*g_minishell;
 
 // BUILTIN
 void	echo_cmd(t_minishell *minishell);
@@ -113,6 +115,7 @@ void	free_cmd(void *cmd);
 char	**free_split(char **split);
 int		count_split(char **split);
 char	*ft_strjoin_free(char const *s1, char const *s2);
-int		get_next_line_no_eof(int fd, char **line);
+int		get_next_line_no_eof(int fd, char **line, int *b);
+void	sighandler(int sig_num);
 
 #endif

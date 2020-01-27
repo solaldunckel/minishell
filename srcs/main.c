@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/22 15:54:58 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/01/27 17:38:22 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,25 +136,67 @@ void	exec_commands(t_minishell *minishell, char *cmd)
 void	sighandler(int sig_num)
 {
 	ft_printf("\b\b  \b\b");
-	if (sig_num == 2)
+	if (sig_num == SIGINT)
 	{
 		ft_printf("\n" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET,
 		g_minishell->curdir);
+		g_minishell->quit = 1;
 	}
+}
+
+int		bracket_odd(char *s)
+{
+	int		bracket1;
+	int		bracket2;
+	int		i;
+
+	bracket1 = 0;
+	bracket2 = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == 34)
+			bracket1++;
+		if (s[i] == 39)
+			bracket2++;
+		i++;;
+	}
+	if (bracket1 % 2 != 0 || bracket2 % 2 != 0)
+		return (1);
+	return (0);
+}
+
+void	next_bracket(t_minishell *minishell)
+{
+	char	*tmp;
+	char	*tmp2;
+	int		*b;
+
+	*b = 1;
+	write(1, ">", 2);
+	get_next_line_no_eof(0, &tmp, b);
+	tmp2 = ft_strjoin(minishell->line, tmp);
+	ft_strdel(&minishell->line);
+	minishell->line = tmp2;
+	ft_strdel(&tmp);
 }
 
 void	wait_for_command(t_minishell *minishell)
 {
 	char 	**cmds;
 	t_list	*tmp;
+	int		*b;
 
 	while (1)
 	{
 		signal(SIGQUIT, sighandler);
 		signal(SIGINT, sighandler);
 		print_prompt(minishell);
-		if (get_next_line_no_eof(0, &minishell->line))
+		*b = 0;
+		if (get_next_line_no_eof(0, &minishell->line, b))
 		{
+			while (bracket_odd(minishell->line))
+				next_bracket(minishell);
 			parse_cmds(minishell);
 			tmp = minishell->cmd_list;
 			while (tmp)
@@ -164,6 +206,7 @@ void	wait_for_command(t_minishell *minishell)
 			}
 			ft_lstclear(&minishell->cmd_list, free_cmd);
 			ft_strdel(&minishell->line);
+			g_minishell->quit = 0;
 		}
 	}
 }
@@ -179,6 +222,7 @@ int		main(int argc, char **argv, char **env)
 	minishell.curdir = getcwd(NULL, 0);
 	env_init(&minishell, env);
 	g_minishell = &minishell;
+	g_minishell->quit = 0;
 	wait_for_command(&minishell);
 	return (0);
 }
