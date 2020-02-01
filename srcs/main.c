@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/27 21:49:54 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/01 18:28:35 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,23 +114,12 @@ void	handle_pipe(t_minishell *minishell, char **cmds)
 	}
 }
 
-void	exec_commands(t_minishell *minishell, char *cmd)
+void	exec_commands(t_minishell *minishell, char **split)
 {
-	int		i;
-	char 	**cmds;
-
-	i = 0;
-	cmds = ft_split_brackets(cmd, "|");
-	if (count_split(cmds) > 1)
-	{
-		handle_pipe(minishell, cmds);
-		return;
-	}
-	minishell->split = ft_split_brackets(cmd, " ");
-	minishell->split = process_split(minishell, minishell->split);
-	if (!exec_builtin(minishell, minishell->split))
-		exec_prog(minishell, minishell->split);
-	free_split(minishell->split);
+	minishell->split = process_split(minishell, split);
+	if (!exec_builtin(minishell, split))
+		exec_prog(minishell, split);
+	//free_split(split);
 }
 
 void	sighandler(int sig_num)
@@ -144,59 +133,11 @@ void	sighandler(int sig_num)
 	}
 }
 
-int		bracket_odd(char *s)
-{
-	int		bracket1;
-	int		bracket2;
-	int		i;
-
-	bracket1 = 0;
-	bracket2 = 0;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == 34)
-			bracket1++;
-		if (s[i] == 39)
-			bracket2++;
-		i++;;
-	}
-	if (bracket1 % 2 != 0 || bracket2 % 2 != 0)
-		return (1);
-	return (0);
-}
-
-void	next_bracket(t_minishell *minishell)
-{
-	char	*tmp;
-	char	*tmp2;
-
-	write(1, ">", 2);
-	if (get_next_line_no_eof(0, &tmp, 1))
-	{
-		tmp2 = ft_strjoin(minishell->line, tmp);
-		ft_strdel(&minishell->line);
-		minishell->line = tmp2;
-		ft_strdel(&tmp);
-		if (bracket_odd(minishell->line))
-		{
-			tmp = minishell->line;
-			minishell->line = ft_strjoin(minishell->line, "\n");
-			ft_strdel(&tmp);
-		}
-	}
-	if (g_minishell->quit == 2)
-	{
-		ft_strdel(&minishell->line);
-		minishell->line = ft_strjoin("", "");
-		g_minishell->quit = 1;
-	}
-}
-
 void	wait_for_command(t_minishell *minishell)
 {
 	char 	**cmds;
-	t_list	*tmp;
+	//t_list	*tmp;
+	t_cmd_list *tmp;
 
 	while (1)
 	{
@@ -208,13 +149,20 @@ void	wait_for_command(t_minishell *minishell)
 		{
 			while (bracket_odd(minishell->line))
 				next_bracket(minishell);
-			parse_cmds(minishell);
-			tmp = minishell->cmd_list;
+			start_parse(minishell, minishell->line);
+			tmp = minishell->token_list;
 			while (tmp)
 			{
-				exec_commands(minishell, ((t_cmd*)(tmp->content))->line);
+				printf("[%s]\n", tmp->token);
 				tmp = tmp->next;
 			}
+			// parse_cmds(minishell);
+			// tmp = minishell->cmd_list;
+			// while (tmp)
+			// {
+			// 	exec_commands(minishell, ((t_cmd*)(tmp->content))->split);
+			// 	tmp = tmp->next;
+			// }
 			ft_lstclear(&minishell->cmd_list, free_cmd);
 			ft_strdel(&minishell->line);
 		}

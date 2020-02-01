@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/27 21:59:14 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/01 18:40:06 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,8 @@
 # define EXPORT_CMD "export"
 # define UNSET_CMD "unset"
 
-# define TYPE_NOMRAL 0
-# define TYPE_PIPE 1
-# define TYPE_OUT 2
-# define TYPE_OUT_APND 3
-# define TYPE_IN 4
+# define NORMAL 0
+# define PIPE 1
 
 typedef struct		s_minishell
 {
@@ -56,9 +53,11 @@ typedef struct		s_minishell
 	int		out;
 	int		quit;
 	char	*tmp;
+	int		buf_count;
+	char 	buf[256];
 	t_list	*cmd_list;
-	t_list	*cmd_list2;
 	t_list	*env_list;
+	struct	s_cmd_list *token_list;
 	char	**env_array;
 	char 	**bin;
 }					t_minishell;
@@ -72,12 +71,16 @@ typedef struct		s_env
 typedef struct		s_cmd
 {
 	char			*line;
+	char 			**split;
 	int				type;
-	int				fd;
-	int				pipe[2];
-	struct s_cmd	*previous;
-	struct s_cmd	*next;
 }					t_cmd;
+
+typedef struct		s_cmd_list
+{
+	char				*token;
+	struct	s_cmd_list	*previous;
+	struct	s_cmd_list	*next;
+}					t_cmd_list;
 
 t_minishell	*g_minishell;
 
@@ -105,11 +108,18 @@ char 	*get_bin(t_minishell *minishell, char *cmd);
 
 // PARSING
 void	parse_cmds(t_minishell *minishell);
+void	start_parse(t_minishell *minishell, char *str);
 
 void	handle_errors(t_minishell *minishell, char *cmd, int type);
 void	handle_errno(t_minishell *minishell, char *cmd, int type);
 
+// BRACKET
+
+int		bracket_odd(char *s);
+void	next_bracket(t_minishell *minishell);
+
 // UTILS
+char	*ft_strndup(const char *s1, int n);
 char	**ft_split_brackets(char const *s, char *set);
 void	free_cmd(void *cmd);
 char	**free_split(char **split);

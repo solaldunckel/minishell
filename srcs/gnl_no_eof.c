@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/01/27 21:42:37 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/01 17:01:31 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int				ctrl_d_exit(int b)
 	}
 	if (!b)
 	{
-		write(1, " exit\n", 6);
+		write(1, "exit\n", 5);
 		exit(0);
 	}
 	return (0);

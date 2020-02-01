@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/01/22 15:56:08 by haguerni         ###   ########.fr        #
+#    Updated: 2020/02/01 18:26:20 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ SRCS_LIST		= \
 					ft_split_brackets.c \
 					errors.c \
 					gnl_no_eof.c \
+					quotes.c \
+					parsing2.c \
 					cd.c
 
 SRCS			= $(addprefix ${FOLDER}/, ${SRCS_LIST})
