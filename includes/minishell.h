@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/01 18:40:06 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/02 22:02:17 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,29 @@
 # define NORMAL 0
 # define PIPE 1
 
+# define T_WORD 1
+# define T_PIPE 2
+
 typedef struct		s_minishell
 {
-	char	*name;
-	char 	*curdir;
-	int		exit;
-	char	*line;
-	char	**split;
-	int		fd_out;
-	int		fd_in;
-	int		in;
-	int		out;
-	int		quit;
-	char	*tmp;
-	int		buf_count;
-	char 	buf[256];
-	t_list	*cmd_list;
-	t_list	*env_list;
-	struct	s_cmd_list *token_list;
-	char	**env_array;
-	char 	**bin;
+	char			*name;
+	char 			*curdir;
+	int				exit;
+	char			*line;
+	char			**split;
+	int				fd_out;
+	int				fd_in;
+	int				in;
+	int				out;
+	int				quit;
+	char			*tmp;
+	int				buf_count;
+	char 			buf[256];
+	t_list			*cmd_list;
+	t_list			*env_list;
+	struct	s_token *token_list;
+	char			**env_array;
+	char 			**bin;
 }					t_minishell;
 
 typedef struct		s_env
@@ -70,30 +73,23 @@ typedef struct		s_env
 
 typedef struct		s_cmd
 {
-	char			*line;
-	char 			**split;
+	char			*cmd;
+	char 			**args;
+	int				pipe[2];
+	int				in;
+	int				out;
 	int				type;
+	struct s_cmd	*prev;
+	struct s_cmd	*next;
 }					t_cmd;
 
-typedef struct		s_cmd_list
+typedef struct		s_token
 {
-	char				*token;
-	struct	s_cmd_list	*previous;
-	struct	s_cmd_list	*next;
-}					t_cmd_list;
+	char				*word;
+	struct	s_token		*next;
+}					t_token;
 
 t_minishell	*g_minishell;
-
-// BUILTIN
-void	echo_cmd(t_minishell *minishell);
-void	cd_cmd(t_minishell *minishell);
-void	pwd_cmd(t_minishell *minishell);
-void	export_cmd(t_minishell *minishell);
-void	env_cmd(t_minishell *minishell);
-void	exit_cmd(t_minishell *minishell);
-void	unset_cmd(t_minishell *minishell);
-
-void	exec_prog(t_minishell *minishell, char **split);
 
 // ENV
 void	env_init(t_minishell *minishell, char **env);
@@ -107,16 +103,18 @@ void	parse_bin(t_minishell *minishell);
 char 	*get_bin(t_minishell *minishell, char *cmd);
 
 // PARSING
-void	parse_cmds(t_minishell *minishell);
 void	start_parse(t_minishell *minishell, char *str);
 
-void	handle_errors(t_minishell *minishell, char *cmd, int type);
-void	handle_errno(t_minishell *minishell, char *cmd, int type);
 
 // BRACKET
 
 int		bracket_odd(char *s);
 void	next_bracket(t_minishell *minishell);
+
+// TOKEN
+t_token		*create_token(t_minishell *minishell);
+void		clear_token_list(t_token **begin, void (*del)(void *));
+void		add_token_list(t_token **begin, t_token *new);
 
 // UTILS
 char	*ft_strndup(const char *s1, int n);
