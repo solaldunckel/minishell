@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/27 21:59:06 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/03 19:34:56 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	replace_env_2(t_minishell *minishell, char *str, char **final)
 			*final = ft_strjoin_free(*final, "");
 		j++;
 	}
-	free_split(split);
+	ft_free_split(&split);
 }
 
 char	*replace_env(t_minishell *minishell, char *line)
@@ -50,7 +50,7 @@ char	*replace_env(t_minishell *minishell, char *line)
 			final = ft_strjoin_free(final, split[i]);
 		i++;
 	}
-	free_split(split);
+	ft_free_split(&split);
 	return (final);
 }
 
@@ -81,7 +81,7 @@ void	env_init(t_minishell *minishell, char **env)
 		if (!(tmp = create_env(minishell, tmp_split)))
 			return ;
 		ft_lstadd_back(&minishell->env_list, ft_lstnew(tmp));
-		free_split(tmp_split);
+		ft_free_split(&tmp_split);
 		i++;
 	}
 	minishell->env_array = env_to_array(minishell);
@@ -108,7 +108,7 @@ char	**env_to_array(t_minishell *minishell)
 	}
 	array[i] = NULL;
 	if (minishell->env_array)
-		free_split(minishell->env_array);
+		ft_free_split(&minishell->env_array);
 	return (array);
 }
 

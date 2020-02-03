@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/02 00:46:55 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/03 13:43:44 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 void	print_prompt(t_minishell *minishell)
 {
 	if (minishell->exit == 0)
-		ft_printf("" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET, minishell->curdir);
+		ft_printf("" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET,
+			minishell->curdir);
 	else
-		ft_printf("" BOLDRED "➜ " RESET BOLDCYAN " %s " RESET, minishell->curdir);
+		ft_printf("" BOLDRED "➜ " RESET BOLDCYAN " %s " RESET,
+			minishell->curdir);
 }
 
 void	sighandler(int sig_num)
@@ -33,8 +35,8 @@ void	sighandler(int sig_num)
 
 void	wait_for_command(t_minishell *minishell)
 {
-	char 		**cmds;
-	t_token 	*tmp;
+	char		**cmds;
+	t_token		*tmp;
 
 	while (1)
 	{
@@ -61,7 +63,7 @@ void	wait_for_command(t_minishell *minishell)
 
 int		main(int argc, char **argv, char **env)
 {
-	t_minishell 	minishell;
+	t_minishell		minishell;
 
 	(void)argv;
 	ft_bzero(&minishell, sizeof(t_minishell));

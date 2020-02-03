@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:03:58 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/27 21:55:01 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/03 10:19:01 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	parse_bin(t_minishell *minishell)
 		i++;
 	}
 	if (minishell->bin)
-		free_split(minishell->bin);
+		ft_free_split(&minishell->bin);
 	minishell->bin = bin;
 }
 

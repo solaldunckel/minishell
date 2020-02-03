@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 17:07:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/31 17:15:37 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/03 13:42:07 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		bracket_odd(char *s)
 			bracket1++;
 		if (s[i] == 39)
 			bracket2++;
-		i++;;
+		i++;
 	}
 	if (bracket1 % 2 != 0 || bracket2 % 2 != 0)
 		return (1);
