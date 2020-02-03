@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/01/17 03:37:04 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/03 10:07:10 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,6 +89,10 @@ SRCS_LIST	= \
 				ft_str_c_count.c \
 				ft_str_isdigit.c \
 				ft_str_end.c \
+				ft_count_split.c \
+				ft_strjoin_free.c \
+				ft_free_split.c \
+				ft_strndup.c \
 				ft_strlen_c.c
 SRCS		= $(addprefix ${FOLDER}/, ${SRCS_LIST})
 OBJS		= ${SRCS:.c=.o}

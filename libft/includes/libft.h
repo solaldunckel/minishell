@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 10:57:51 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/01/17 03:36:44 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/03 10:06:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);
 char				**ft_ssplit(char const *s, char *set);
+void				ft_free_split(char ***split);
+int					ft_count_split(char **split);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_atoi(const char *nptr);
 float				ft_atof(char *str);
@@ -71,6 +73,8 @@ char				*ft_strncpy(char *dst, const char *src, size_t len);
 int					ft_str_c_count(char *str, char c);
 int					ft_str_isdigit(char *str);
 int					ft_str_end(char *str, char *end);
+char				*ft_strndup(const char *s1, int n);
+char				*ft_strjoin_free(char const *s1, char const *s2);
 
 /*
 ** Memory Functions
