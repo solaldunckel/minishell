@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/03 13:43:02 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/04 19:04:04 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@
 # define PIPE 1
 
 # define T_WORD 1
-# define T_PIPE 2
+# define T_REDIRECT 2
+# define T_PIPE 3
+# define T_SEP 4
+# define T_NEWLINE 5
 
 typedef struct		s_minishell
 {
@@ -56,8 +59,7 @@ typedef struct		s_minishell
 	int				out;
 	int				quit;
 	char			*tmp;
-	int				buf_count;
-	char			buf[256];
+	int				count;
 	t_list			*cmd_list;
 	t_list			*env_list;
 	struct s_token	*token_list;
@@ -86,6 +88,8 @@ typedef struct		s_cmd
 typedef struct		s_token
 {
 	char				*word;
+	int					type;
+	struct s_token		*prev;
 	struct s_token		*next;
 }					t_token;
 
@@ -105,14 +109,13 @@ char				*get_bin(t_minishell *minishell, char *cmd);
 // PARSING
 void				start_parse(t_minishell *minishell, char *str);
 
-
 // BRACKET
 
 int					bracket_odd(char *s);
 void				next_bracket(t_minishell *minishell);
 
 // TOKEN
-t_token				*create_token(t_minishell *minishell);
+t_token				*create_token(t_minishell *minishell, int i);
 void				clear_token_list(t_token **begin, void (*del)(void *));
 void				add_token_list(t_token **begin, t_token *new);
 

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/03 13:43:44 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/04 17:29:52 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	wait_for_command(t_minishell *minishell)
 			tmp = minishell->token_list;
 			while (tmp)
 			{
-				printf("[%s]\n", tmp->word);
+				printf("[%s] = %d\n", tmp->word, tmp->type);
 				tmp = tmp->next;
 			}
 			clear_token_list(&minishell->token_list, free);
