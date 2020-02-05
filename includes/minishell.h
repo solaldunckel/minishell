@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 18:15:15 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 21:43:10 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct		s_minishell
 	int				count;
 	struct s_cmd	*cmd_list;
 	t_list			*env_list;
+	t_list			*sort_env_list;
 	struct s_token	*token_list;
 	char			**env_array;
 	char			**bin;
@@ -105,6 +106,16 @@ char				**env_to_array(t_minishell *minishell);
 // BIN
 void				parse_bin(t_minishell *minishell);
 char				*get_bin(t_minishell *minishell, char *cmd);
+
+// BUILTIN
+
+void				echo_cmd(t_minishell *minishell, t_cmd *cmd);
+void				cd_cmd(t_minishell *minishell, t_cmd *cmd);
+void				exit_cmd(void);
+void				env_cmd(t_list **begin);
+void				pwd_cmd(t_minishell *minishell);
+void				export_cmd(t_minishell *minishell, t_cmd *cmd);
+void				unset_cmd(t_minishell *minishell, t_cmd *cmd);
 
 // PARSING
 void				start_parse(t_minishell *minishell, char *str);

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 18:15:32 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 21:25:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,33 @@ void	sighandler(int sig_num)
 	}
 }
 
+void	exec_commands(t_minishell *minishell)
+{
+	t_cmd	*tmp;
+
+	tmp = minishell->cmd_list;
+	while (tmp)
+	{
+		if (ft_strequ(tmp->cmd, ECHO_CMD))
+			echo_cmd(minishell, tmp);
+		else if (ft_strequ(tmp->cmd, CD_CMD))
+			cd_cmd(minishell, tmp);
+		else if (ft_strequ(tmp->cmd, EXIT_CMD))
+			exit_cmd();
+		else if (ft_strequ(tmp->cmd, ENV_CMD))
+			env_cmd(&minishell->env_list);
+		else if (ft_strequ(tmp->cmd, PWD_CMD))
+			pwd_cmd(minishell);
+		else if (ft_strequ(tmp->cmd, EXPORT_CMD))
+			export_cmd(minishell, tmp);
+		else if (ft_strequ(tmp->cmd, UNSET_CMD))
+			unset_cmd(minishell, tmp);
+		tmp = tmp->next;
+	}
+}
+
 void	wait_for_command(t_minishell *minishell)
 {
-	t_token		*tmp;
-
 	while (1)
 	{
 		signal(SIGQUIT, sighandler);
@@ -48,7 +71,7 @@ void	wait_for_command(t_minishell *minishell)
 			while (bracket_odd(minishell->line))
 				next_bracket(minishell);
 			start_parse(minishell, minishell->line);
-			tmp = minishell->token_list;
+			exec_commands(minishell);
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);
 			ft_strdel(&minishell->line);

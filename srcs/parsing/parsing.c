@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 18:10:04 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 18:15:38 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 18:32:40 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,25 +213,25 @@ void	start_parse(t_minishell *minishell, char *str)
 	tmp = minishell->token_list;
 	while (tmp)
 		parse_tokens(minishell, &tmp);
-	tmp2 = minishell->cmd_list;
-
-	while (tmp2)
-	{
-		t_token *tmp3;
-
-		printf("cmd : %s\n", tmp2->cmd);
-		tmp3 = tmp2->args;
-		printf("args : ");
-		while (tmp3)
-		{
-			printf("[%s]", tmp3->word);
-			tmp3 = tmp3->next;
-		}
-		printf("\n");
-		printf("type : %d\n", tmp2->type);
-		printf("fd_out : %d\n", tmp2->out);
-		printf("fd_in : %d\n", tmp2->in);
-		printf("\n");
-		tmp2 = tmp2->next;
-	}
+	// tmp2 = minishell->cmd_list;
+	//
+	// while (tmp2)
+	// {
+	// 	t_token *tmp3;
+	//
+	// 	printf("cmd : %s\n", tmp2->cmd);
+	// 	tmp3 = tmp2->args;
+	// 	printf("args : ");
+	// 	while (tmp3)
+	// 	{
+	// 		printf("[%s]", tmp3->word);
+	// 		tmp3 = tmp3->next;
+	// 	}
+	// 	printf("\n");
+	// 	printf("type : %d\n", tmp2->type);
+	// 	printf("fd_out : %d\n", tmp2->out);
+	// 	printf("fd_in : %d\n", tmp2->in);
+	// 	printf("\n");
+	// 	tmp2 = tmp2->next;
+	// }
 }
