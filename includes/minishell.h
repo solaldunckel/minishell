@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 17:53:38 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 18:15:15 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,5 +134,6 @@ int					count_split(char **split);
 char				*ft_strjoin_free(char const *s1, char const *s2);
 int					get_next_line_no_eof(int fd, char **line, int b);
 void				sighandler(int sig_num);
+int					is_escaped(char *s, int pos);
 
 #endif
