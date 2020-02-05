@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/04 17:29:52 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 14:23:50 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	sighandler(int sig_num)
 
 void	wait_for_command(t_minishell *minishell)
 {
-	char		**cmds;
 	t_token		*tmp;
 
 	while (1)
@@ -50,12 +49,13 @@ void	wait_for_command(t_minishell *minishell)
 				next_bracket(minishell);
 			start_parse(minishell, minishell->line);
 			tmp = minishell->token_list;
-			while (tmp)
-			{
-				printf("[%s] = %d\n", tmp->word, tmp->type);
-				tmp = tmp->next;
-			}
+			// while (tmp)
+			// {
+			// 	printf("[%s] = %d\n", tmp->word, tmp->type);
+			// 	tmp = tmp->next;
+			// }
 			clear_token_list(&minishell->token_list, free);
+			clear_cmd_list(&minishell->cmd_list, free);
 			ft_strdel(&minishell->line);
 		}
 	}
@@ -65,6 +65,7 @@ int		main(int argc, char **argv, char **env)
 {
 	t_minishell		minishell;
 
+	(void)argc;
 	(void)argv;
 	ft_bzero(&minishell, sizeof(t_minishell));
 	ft_printf("\nMINISHELL 42 by sdunckel & haguerni\n\n");

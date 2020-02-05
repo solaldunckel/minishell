@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/02 16:37:25 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/05 13:28:14 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,26 +14,28 @@ NAME			= minishell
 
 SRCS_LIST		= \
 					main.c \
-					utils.c \
-					env_utils.c \
-					bin_path.c \
-					ft_split_brackets.c \
-					gnl_no_eof.c \
-					quotes.c \
-					token.c \
-					parsing2.c
+					\
+					env/env_utils.c \
+					\
+					parsing/token.c \
+					parsing/cmds.c \
+					parsing/parsing.c \
+					parsing/bin_path.c \
+					\
+					utils/utils.c \
+					utils/quotes.c \
+					utils/gnl_no_eof.c
 
-SRCS			= $(addprefix ${FOLDER}/, ${SRCS_LIST})
-
+SRCS_FOLDER		= srcs
+SRCS			= $(addprefix ${SRCS_FOLDER}/, ${SRCS_LIST})
 OBJS			= ${SRCS:.c=.o}
 
 HEADER			= includes
-FOLDER			= srcs
 
 LIBFT 			= libft
 
 CC				= gcc
-CFLAGS 			= # -Wall -Wextra -Werror
+CFLAGS 			= -Wall -Wextra -Werror
 LFLAGS			= -L libft -lft
 
 RM				= rm -f

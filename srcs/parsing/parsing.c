@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing2.c                                         :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 18:10:04 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/04 19:46:41 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 14:21:13 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	token_env(char *str, int *i, t_minishell *minishell)
 	}
 }
 
-t_token		*create_token_newline(t_minishell *minishell)
+t_token		*create_token_newline(void)
 {
 	t_token	*new;
 
@@ -101,8 +101,7 @@ void	split_tokens(t_minishell *minishell, char *str)
 		i++;
 	}
 	add_token_list(&minishell->token_list, create_token(minishell, i));
-	add_token_list(&minishell->token_list, create_token_newline(minishell));
-
+	add_token_list(&minishell->token_list, create_token_newline());
 }
 
 int		check_error(t_token *token)
@@ -150,13 +149,68 @@ char	*iter_tokens(t_minishell *minishell)
 	return (NULL);
 }
 
+void	create_redirect(t_token **token, t_cmd *cmd)
+{
+	if (ft_strequ((*token)->word, ">"))
+		cmd->out = open((*token)->next->word, O_TRUNC | O_RDWR | O_CREAT, 0644);
+	else if (ft_strequ((*token)->word, ">>"))
+		cmd->out = open((*token)->next->word, O_RDWR | O_CREAT | O_APPEND, 0644);
+	else if (ft_strequ((*token)->word, "<"))
+		cmd->in = open((*token)->next->word, O_RDONLY);
+	*token = (*token)->next;
+}
+
+void	parse_tokens(t_minishell *minishell, t_token **tmp)
+{
+	t_cmd	*cmd;
+	(void)minishell;
+	if (!(cmd = ft_calloc(1, sizeof(t_cmd))))
+		return ;
+	while (*tmp)
+	{
+		if ((*tmp)->type == T_WORD && !cmd->cmd)
+			cmd->cmd = (*tmp)->word;
+		if ((*tmp)->type == T_REDIRECT)
+			create_redirect(tmp, cmd);
+		if ((*tmp)->type == T_PIPE)
+		{
+			cmd->type = T_PIPE;
+			*tmp = (*tmp)->next;
+			break;
+		}
+		if ((*tmp)->type == T_SEP)
+		{
+			cmd->type = T_SEP;
+			*tmp = (*tmp)->next;
+			break;
+		}
+		*tmp = (*tmp)->next;
+	}
+	add_cmd_list(&minishell->cmd_list, cmd);
+}
+
 void	start_parse(t_minishell *minishell, char *str)
 {
 	char 	*token;
+	t_token *tmp;
+	t_cmd	*tmp2;
 
 	split_tokens(minishell, str);
 	token = iter_tokens(minishell);
 	if (token)
+	{
 		ft_dprintf(2, "%s: syntax error near unexpected token `%s'\n",
 			minishell->name, token);
+		exit(1);
+	}
+	tmp = minishell->token_list;
+	while (tmp)
+		parse_tokens(minishell, &tmp);
+	tmp2 = minishell->cmd_list;
+	while (tmp2)
+	{
+		printf("cmd : %s / type : %d / fd_out : %d / fd_in = %d\n", tmp2->cmd,
+			tmp2->type, tmp2->out, tmp2->in);
+		tmp2 = tmp2->next;
+	}
 }

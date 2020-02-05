@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 17:07:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/03 13:42:07 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 13:07:50 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int		bracket_odd(char *s)
 void	next_bracket(t_minishell *minishell)
 {
 	char	*tmp;
-	char	*tmp2;
 
 	write(1, "> ", 2);
 	if (get_next_line_no_eof(0, &tmp, 1))

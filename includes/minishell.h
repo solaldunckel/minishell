@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/04 19:04:04 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 14:25:57 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct		s_minishell
 	int				quit;
 	char			*tmp;
 	int				count;
-	t_list			*cmd_list;
+	struct s_cmd	*cmd_list;
 	t_list			*env_list;
 	struct s_token	*token_list;
 	char			**env_array;
@@ -76,7 +76,7 @@ typedef struct		s_env
 typedef struct		s_cmd
 {
 	char			*cmd;
-	char			**args;
+	struct s_token	*args;
 	int				pipe[2];
 	int				in;
 	int				out;
@@ -97,7 +97,7 @@ t_minishell			*g_minishell;
 
 // ENV
 void				env_init(t_minishell *minishell, char **env);
-t_env				*create_env(t_minishell *minishell, char **split);
+t_env				*create_env(char **split);
 char				*get_env(t_minishell *minishell, char *env);
 char				*replace_env(t_minishell *minishell, char *line);
 char				**env_to_array(t_minishell *minishell);
@@ -118,6 +118,10 @@ void				next_bracket(t_minishell *minishell);
 t_token				*create_token(t_minishell *minishell, int i);
 void				clear_token_list(t_token **begin, void (*del)(void *));
 void				add_token_list(t_token **begin, t_token *new);
+
+// CMD
+void				add_cmd_list(t_cmd **begin, t_cmd *new);
+void				clear_cmd_list(t_cmd **begin, void (*del)(void *));
 
 // UTILS
 char				*ft_strndup(const char *s1, int n);

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/03 19:34:56 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 13:07:23 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	replace_env_2(t_minishell *minishell, char *str, char **final)
 char	*replace_env(t_minishell *minishell, char *line)
 {
 	int		i;
-	char	*tmp;
 	char	*final;
 	char	**split;
 
@@ -54,7 +53,7 @@ char	*replace_env(t_minishell *minishell, char *line)
 	return (final);
 }
 
-t_env	*create_env(t_minishell *minishell, char **split)
+t_env	*create_env(char **split)
 {
 	t_env	*env;
 
@@ -78,7 +77,7 @@ void	env_init(t_minishell *minishell, char **env)
 	while (env[i])
 	{
 		tmp_split = ft_split(env[i], '=');
-		if (!(tmp = create_env(minishell, tmp_split)))
+		if (!(tmp = create_env(tmp_split)))
 			return ;
 		ft_lstadd_back(&minishell->env_list, ft_lstnew(tmp));
 		ft_free_split(&tmp_split);
