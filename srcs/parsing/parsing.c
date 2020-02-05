@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 18:10:04 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 14:21:13 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 18:12:41 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		in_bracket(char *s, int pos)
 
 	bracket1 = 0;
 	bracket2 = 0;
-	while (pos > 0)
+	while (pos >= 0)
 	{
 		if (s[pos] == 34 && s[pos - 1] != 92)
 			bracket1++;
@@ -100,8 +100,12 @@ void	split_tokens(t_minishell *minishell, char *str)
 			add_token_list(&minishell->token_list, create_token(minishell, i + 1));
 		i++;
 	}
-	add_token_list(&minishell->token_list, create_token(minishell, i));
-	add_token_list(&minishell->token_list, create_token_newline());
+	if (i > 0)
+	{
+		add_token_list(&minishell->token_list, create_token(minishell, i));
+		add_token_list(&minishell->token_list, create_token_newline());
+	}
+
 }
 
 int		check_error(t_token *token)
@@ -111,11 +115,11 @@ int		check_error(t_token *token)
 	if (token->type == T_REDIRECT && (token->prev
 		&& token->prev->type == T_REDIRECT))
 		return (0);
-	if (token->type == T_NEWLINE && token->prev->type == T_REDIRECT)
+	if (token->type == T_NEWLINE && token->prev && token->prev->type == T_REDIRECT)
 		return (0);
-	if (token->type == T_PIPE && token->prev->type == T_PIPE)
+	if (token->type == T_PIPE && token->prev && token->prev->type == T_PIPE)
 		return (0);
-	if (token->type == T_SEP && token->prev->type == T_SEP)
+	if (token->type == T_SEP && token->prev && token->prev->type == T_SEP)
 		return (0);
 	return (1);
 }
@@ -123,7 +127,6 @@ int		check_error(t_token *token)
 char	*iter_tokens(t_minishell *minishell)
 {
 	t_token *tmp;
-	t_token *prev;
 
 	tmp = minishell->token_list;
 	while (tmp)
@@ -139,11 +142,8 @@ char	*iter_tokens(t_minishell *minishell)
 			tmp->type = T_NEWLINE;
 		else
 			tmp->type = T_WORD;
-		if (prev)
-			tmp->prev = prev;
 		if (!check_error(tmp))
 			return (tmp->word);
-		prev = tmp;
 		tmp = tmp->next;
 	}
 	return (NULL);
@@ -163,11 +163,18 @@ void	create_redirect(t_token **token, t_cmd *cmd)
 void	parse_tokens(t_minishell *minishell, t_token **tmp)
 {
 	t_cmd	*cmd;
-	(void)minishell;
+
+	if ((*tmp)->type == T_NEWLINE)
+	{
+		*tmp = (*tmp)->next;
+		return ;
+	}
 	if (!(cmd = ft_calloc(1, sizeof(t_cmd))))
 		return ;
 	while (*tmp)
 	{
+		if ((*tmp)->type == T_WORD && cmd->cmd)
+			add_token_list(&cmd->args, create_arg_token((*tmp)->word));
 		if ((*tmp)->type == T_WORD && !cmd->cmd)
 			cmd->cmd = (*tmp)->word;
 		if ((*tmp)->type == T_REDIRECT)
@@ -201,16 +208,30 @@ void	start_parse(t_minishell *minishell, char *str)
 	{
 		ft_dprintf(2, "%s: syntax error near unexpected token `%s'\n",
 			minishell->name, token);
-		exit(1);
+		return ;
 	}
 	tmp = minishell->token_list;
 	while (tmp)
 		parse_tokens(minishell, &tmp);
 	tmp2 = minishell->cmd_list;
+
 	while (tmp2)
 	{
-		printf("cmd : %s / type : %d / fd_out : %d / fd_in = %d\n", tmp2->cmd,
-			tmp2->type, tmp2->out, tmp2->in);
+		t_token *tmp3;
+
+		printf("cmd : %s\n", tmp2->cmd);
+		tmp3 = tmp2->args;
+		printf("args : ");
+		while (tmp3)
+		{
+			printf("[%s]", tmp3->word);
+			tmp3 = tmp3->next;
+		}
+		printf("\n");
+		printf("type : %d\n", tmp2->type);
+		printf("fd_out : %d\n", tmp2->out);
+		printf("fd_in : %d\n", tmp2->in);
+		printf("\n");
 		tmp2 = tmp2->next;
 	}
 }

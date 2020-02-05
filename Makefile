@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/05 13:28:14 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/05 17:20:33 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ HEADER			= includes
 LIBFT 			= libft
 
 CC				= gcc
-CFLAGS 			= -Wall -Wextra -Werror
+CFLAGS 			= # -Wall -Wextra -Werror
 LFLAGS			= -L libft -lft
 
 RM				= rm -f

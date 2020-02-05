@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 14:25:57 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/05 17:53:38 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ void				next_bracket(t_minishell *minishell);
 
 // TOKEN
 t_token				*create_token(t_minishell *minishell, int i);
+t_token				*create_arg_token(char *word);
+void				token_remove_last(t_token **begin_list);
 void				clear_token_list(t_token **begin, void (*del)(void *));
 void				add_token_list(t_token **begin, t_token *new);
 
