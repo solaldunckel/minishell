@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 01:32:22 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 15:23:45 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,19 @@ t_token		*create_token(t_minishell *minishell, int i)
 		return (NULL);
 	if (!(new = ft_calloc(1, sizeof(t_token))))
 		return (NULL);
-	new->word = ft_substr(minishell->line, i - minishell->count, minishell->count);
+	new->word = ft_substr(minishell->line, i - minishell->count,
+		minishell->count);
 	minishell->count = 0;
+	return (new);
+}
+
+t_token		*create_token_newline(void)
+{
+	t_token	*new;
+
+	if (!(new = ft_calloc(1, sizeof(t_token))))
+		return (NULL);
+	new->word = ft_strdup("newline");
 	return (new);
 }
 

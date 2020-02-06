@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 02:10:56 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 18:40:30 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@
 # define ENV_CMD "env"
 # define EXPORT_CMD "export"
 # define UNSET_CMD "unset"
-
-# define NORMAL 0
-# define PIPE 1
 
 # define T_WORD 1
 # define T_REDIRECT 2
@@ -90,19 +87,25 @@ typedef struct		s_token
 
 t_minishell			*g_minishell;
 
-// ENV
+/*
+** ENV
+*/
 void				env_init(t_minishell *minishell, char **env);
 t_env				*create_env(char **split);
+void				set_env(t_minishell *minishell, char *env, char *value);
 char				*get_env(t_minishell *minishell, char *env);
 char				*replace_env(t_minishell *minishell, char *line);
 char				**env_to_array(t_minishell *minishell);
 
-// BIN
+/*
+** BIN
+*/
 void				parse_bin(t_minishell *minishell);
 char				*get_bin(t_minishell *minishell, char *cmd);
 
-// BUILTIN
-
+/*
+** BUILTIN
+*/
 void				echo_cmd(t_minishell *minishell, t_cmd *cmd);
 void				cd_cmd(t_minishell *minishell, t_cmd *cmd);
 void				exit_cmd(void);
@@ -111,34 +114,45 @@ void				pwd_cmd(t_minishell *minishell);
 void				export_cmd(t_minishell *minishell, t_cmd *cmd);
 void				unset_cmd(t_minishell *minishell, t_cmd *cmd);
 
-// PARSING
+/*
+** PARSING
+*/
 void				start_parse(t_minishell *minishell, char *str);
+void				split_tokens(t_minishell *minishell, char *str);
+char				*iter_tokens(t_minishell *minishell);
+void				parse_tokens(t_minishell *minishell, t_token **tmp);
 
-// BRACKET
-
+/*
+** BRACKET/QUOTES
+*/
 int					bracket_odd(char *s);
 void				next_bracket(t_minishell *minishell);
 
-// TOKEN
+/*
+** TOKEN_LIST
+*/
 t_token				*create_token(t_minishell *minishell, int i);
 t_token				*create_arg_token(char *word);
+t_token				*create_token_newline(void);
 void				token_remove_last(t_token **begin_list);
 void				clear_token_list(t_token **begin, void (*del)(void *));
 void				add_token_list(t_token **begin, t_token *new);
 
-// CMD
+/*
+** CMDS_LIST
+*/
 void				add_cmd_list(t_cmd **begin, t_cmd *new);
 void				clear_cmd_list(t_cmd **begin, void (*del)(void *));
 
-// UTILS
-char				*ft_strndup(const char *s1, int n);
-char				**ft_split_brackets(char const *s, char *set);
+/*
+** UTILS
+*/
 void				free_cmd(void *cmd);
-char				**free_split(char **split);
-int					count_split(char **split);
-char				*ft_strjoin_free(char const *s1, char const *s2);
 int					get_next_line_no_eof(int fd, char **line, int b);
 void				sighandler(int sig_num);
 int					is_escaped(char *s, int pos);
+int					in_bracket(char *s, int pos);
+int					is_char_str(char c, char *str);
+void				nothing(void *cmd);
 
 #endif

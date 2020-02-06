@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 18:33:36 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 01:56:23 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 18:30:07 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,5 @@ void	echo_cmd(t_minishell *minishell, t_cmd *cmd)
 	}
 	if (endl)
 		ft_putchar('\n');
+	minishell->exit = 0;
 }

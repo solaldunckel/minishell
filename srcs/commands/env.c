@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:31:25 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 21:28:26 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 17:34:22 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	env_cmd(t_list **begin)
 		return ;
 	while (tmp)
 	{
-		ft_printf("%s=%s\n", ((t_env*)(tmp->content))->name,
-			((t_env*)(tmp->content))->value);
+		if (((t_env*)(tmp->content))->value)
+			ft_printf("%s=%s\n", ((t_env*)(tmp->content))->name,
+				((t_env*)(tmp->content))->value);
 		tmp = tmp->next;
 	}
 }

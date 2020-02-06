@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 17:07:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 15:50:17 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/06 15:10:01 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		is_escaped(char *s, int pos)
 	int n;
 
 	n = 0;
-	while(pos > 0 && s[pos] == '\\' )
+	while (pos > 0 && s[pos] == '\\')
 	{
 		n++;
 		pos--;
@@ -30,7 +30,7 @@ int		last_pipe(char *s, int pos)
 	while (pos >= 0 && s[pos] == ' ')
 		pos--;
 	if (pos >= 0 && s[pos] == '|' && !is_escaped(s, pos - 1))
-		return(1);
+		return (1);
 	return (0);
 }
 

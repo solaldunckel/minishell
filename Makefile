@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/05 20:40:27 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/06 15:20:55 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SRCS_LIST		= \
 					parsing/cmds.c \
 					parsing/parsing.c \
 					parsing/bin_path.c \
+					parsing/parsing_token.c \
+					parsing/parsing_cmds.c \
 					\
 					commands/echo.c \
 					commands/cd.c \
