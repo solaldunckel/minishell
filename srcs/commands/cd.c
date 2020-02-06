@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 19:38:50 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 20:12:45 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 02:16:25 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	cd_cmd(t_minishell *minishell, t_cmd *cmd)
 	else
 	{
 		if (chdir(args->word))
-			ft_printf("%s: cd: %s: %s\n", minishell->name, args->word, strerror(errno));
+			ft_printf("%s: cd: %s: %s\n", minishell->name, args->word,
+				strerror(errno));
 	}
 	ft_strdel(&minishell->curdir);
 	minishell->curdir = getcwd(NULL, 0);

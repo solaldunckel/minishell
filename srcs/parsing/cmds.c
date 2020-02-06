@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 12:56:11 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 18:14:13 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 01:33:43 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,19 @@ void		add_cmd_list(t_cmd **begin, t_cmd *new)
 void		clear_cmd_list(t_cmd **begin, void (*del)(void *))
 {
 	t_cmd	*tmp;
+	t_token *args;
 
 	if (!begin || !del)
 		return ;
 	tmp = *begin;
 	while (tmp)
 	{
-		//del(tmp->cmd);
+		args = tmp->args;
+		while (args)
+		{
+			del(args);
+			args = args->next;
+		}
 		free(tmp);
 		tmp = tmp->next;
 	}

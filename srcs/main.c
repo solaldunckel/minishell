@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 21:25:26 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 01:35:57 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ void	wait_for_command(t_minishell *minishell)
 			while (bracket_odd(minishell->line))
 				next_bracket(minishell);
 			start_parse(minishell, minishell->line);
+			ft_strdel(&minishell->line);
 			exec_commands(minishell);
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);
-			ft_strdel(&minishell->line);
 		}
 	}
 }

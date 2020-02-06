@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 21:43:10 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 02:10:56 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,7 @@ typedef struct		s_minishell
 	char			*curdir;
 	int				exit;
 	char			*line;
-	char			**split;
-	int				fd_out;
-	int				fd_in;
-	int				in;
-	int				out;
 	int				quit;
-	char			*tmp;
 	int				count;
 	struct s_cmd	*cmd_list;
 	t_list			*env_list;

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 21:59:34 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 01:40:48 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,13 +106,16 @@ void	export_cmd(t_minishell *minishell, t_cmd *cmd)
 	}
 	while (args)
 	{
-		split = ft_split(args->word, '=');
-		if (!(modify_env_list(minishell, split)))
-			ft_lstadd_back(&minishell->env_list, ft_lstnew(create_env(split)));
-		if (ft_strequ(split[0], "PATH"))
-			parse_bin(minishell);
-		minishell->env_array = env_to_array(minishell);
-		ft_free_split(&split);
+		if (ft_is_in_stri('=', args->word) >= 0)
+		{
+			split = ft_split(args->word, '=');
+			if (!(modify_env_list(minishell, split)))
+				ft_lstadd_back(&minishell->env_list, ft_lstnew(create_env(split)));
+			if (ft_strequ(split[0], "PATH"))
+				parse_bin(minishell);
+			minishell->env_array = env_to_array(minishell);
+			ft_free_split(&split);
+		}
 		args = args->next;
 	}
 }
