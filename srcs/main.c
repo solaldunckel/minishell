@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 01:35:57 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/10 01:17:41 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,6 @@ void	sighandler(int sig_num)
 		ft_printf("\n" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET,
 		g_minishell->curdir);
 		g_minishell->quit = 1;
-	}
-}
-
-void	exec_commands(t_minishell *minishell)
-{
-	t_cmd	*tmp;
-
-	tmp = minishell->cmd_list;
-	while (tmp)
-	{
-		if (ft_strequ(tmp->cmd, ECHO_CMD))
-			echo_cmd(minishell, tmp);
-		else if (ft_strequ(tmp->cmd, CD_CMD))
-			cd_cmd(minishell, tmp);
-		else if (ft_strequ(tmp->cmd, EXIT_CMD))
-			exit_cmd();
-		else if (ft_strequ(tmp->cmd, ENV_CMD))
-			env_cmd(&minishell->env_list);
-		else if (ft_strequ(tmp->cmd, PWD_CMD))
-			pwd_cmd(minishell);
-		else if (ft_strequ(tmp->cmd, EXPORT_CMD))
-			export_cmd(minishell, tmp);
-		else if (ft_strequ(tmp->cmd, UNSET_CMD))
-			unset_cmd(minishell, tmp);
-		tmp = tmp->next;
 	}
 }
 

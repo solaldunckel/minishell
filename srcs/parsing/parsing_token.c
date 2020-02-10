@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 15:24:07 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/10 01:24:47 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	split_tokens(t_minishell *minishell, char *str)
 	if (i > 0)
 	{
 		add_token_list(&minishell->token_list, create_token(minishell, i));
-		add_token_list(&minishell->token_list, create_token_newline());
+		add_token_list(&minishell->token_list,
+			create_arg_token(ft_strdup("newline")));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 12:56:11 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 01:33:43 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/10 01:16:16 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,39 @@ void		add_cmd_list(t_cmd **begin, t_cmd *new)
 	if (*begin)
 	{
 		tmp = *begin;
+		prev = tmp;
 		while (tmp->next)
 		{
-			tmp->prev = prev;
-			prev = tmp;
+			tmp->next->prev = prev;
+			prev = tmp->next;
 			tmp = tmp->next;
 		}
-		tmp->prev = tmp;
 		tmp->next = new;
+		tmp->next->prev = prev;
 	}
 	else
 		*begin = new;
+}
+
+char	**args_to_array(t_minishell *minishell, t_cmd *cmd)
+{
+	char 	**array;
+	int		i;
+	t_token *tmp;
+
+	i = 1;
+	if (!(array = malloc(sizeof(char *) * (token_list_size(&cmd->args) + 2))))
+		return (NULL);
+	array[0] = cmd->cmd;
+	tmp = cmd->args;
+	while (tmp)
+	{
+		array[i] = tmp->word;
+		tmp = tmp->next;
+		i++;
+	}
+	array[i] = NULL;
+	return (array);
 }
 
 void		clear_cmd_list(t_cmd **begin, void (*del)(void *))

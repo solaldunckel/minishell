@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/06 15:20:55 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/10 01:19:16 by tomsize          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,9 +31,11 @@ SRCS_LIST		= \
 					commands/pwd.c \
 					commands/unset.c \
 					commands/export.c \
+					commands/exec.c \
 					\
 					utils/utils.c \
 					utils/quotes.c \
+					utils/errors.c \
 					utils/gnl_no_eof.c
 
 SRCS_FOLDER		= srcs

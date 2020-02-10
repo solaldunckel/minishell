@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 15:28:40 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/10 14:19:47 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,26 @@
 void	create_redirect(t_token **token, t_cmd *cmd)
 {
 	if (ft_strequ((*token)->word, ">"))
-		cmd->out = open((*token)->next->word, O_TRUNC | O_RDWR | O_CREAT, 0644);
+	{
+		if ((cmd->out = open((*token)->next->word, O_TRUNC | O_RDWR | O_CREAT,
+			0644)) < 0)
+			ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
+				(*token)->next->word, strerror(errno));
+	}
 	else if (ft_strequ((*token)->word, ">>"))
-		cmd->out = open((*token)->next->word, O_RDWR | O_CREAT | O_APPEND,
-			0644);
+	{
+		if ((cmd->out = open((*token)->next->word, O_RDWR | O_CREAT | O_APPEND,
+			0644)) < 0)
+			ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
+				(*token)->next->word, strerror(errno));
+	}
 	else if (ft_strequ((*token)->word, "<"))
-		cmd->in = open((*token)->next->word, O_RDONLY);
+	{
+		if ((cmd->in = open((*token)->next->word, O_RDONLY)) < 0)
+			ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
+				(*token)->next->word, strerror(errno));
+	}
+
 	*token = (*token)->next;
 }
 

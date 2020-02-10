@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 18:40:30 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/10 14:01:49 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct		s_cmd
 	int				in;
 	int				out;
 	int				type;
+	int				err;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }					t_cmd;
@@ -115,6 +116,15 @@ void				export_cmd(t_minishell *minishell, t_cmd *cmd);
 void				unset_cmd(t_minishell *minishell, t_cmd *cmd);
 
 /*
+** EXEC
+*/
+void				exec_builtin(t_minishell *minishell, t_cmd *tmp);
+void				open_pipes(t_minishell *minishell, t_cmd *tmp);
+void				close_pipes(t_minishell *minishell, t_cmd *tmp,
+						int *status, int pid);
+void				exec_commands(t_minishell *minishell);
+
+/*
 ** PARSING
 */
 void				start_parse(t_minishell *minishell, char *str);
@@ -137,6 +147,7 @@ t_token				*create_token_newline(void);
 void				token_remove_last(t_token **begin_list);
 void				clear_token_list(t_token **begin, void (*del)(void *));
 void				add_token_list(t_token **begin, t_token *new);
+int					token_list_size(t_token **begin);
 
 /*
 ** CMDS_LIST
@@ -154,5 +165,7 @@ int					is_escaped(char *s, int pos);
 int					in_bracket(char *s, int pos);
 int					is_char_str(char c, char *str);
 void				nothing(void *cmd);
+char				**args_to_array(t_minishell *minishell, t_cmd *cmd);
+void				handle_errno(t_minishell *minishell, char *cmd, int type);
 
 #endif
