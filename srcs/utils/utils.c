@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/10 01:15:57 by tomsize          ###   ########.fr       */
+/*   Updated: 2020/02/11 00:23:30 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		in_bracket(char *s, int pos)
 	bracket2 = 0;
 	while (pos >= 0)
 	{
-		if (s[pos] == 34 && s[pos - 1] != 92)
+		if (s[pos] == 34 && (pos == 0 || !is_escaped(s, pos - 1)))
 			bracket1++;
 		if (s[pos] == 39)
 			bracket2++;

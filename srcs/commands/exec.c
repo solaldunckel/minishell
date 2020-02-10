@@ -6,7 +6,7 @@
 /*   By: tomsize <tomsize@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:17:25 by tomsize           #+#    #+#             */
-/*   Updated: 2020/02/10 14:17:21 by tomsize          ###   ########.fr       */
+/*   Updated: 2020/02/11 00:50:20 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,64 @@ void	close_pipes(t_minishell *minishell, t_cmd *tmp, int *status, int pid)
 		minishell->exit = WEXITSTATUS(*status);
 }
 
+char	*replace_env(t_minishell *minishell, char *str)
+{
+	int		i;
+	int		count;
+	char 	buf[4096];
+	char 	*new;
+
+	new = ft_strdup("");
+	i = 0;
+	count = 0;
+	ft_bzero(buf, sizeof(buf));
+	while (str[i])
+	{
+		while (str[i] && str[i] == '$' && !is_escaped(str, i - 1))
+		{
+			new = ft_strjoin_free(new, buf);
+			ft_bzero(buf, count);
+			count = 0;
+			i++;
+			while (str[i] && !is_char_str(str[i], "$ \'\""))
+			{
+				buf[count] = str[i];
+				i++;
+				count++;
+			}
+			new = ft_strjoin_free(new, get_env(minishell, buf));
+			ft_bzero(buf, count);
+			count = 0;
+		}
+		buf[count] = str[i];
+		count++;
+		i++;
+	}
+	new = ft_strjoin_free(new, buf);
+	return (new);
+}
+
+void	process_args(t_minishell *minishell, t_cmd *cmd)
+{
+	t_token	*tmp;
+	char 	*to_free;
+
+	if (ft_is_in_stri('$', cmd->cmd) >= 0)
+		cmd->cmd = replace_env(minishell, cmd->cmd);
+	tmp = cmd->args;
+	while (tmp)
+	{
+	//	printf("%s\n", tmp->word);
+		if (ft_is_in_stri('$', tmp->word) >= 0)
+			tmp->word = replace_env(minishell, tmp->word);
+		// if (tmp->word[0] == '\'' && tmp->word[ft_strlen(tmp->word) - 1] == '\'')
+		// to_free = tmp->word;
+		// tmp->word = ft_strtrim(tmp->word, "\"");
+		// free(to_free);
+		tmp = tmp->next;
+	}
+}
+
 void	exec_commands(t_minishell *minishell)
 {
 	t_cmd	*tmp;
@@ -94,11 +152,10 @@ void	exec_commands(t_minishell *minishell)
 	tmp = minishell->cmd_list;
 	while (tmp)
 	{
+		process_args(minishell, tmp);
 		if (tmp->type == T_PIPE || (tmp->prev && tmp->prev->type == T_PIPE))
-		{
 			if (pipe(tmp->pipe))
 				return (exit(0));
-		}
 		pid = fork();
 		if (pid < 0)
 			exit(0);

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/10 14:19:47 by tomsize          ###   ########.fr       */
+/*   Updated: 2020/02/10 17:45:14 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	create_redirect(t_token **token, t_cmd *cmd)
 			ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 				(*token)->next->word, strerror(errno));
 	}
-
 	*token = (*token)->next;
 }
 

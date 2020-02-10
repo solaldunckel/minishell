@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/10 01:24:47 by tomsize          ###   ########.fr       */
+/*   Updated: 2020/02/11 00:47:04 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ int		split_tokens2(t_minishell *minishell, char *str, int *i)
 	if ((is_char_str(str[*i], "><|;") && !is_char_str(str[*i - 1], "><"))
 		&& !in_bracket(str, *i))
 		add_token_list(&minishell->token_list, create_token(minishell, *i));
-	if (is_char_str(str[*i], "$") && !in_bracket(str, *i))
-	{
-		token_env(str, i, minishell);
-		return (0);
-	}
+	// if (is_char_str(str[*i], "$") && !in_bracket(str, *i))
+	// {
+	// 	token_env(str, i, minishell);
+	// 	return (0);
+	// }
 	return (1);
 }
 

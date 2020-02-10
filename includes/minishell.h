@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/10 14:01:49 by tomsize          ###   ########.fr       */
+/*   Updated: 2020/02/11 00:53:06 by tomsize          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct		s_cmd
 	int				in;
 	int				out;
 	int				type;
-	int				err;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }					t_cmd;
