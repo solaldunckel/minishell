@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 02:10:56 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/11 15:44:16 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct		s_minishell
 	char			*line;
 	int				quit;
 	int				count;
+	int				out;
+	int				in;
 	struct s_cmd	*cmd_list;
 	t_list			*env_list;
 	t_list			*sort_env_list;
@@ -71,8 +73,11 @@ typedef struct		s_env
 typedef struct		s_cmd
 {
 	char			*cmd;
+
 	struct s_token	*args;
+	char			**args_array;
 	int				pipe[2];
+	int				pipeprev[2];
 	int				in;
 	int				out;
 	int				type;
@@ -113,6 +118,7 @@ void				unset_cmd(t_minishell *minishell, t_cmd *cmd);
 
 // PARSING
 void				start_parse(t_minishell *minishell, char *str);
+char				*supp_newline(char *src);
 
 // BRACKET
 
@@ -125,6 +131,7 @@ t_token				*create_arg_token(char *word);
 void				token_remove_last(t_token **begin_list);
 void				clear_token_list(t_token **begin, void (*del)(void *));
 void				add_token_list(t_token **begin, t_token *new);
+int					size_token_list(t_token **begin);
 
 // CMD
 void				add_cmd_list(t_cmd **begin, t_cmd *new);
@@ -140,5 +147,9 @@ char				*ft_strjoin_free(char const *s1, char const *s2);
 int					get_next_line_no_eof(int fd, char **line, int b);
 void				sighandler(int sig_num);
 int					is_escaped(char *s, int pos);
+void				exec_prog(t_minishell *minishell, t_cmd *tmp, int f_pipe[2],
+					int f_pipe2[2]);
+void				handle_errors(t_minishell *minishell, char *cmd, int type);
+void				handle_errno(t_minishell *minishell, char *cmd, int type);
 
 #endif

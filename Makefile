@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/05 20:40:27 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/08 18:53:29 by haguerni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,9 @@ SRCS_LIST		= \
 					\
 					utils/utils.c \
 					utils/quotes.c \
-					utils/gnl_no_eof.c
+					utils/gnl_no_eof.c\
+					utils/exec.c\
+					utils/errors.c\
 
 SRCS_FOLDER		= srcs
 SRCS			= $(addprefix ${SRCS_FOLDER}/, ${SRCS_LIST})

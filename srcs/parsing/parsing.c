@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 18:10:04 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 01:36:56 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/11 12:34:33 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void	parse_tokens(t_minishell *minishell, t_token **tmp)
 		if ((*tmp)->type == T_PIPE)
 		{
 			cmd->type = T_PIPE;
+			pipe(cmd->pipe);
 			*tmp = (*tmp)->next;
 			break;
 		}

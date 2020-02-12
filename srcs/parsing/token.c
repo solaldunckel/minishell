@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 01:32:22 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/06 15:41:20 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,19 @@ t_token		*create_arg_token(char *word)
 		return (NULL);
 	new->word = word;
 	return (new);
+}
+
+int		size_token_list(t_token **begin)
+{
+	int 	i;
+	t_token	*tmp;
+
+	i = 0;
+	tmp = *begin;
+	while(tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
 }
