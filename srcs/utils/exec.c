@@ -86,8 +86,8 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 		env_cmd(&minishell->env_list);
 	else if (ft_strequ(tmp->cmd, PWD_CMD))
 		pwd_cmd(minishell);
-	else if (ft_strequ(tmp->cmd, EXPORT_CMD))
-		export_cmd(minishell, tmp);
+//	else if (ft_strequ(tmp->cmd, EXPORT_CMD))
+	//	export_cmd(minishell, tmp, 0);
 	else if (ft_strequ(tmp->cmd, UNSET_CMD))
 		unset_cmd(minishell, tmp);
 	else

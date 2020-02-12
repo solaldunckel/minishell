@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/11 15:58:45 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/12 15:15:44 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	exec_commands(t_minishell *minishell)
 	{
 		if (ft_strequ(tmp->cmd, EXIT_CMD))
 			exit_cmd();
+		else if (ft_strequ(tmp->cmd, EXPORT_CMD))
+			export_cmd(minishell, tmp, 1);
 		pipe(fpipe);
 		if (!tmp->prev || (tmp->prev && !(tmp->prev->type == T_PIPE)))
 			exec_prog(minishell, tmp, fpipe, NULL);
