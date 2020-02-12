@@ -6,13 +6,10 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2020/02/10 01:25:28 by tomsize          ###   ########.fr       */
-=======
-/*   Updated: 2020/02/06 15:41:20 by haguerni         ###   ########.fr       */
->>>>>>> origin/Hava_branche
+/*   Updated: 2020/02/12 17:25:29 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -92,21 +89,6 @@ t_token		*create_arg_token(char *word)
 
 	if (!(new = ft_calloc(1, sizeof(t_token))))
 		return (NULL);
-	new->word = word;
+	new->word = handle_quotes(word);
 	return (new);
-}
-
-int		size_token_list(t_token **begin)
-{
-	int 	i;
-	t_token	*tmp;
-
-	i = 0;
-	tmp = *begin;
-	while(tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return (i);
 }

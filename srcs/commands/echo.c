@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 18:33:36 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 18:30:07 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/12 17:28:40 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	echo_cmd(t_minishell *minishell, t_cmd *cmd)
 	while (args)
 	{
 		ft_putstr(args->word);
-		if (ft_strlen(args->word) && args->next)
-			ft_putchar(' ');
+	//	if (ft_strlen(args->word) && args->next)
+	//		ft_putchar(' ');
 		args = args->next;
 	}
 	if (endl)

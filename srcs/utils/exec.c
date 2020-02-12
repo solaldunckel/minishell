@@ -60,7 +60,7 @@ char	**join_args(t_cmd *cmd)
 
 	i = 1;
 	if(!(args = (char **)malloc(sizeof(char *) *
-		(size_token_list(&cmd->args) + 2))))
+		(token_list_size(&cmd->args) + 2))))
 		return (NULL);
 	args[0] = cmd->cmd;
 	tmp = cmd->args;
@@ -79,15 +79,15 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 	if (ft_strequ(tmp->cmd, ECHO_CMD))
 		echo_cmd(minishell, tmp);
 	else if (ft_strequ(tmp->cmd, CD_CMD))
-		cd_cmd(minishell, tmp);
+		;//cd_cmd(minishell, tmp);
 	else if (ft_strequ(tmp->cmd, EXIT_CMD))
 		exit_cmd();
 	else if (ft_strequ(tmp->cmd, ENV_CMD))
 		env_cmd(&minishell->env_list);
 	else if (ft_strequ(tmp->cmd, PWD_CMD))
 		pwd_cmd(minishell);
-//	else if (ft_strequ(tmp->cmd, EXPORT_CMD))
-	//	export_cmd(minishell, tmp, 0);
+	else if (ft_strequ(tmp->cmd, EXPORT_CMD))
+		export_cmd(minishell, tmp, 0);
 	else if (ft_strequ(tmp->cmd, UNSET_CMD))
 		unset_cmd(minishell, tmp);
 	else

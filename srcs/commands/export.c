@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 18:34:59 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/12 16:39:10 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,18 +92,18 @@ int		modify_env_list(t_minishell *minishell, char **split)
 	return (0);
 }
 
-void	export_cmd(t_minishell *minishell, t_cmd *cmd)
+void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 {
 	t_token *args;
 	char	**split;
 
 	args = cmd->args;
-	if (!args)
+	if (!args && forked)
 	{
 		export_no_args(minishell);
 		return ;
 	}
-	while (args)
+	while (args && !forked)
 	{
 		if (ft_is_in_stri('=', args->word) >= 0)
 		{

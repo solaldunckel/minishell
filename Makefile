@@ -6,11 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2020/02/10 01:19:16 by tomsize          ###   ########.fr        #
-=======
-#    Updated: 2020/02/08 18:53:29 by haguerni         ###   ########.fr        #
->>>>>>> origin/Hava_branche
+#    Updated: 2020/02/12 16:52:50 by haguerni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,18 +31,12 @@ SRCS_LIST		= \
 					commands/pwd.c \
 					commands/unset.c \
 					commands/export.c \
-					commands/exec.c \
 					\
 					utils/utils.c \
 					utils/quotes.c \
-<<<<<<< HEAD
-					utils/errors.c \
-					utils/gnl_no_eof.c
-=======
 					utils/gnl_no_eof.c\
 					utils/exec.c\
 					utils/errors.c\
->>>>>>> origin/Hava_branche
 
 SRCS_FOLDER		= srcs
 SRCS			= $(addprefix ${SRCS_FOLDER}/, ${SRCS_LIST})
