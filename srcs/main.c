@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/10 01:17:41 by tomsize          ###   ########.fr       */
+/*   Updated: 2020/02/12 16:33:21 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,25 @@ void	sighandler(int sig_num)
 	}
 }
 
+void	exec_commands(t_minishell *minishell)
+{
+	t_cmd	*tmp;
+	int		fpipe[2];
+
+	tmp = minishell->cmd_list;
+	while (tmp)
+	{
+		if (ft_strequ(tmp->cmd, EXIT_CMD))
+			exit_cmd();
+		else if (ft_strequ(tmp->cmd, EXPORT_CMD))
+			export_cmd(minishell, tmp, 1);
+		pipe(fpipe);
+		if (!tmp->prev || (tmp->prev && !(tmp->prev->type == T_PIPE)))
+			exec_prog(minishell, tmp, fpipe, NULL);
+		tmp = tmp->next;
+	}
+}
+
 void	wait_for_command(t_minishell *minishell)
 {
 	while (1)
@@ -47,7 +66,8 @@ void	wait_for_command(t_minishell *minishell)
 				next_bracket(minishell);
 			start_parse(minishell, minishell->line);
 			ft_strdel(&minishell->line);
-			exec_commands(minishell);
+			if (g_minishell->quit == 0)
+				exec_commands(minishell);
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);
 		}
