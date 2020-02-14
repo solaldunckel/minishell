@@ -6,11 +6,35 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/10 17:45:14 by tomsize          ###   ########.fr       */
+/*   Updated: 2020/02/14 19:33:07 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_heredoc(t_token **token, t_cmd *cmd)
+{
+	char	*line;
+	char	*tmp;
+	int		pip[2];
+
+	pipe(pip);
+	cmd->in = pip[0];
+	line = ft_strdup("");
+	while (!tmp || !ft_strequ((*token)->next->word, tmp))
+	{
+		ft_strdel(&tmp);
+		write(1, "> ", 2);
+		if (get_next_line_no_eof(0, &tmp, 1))
+		{
+			line = ft_strjoin_free(line, tmp);
+			line = ft_strjoin_free(line, "\n");
+		}
+	}
+	ft_strdel(&tmp);
+	ft_putstr_fd(line, pip[1]);
+	close(pip[1]);
+}
 
 void	create_redirect(t_token **token, t_cmd *cmd)
 {
@@ -34,6 +58,8 @@ void	create_redirect(t_token **token, t_cmd *cmd)
 			ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 				(*token)->next->word, strerror(errno));
 	}
+	else if (ft_strequ((*token)->word, "<<"))
+		ft_heredoc(token, cmd);
 	*token = (*token)->next;
 }
 
