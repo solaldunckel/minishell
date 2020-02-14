@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 15:23:40 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 20:37:39 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,10 @@ char	*get_env(t_minishell *minishell, char *env)
 	while (tmp)
 	{
 		if (ft_strequ(env, ((t_env*)(tmp->content))->name))
+		{
+			printf("TROUVE %s\n", ((t_env*)(tmp->content))->name);
 			return (((t_env*)(tmp->content))->value);
+		}
 		tmp = tmp->next;
 	}
 	if (ft_strequ(env, "?"))

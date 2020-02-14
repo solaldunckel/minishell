@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/14 17:58:17 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 20:33:40 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ char	*replace_env(t_minishell *minishell, char *str)
 				i++;
 				count++;
 			}
-			new = ft_strjoin_free(new, get_env(minishell, buf));
+			//printf("%s\n", buf);
+			printf("%s\n", get_env(minishell, buf));
+			//new = ft_strjoin_free(new, get_env(minishell, buf));
 			ft_bzero(buf, count);
 			count = 0;
 		}

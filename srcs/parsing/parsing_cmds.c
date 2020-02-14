@@ -6,13 +6,13 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 19:33:07 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 20:29:11 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_heredoc(t_token **token, t_cmd *cmd)
+void	ft_heredoc(t_minishell *minishell, t_token **token, t_cmd *cmd)
 {
 	char	*line;
 	char	*tmp;
@@ -32,11 +32,13 @@ void	ft_heredoc(t_token **token, t_cmd *cmd)
 		}
 	}
 	ft_strdel(&tmp);
+	if (ft_is_in_stri('$', line) && (*token)->next->word[0] != '\"')
+		line = replace_env(minishell, line);
 	ft_putstr_fd(line, pip[1]);
 	close(pip[1]);
 }
 
-void	create_redirect(t_token **token, t_cmd *cmd)
+void	create_redirect(t_minishell *minishell, t_token **token, t_cmd *cmd)
 {
 	if (ft_strequ((*token)->word, ">"))
 	{
@@ -59,7 +61,7 @@ void	create_redirect(t_token **token, t_cmd *cmd)
 				(*token)->next->word, strerror(errno));
 	}
 	else if (ft_strequ((*token)->word, "<<"))
-		ft_heredoc(token, cmd);
+		ft_heredoc(minishell, token, cmd);
 	*token = (*token)->next;
 }
 
@@ -70,7 +72,7 @@ int		parse_tokens2(t_minishell *minishell, t_token **tmp, t_cmd *cmd)
 	if ((*tmp)->type == T_WORD && !cmd->cmd)
 		cmd->cmd = (*tmp)->word;
 	if ((*tmp)->type == T_REDIRECT)
-		create_redirect(tmp, cmd);
+		create_redirect(minishell, tmp, cmd);
 	if ((*tmp)->type == T_PIPE)
 	{
 		cmd->type = T_PIPE;
