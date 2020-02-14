@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:50:10 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 18:29:09 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:02:43 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	unset_cmd(t_minishell *minishell, t_cmd *cmd)
 		if (env)
 			ft_lst_remove_if(&minishell->env_list, args->word, is_env,
 				free_env);
+		if (ft_strequ(args->word, "PATH"))
+			parse_bin(minishell);
 		args = args->next;
 	}
 	minishell->exit = 0;

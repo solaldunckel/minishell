@@ -79,7 +79,7 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 	if (ft_strequ(tmp->cmd, ECHO_CMD))
 		echo_cmd(minishell, tmp);
 	else if (ft_strequ(tmp->cmd, CD_CMD))
-		;//cd_cmd(minishell, tmp);
+		exit (0);
 	else if (ft_strequ(tmp->cmd, EXIT_CMD))
 		exit_cmd();
 	else if (ft_strequ(tmp->cmd, ENV_CMD))
@@ -89,7 +89,7 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 	else if (ft_strequ(tmp->cmd, EXPORT_CMD))
 		export_cmd(minishell, tmp, 1);
 	else if (ft_strequ(tmp->cmd, UNSET_CMD))
-		unset_cmd(minishell, tmp);
+		exit (0);
 	else
 	{
 		execve(bin, tmp->args_array, minishell->env_array);
@@ -108,6 +108,8 @@ void	exec_prog(t_minishell *minishell, t_cmd *tmp, int fpip[2], int spip[2])
 	pid = fork();
 	if (pid == 0)
 	{
+		if (tmp->out == -1 || tmp->in == -1)
+			exit(-1);
 		handle_fd(tmp, fpip, spip);
 		tmp->args_array = join_args(tmp);
 		bin = get_bin(minishell, tmp->cmd);

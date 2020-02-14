@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/06 17:22:08 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/14 15:23:40 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	set_env(t_minishell *minishell, char *env, char *value)
 	}
 }
 
-t_env	*create_env(char **split)
+t_env	*create_env(char **split, int ex)
 {
 	t_env	*env;
 
@@ -44,6 +44,7 @@ t_env	*create_env(char **split)
 		env->value = ft_strdup(split[1]);
 	else
 		env->value = ft_strdup("");
+	env->ex = ex;
 	return (env);
 }
 
@@ -57,7 +58,7 @@ void	env_init(t_minishell *minishell, char **env)
 	while (env[i])
 	{
 		tmp_split = ft_split(env[i], '=');
-		if (!(tmp = create_env(tmp_split)))
+		if (!(tmp = create_env(tmp_split, 0)))
 			return ;
 		ft_lstadd_back(&minishell->env_list, ft_lstnew(tmp));
 		ft_free_split(&tmp_split);

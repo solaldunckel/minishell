@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:03:58 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/05 13:07:39 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:00:27 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,15 @@ void	parse_bin(t_minishell *minishell)
 {
 	int		i;
 	char	**bin;
+	char	*ban;
 
 	i = 0;
-	bin = ft_split(get_env(minishell, "PATH"), ':');
-	while (bin[i])
+	ban = NULL;
+	ban = get_env(minishell, "PATH");
+	bin = NULL;
+	if (ban)
+		bin = ft_split(ban, ':');
+	while (bin && bin[i])
 	{
 		bin[i] = ft_strjoin_free(bin[i], "/");
 		i++;
@@ -56,7 +61,7 @@ char	*get_bin(t_minishell *minishell, char *cmd)
 	i = 0;
 	if (ft_is_in_stri('/', cmd) >= 0)
 		return (cmd);
-	while (minishell->bin[i])
+	while (minishell->bin && minishell->bin[i])
 	{
 		try = try_opendir(minishell->bin[i], cmd);
 		if (try)

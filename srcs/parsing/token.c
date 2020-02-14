@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/12 17:25:29 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:15:32 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,6 @@ t_token		*create_arg_token(char *word)
 
 	if (!(new = ft_calloc(1, sizeof(t_token))))
 		return (NULL);
-	new->word = handle_quotes(word);
+	new->word = word;
 	return (new);
 }

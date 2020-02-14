@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/12 17:13:39 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:19:17 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct		s_env
 {
 	char	*name;
 	char	*value;
+	int		ex;
 }					t_env;
 
 typedef struct		s_cmd
@@ -96,7 +97,7 @@ t_minishell			*g_minishell;
 ** ENV
 */
 void				env_init(t_minishell *minishell, char **env);
-t_env				*create_env(char **split);
+t_env				*create_env(char **split, int ex);
 void				set_env(t_minishell *minishell, char *env, char *value);
 char				*get_env(t_minishell *minishell, char *env);
 char				*replace_env(t_minishell *minishell, char *line);
@@ -127,6 +128,7 @@ void				open_pipes(t_minishell *minishell, t_cmd *tmp);
 void				close_pipes(t_minishell *minishell, t_cmd *tmp,
 						int *status, int pid);
 void				exec_commands(t_minishell *minishell);
+void				process_args(t_minishell *minishell, t_cmd *cmd);
 
 /*
 ** PARSING
