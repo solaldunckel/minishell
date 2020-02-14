@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/14 17:30:42 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:58:17 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ char	*replace_env(t_minishell *minishell, char *str)
 {
 	int		i;
 	int		count;
-	char 	buf[4096];
-	char 	*new;
+	char	buf[4096];
+	char	*new;
 
 	new = ft_strdup("");
 	i = 0;
@@ -98,11 +98,6 @@ int		in_bracket(char *s, int pos)
 	if (bracket1 % 2 != 0 || bracket2 % 2 != 0)
 		return (1);
 	return (0);
-}
-
-void	nothing(void *cmd)
-{
-	(void)cmd;
 }
 
 int		is_char_str(char c, char *str)

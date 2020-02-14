@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 17:13:55 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:44:00 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	wait_for_command(t_minishell *minishell)
 	while (1)
 	{
 		signal(SIGQUIT, sighandler);
-		//signal(SIGINT, sighandler);
+		signal(SIGINT, sighandler);
 		g_minishell->quit == 0 ? print_prompt(minishell) : 0;
 		g_minishell->quit = 0;
 		if (get_next_line_no_eof(0, &minishell->line, 0))

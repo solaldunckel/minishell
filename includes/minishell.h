@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 17:19:17 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:48:10 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,5 +177,6 @@ void				exec_prog(t_minishell *minishell, t_cmd *tmp, int f_pipe[2],
 					int f_pipe2[2]);
 void				handle_errors(t_minishell *minishell, char *cmd, int type);
 char				*handle_quotes(char *src);
+char				**join_args(t_cmd *cmd);
 
 #endif

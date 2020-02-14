@@ -6,11 +6,33 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 17:31:01 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/14 17:57:20 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**join_args(t_cmd *cmd)
+{
+	char	**args;
+	t_token	*tmp;
+	int 	i;
+
+	i = 1;
+	if (!(args = (char **)malloc(sizeof(char *) *
+		(token_list_size(&cmd->args) + 2))))
+		return (NULL);
+	args[0] = cmd->cmd;
+	tmp = cmd->args;
+	while (tmp)
+	{
+		args[i] = tmp->word;
+		tmp = tmp->next;
+		i++;
+	}
+	args[i] = NULL;
+	return (args);
+}
 
 char	*handle_quotes(char *src)
 {
@@ -65,4 +87,9 @@ char	*supp_newline(char *src)
 	free(src);
 	src = NULL;
 	return (dest);
+}
+
+void	nothing(void *cmd)
+{
+	(void)cmd;
 }

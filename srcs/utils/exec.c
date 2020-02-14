@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
+/*   Updated: 2020/02/14 17:56:25 by haguerni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
@@ -52,34 +64,12 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 	}
 }
 
-char	**join_args(t_cmd *cmd)
-{
-	char	**args;
-	t_token	*tmp;
-	int i;
-
-	i = 1;
-	if(!(args = (char **)malloc(sizeof(char *) *
-		(token_list_size(&cmd->args) + 2))))
-		return (NULL);
-	args[0] = cmd->cmd;
-	tmp = cmd->args;
-	while (tmp)
-	{
-		args[i] = tmp->word;
-		tmp = tmp->next;
-		i++;
-	}
-	args[i] = NULL;
-	return (args);
-}
-
 void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 {
 	if (ft_strequ(tmp->cmd, ECHO_CMD))
 		echo_cmd(minishell, tmp);
 	else if (ft_strequ(tmp->cmd, CD_CMD))
-		exit (0);
+		exit(0);
 	else if (ft_strequ(tmp->cmd, EXIT_CMD))
 		exit_cmd();
 	else if (ft_strequ(tmp->cmd, ENV_CMD))
@@ -89,14 +79,14 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 	else if (ft_strequ(tmp->cmd, EXPORT_CMD))
 		export_cmd(minishell, tmp, 1);
 	else if (ft_strequ(tmp->cmd, UNSET_CMD))
-		exit (0);
+		exit(0);
 	else
 	{
 		execve(bin, tmp->args_array, minishell->env_array);
 		handle_errno(minishell, tmp->cmd, errno);
 		exit(EXIT_FAILURE);
 	}
-	exit (0);
+	exit(0);
 }
 
 void	exec_prog(t_minishell *minishell, t_cmd *tmp, int fpip[2], int spip[2])
