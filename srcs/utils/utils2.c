@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/14 20:33:40 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/15 13:58:18 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*replace_env(t_minishell *minishell, char *str)
 	ft_bzero(buf, sizeof(buf));
 	while (str[i])
 	{
-		while (str[i] && str[i] == '$' && !is_escaped(str, i - 1))
+		while (str[i] && str[i] == '$')
 		{
 			new = ft_strjoin_free(new, buf);
 			ft_bzero(buf, count);
@@ -46,9 +46,7 @@ char	*replace_env(t_minishell *minishell, char *str)
 				i++;
 				count++;
 			}
-			//printf("%s\n", buf);
-			printf("%s\n", get_env(minishell, buf));
-			//new = ft_strjoin_free(new, get_env(minishell, buf));
+			new = ft_strjoin_free(new, get_env(minishell, buf));
 			ft_bzero(buf, count);
 			count = 0;
 		}
@@ -70,10 +68,9 @@ void	process_args(t_minishell *minishell, t_cmd *cmd)
 	tmp = cmd->args;
 	while (tmp)
 	{
-		if (tmp->word && tmp->word[0] != '\'' &&
-			ft_is_in_stri('$', tmp->word) >= 0)
+		if (ft_is_in_stri('$', tmp->word) >= 0)
 			tmp->word = replace_env(minishell, tmp->word);
-		tmp->word = handle_quotes(tmp->word);
+		//tmp->word = handle_quotes(tmp->word);
 		tmp = tmp->next;
 	}
 }

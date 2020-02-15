@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 17:44:00 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:49:09 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,23 @@ void	exec_commands(t_minishell *minishell)
 	tmp = minishell->cmd_list;
 	while (tmp)
 	{
-		pipe(fpipe);
-		process_args(minishell, tmp);
-		if (ft_strequ(tmp->cmd, EXIT_CMD) && tmp->type != T_PIPE &&
-		(!tmp->prev || tmp->prev->type != T_PIPE))
-			exit_cmd();
-		else if (ft_strequ(tmp->cmd, EXPORT_CMD))
-			export_cmd(minishell, tmp, 0);
-		else if (ft_strequ(tmp->cmd, CD_CMD) && tmp->type != T_PIPE &&
-		(!tmp->prev || tmp->prev->type != T_PIPE))
-			cd_cmd(minishell, tmp);
-		else if (ft_strequ(tmp->cmd, UNSET_CMD))
-			unset_cmd(minishell, tmp);
-		else if (!tmp->prev || (tmp->prev && !(tmp->prev->type == T_PIPE)))
-			exec_prog(minishell, tmp, fpipe, NULL);
+		if (tmp->cmd)
+		{
+			process_args(minishell, tmp);
+			pipe(fpipe);
+			if (ft_strequ(tmp->cmd, EXIT_CMD) && tmp->type != T_PIPE &&
+			(!tmp->prev || tmp->prev->type != T_PIPE))
+				exit_cmd();
+			else if (ft_strequ(tmp->cmd, EXPORT_CMD))
+				export_cmd(minishell, tmp, 0);
+			else if (ft_strequ(tmp->cmd, CD_CMD) && tmp->type != T_PIPE &&
+			(!tmp->prev || tmp->prev->type != T_PIPE))
+				cd_cmd(minishell, tmp);
+			else if (ft_strequ(tmp->cmd, UNSET_CMD))
+				unset_cmd(minishell, tmp);
+			else if (!tmp->prev || (tmp->prev && !(tmp->prev->type == T_PIPE)))
+				exec_prog(minishell, tmp, fpipe, NULL);
+		}
 		tmp = tmp->next;
 	}
 }

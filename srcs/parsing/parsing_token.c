@@ -6,35 +6,14 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 19:23:29 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:34:34 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	token_env(char *str, int *i, t_minishell *minishell)
-{
-	while (str[*i])
-	{
-		minishell->count++;
-		(*i)++;
-		if (is_char_str(str[*i], "><$|;\"\' "))
-		{
-			add_token_list(&minishell->token_list, create_token(minishell, *i));
-			return ;
-		}
-	}
-}
-
 int		split_tokens2(t_minishell *minishell, char *str, int *i)
 {
-	if (is_char_str(str[*i], "\'\"") && !in_bracket(str, *i))
-	{
-		minishell->count++;
-		add_token_list(&minishell->token_list, create_token(minishell, *i + 1));
-		(*i)++;
-		return (0);
-	}
 	if ((str[*i] == ' ' || str[*i] == '\t') && !in_bracket(str, *i))
 	{
 		add_token_list(&minishell->token_list, create_token(minishell, *i));
@@ -44,11 +23,6 @@ int		split_tokens2(t_minishell *minishell, char *str, int *i)
 	if ((is_char_str(str[*i], "><|;") && !is_char_str(str[*i - 1], "><"))
 		&& !in_bracket(str, *i))
 		add_token_list(&minishell->token_list, create_token(minishell, *i));
-	// if (is_char_str(str[*i], "$") && !in_bracket(str, *i))
-	// {
-	// 	token_env(str, i, minishell);
-	// 	return (0);
-	// }
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 17:57:20 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:40:24 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ char	*supp_newline(char *src)
 	int		j;
 	char	*dest;
 
-	if (ft_is_in_stri('\n', src) == -1 || src == NULL)
+	if (!src)
+		return (NULL);
+	if (ft_is_in_stri('\n', src) == -1)
 		return (src);
 	i = 0;
 	j = 0;

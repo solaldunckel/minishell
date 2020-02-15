@@ -6,21 +6,11 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 18:10:04 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/12 16:57:16 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:32:06 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_token		*create_token_newline(void)
-{
-	t_token	*new;
-
-	if (!(new = ft_calloc(1, sizeof(t_token))))
-		return (NULL);
-	new->word = ft_strdup("newline");
-	return (new);
-}
 
 void	start_parse(t_minishell *minishell, char *str)
 {
