@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 15:36:24 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/16 15:47:45 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	env_cmd_export(t_list **begin)
 					((t_env*)(tmp->content))->name,
 					((t_env*)(tmp->content))->value);
 			else if (!((t_env*)(tmp->content))->value)
-				ft_printf("declare -x %s=\"\"\n",
+				ft_printf("declare -x %s\n",
 					((t_env*)(tmp->content))->name);
 		}
 		tmp = tmp->next;

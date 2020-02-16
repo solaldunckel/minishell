@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/15 12:30:00 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/16 15:59:27 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ t_env	*create_env(char **split, int ex)
 	env->name = ft_strdup(split[0]);
 	if (split[1])
 		env->value = ft_strdup(split[1]);
+	else if (ex)
+		env->value = NULL;
 	else
 		env->value = ft_strdup("");
 	env->ex = ex;
