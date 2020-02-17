@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/17 18:00:21 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/17 21:56:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_heredoc(t_minishell *minishell, t_token **token, t_cmd *cmd)
 
 void	create_redirect(t_minishell *minishell, t_token **token, t_cmd *cmd)
 {
+	printf("%d\n", BONUS);
 	if (ft_strequ((*token)->word, ">"))
 	{
 		if ((cmd->out = open((*token)->next->word, O_TRUNC | O_RDWR | O_CREAT,
@@ -63,7 +64,7 @@ void	create_redirect(t_minishell *minishell, t_token **token, t_cmd *cmd)
 			ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 				(*token)->next->word, strerror(errno));
 	}
-	else if (ft_strequ((*token)->word, "<<"))
+	else if (ft_strequ((*token)->word, "<<") && BONUS)
 		ft_heredoc(minishell, token, cmd);
 	*token = (*token)->next;
 }

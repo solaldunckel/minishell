@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/17 19:37:19 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/17 22:38:57 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@
 #  include <term.h>
 # endif
 # include <errno.h>
+
+# ifndef BONUS
+#  define BONUS 0
+# endif
 
 # define ECHO_CMD "echo"
 # define EXIT_CMD "exit"
