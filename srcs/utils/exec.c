@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/15 14:05:34 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/17 16:29:38 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 	{
 		dup2(fpip[0], 0);
 		close(fpip[1]);
-		if (!tmp->out && tmp->type == T_PIPE)
+		if (tmp->type == T_PIPE)
 		{
 			dup2(spip[1], 1);
 			close(spip[0]);
 		}
 	}
-	else if (!tmp->out && tmp->type == T_PIPE)
+	else if (tmp->type == T_PIPE)
 	{
 		dup2(fpip[1], 1);
 		close(fpip[0]);

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/15 15:38:32 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/17 16:09:35 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ void	ft_heredoc(t_minishell *minishell, t_token **token, t_cmd *cmd)
 		write(1, "> ", 2);
 		if (get_next_line_no_eof(0, &tmp, 1))
 		{
-			line = ft_strjoin_free(line, tmp);
-			line = ft_strjoin_free(line, "\n");
+			if (!ft_strequ((*token)->next->word, tmp))
+			{
+				line = ft_strjoin_free(line, tmp);
+				line = ft_strjoin_free(line, "\n");
+			}
 		}
 	}
 	ft_strdel(&tmp);

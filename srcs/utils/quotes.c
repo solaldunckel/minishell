@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 17:07:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/12 18:47:00 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/17 16:22:07 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int		is_escaped(char *s, int pos)
 
 int		last_pipe(char *s, int pos)
 {
-	while (pos >= 0 && s[pos] == ' ')
+	while (pos > 0 && (s[pos] == ' ' || s[pos] == '\n'))
 		pos--;
-	if (pos >= 0 && s[pos] == '|' && !is_escaped(s, pos - 1))
+	if (pos > 0 && s[pos] == '|' && !is_escaped(s, pos - 1))
 		return (1);
 	return (0);
 }
 
-int		bracket_odd(char *s)
+int		bracket_odd(char *s, int ret)
 {
 	int		bracket1;
 	int		bracket2;
@@ -55,7 +55,7 @@ int		bracket_odd(char *s)
 	}
 	if (bracket1 % 2 != 0 || bracket2 % 2 != 0)
 		return (1);
-	return (last_pipe(s, i));
+	return (ret ? last_pipe(s, i - 1) : 0);
 }
 
 void	next_bracket(t_minishell *minishell)

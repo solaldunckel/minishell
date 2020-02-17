@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/15 13:58:18 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/17 16:37:59 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*replace_env(t_minishell *minishell, char *str)
 			ft_bzero(buf, count);
 			count = 0;
 			i++;
-			while (str[i] && !is_char_str(str[i], "$ \'\""))
+			while (str[i] && !is_char_str(str[i], "$ \'\"\n"))
 			{
 				buf[count] = str[i];
 				i++;
@@ -70,7 +70,7 @@ void	process_args(t_minishell *minishell, t_cmd *cmd)
 	{
 		if (ft_is_in_stri('$', tmp->word) >= 0)
 			tmp->word = replace_env(minishell, tmp->word);
-		//tmp->word = handle_quotes(tmp->word);
+		tmp->word = handle_quotes(tmp->word);
 		tmp = tmp->next;
 	}
 }

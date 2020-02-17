@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 20:09:26 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/17 16:13:48 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ char				*supp_newline(char *src);
 /*
 ** BRACKET/QUOTES
 */
-int					bracket_odd(char *s);
+int					bracket_odd(char *s, int ret);
 void				next_bracket(t_minishell *minishell);
 
 /*

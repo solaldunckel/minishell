@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/16 18:03:40 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/17 15:51:39 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int				ctrl_d_exit(int b)
 	}
 	return (0);
 }
-
-ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls
 
 int				get_next_line_no_eof(int fd, char **line, int b)
 {
