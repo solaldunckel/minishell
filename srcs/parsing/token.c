@@ -6,10 +6,9 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/14 17:15:32 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/17 18:11:33 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -38,7 +37,7 @@ void		add_token_list(t_token **begin, t_token *new)
 		*begin = new;
 }
 
-int		token_list_size(t_token **begin)
+int			token_list_size(t_token **begin)
 {
 	t_token	*tmp;
 	int		i;
@@ -76,7 +75,7 @@ t_token		*create_token(t_minishell *minishell, int i)
 	if (!minishell->count)
 		return (NULL);
 	if (!(new = ft_calloc(1, sizeof(t_token))))
-		return (NULL);
+		exit_cmd(minishell);
 	new->word = ft_substr(minishell->line, i - minishell->count,
 		minishell->count);
 	minishell->count = 0;
@@ -88,7 +87,7 @@ t_token		*create_arg_token(char *word)
 	t_token	*new;
 
 	if (!(new = ft_calloc(1, sizeof(t_token))))
-		return (NULL);
+		exit_cmd(g_minishell);
 	new->word = word;
 	return (new);
 }

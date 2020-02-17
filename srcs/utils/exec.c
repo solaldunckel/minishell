@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/17 16:29:38 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/17 18:05:37 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 	else if (ft_strequ(tmp->cmd, CD_CMD))
 		exit(0);
 	else if (ft_strequ(tmp->cmd, EXIT_CMD))
-		exit_cmd();
+		exit_cmd(minishell);
 	else if (ft_strequ(tmp->cmd, ENV_CMD))
 		env_cmd(&minishell->env_list);
 	else if (ft_strequ(tmp->cmd, PWD_CMD))

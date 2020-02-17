@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/16 15:59:27 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/17 19:46:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_env	*create_env(char **split, int ex)
 	t_env	*env;
 
 	if (!(env = ft_calloc(1, sizeof(t_env))))
-		return (NULL);
+		exit_cmd(g_minishell);
 	env->name = ft_strdup(split[0]);
 	if (split[1])
 		env->value = ft_strdup(split[1]);
@@ -46,7 +46,6 @@ t_env	*create_env(char **split, int ex)
 		env->value = NULL;
 	else
 		env->value = ft_strdup("");
-	env->ex = ex;
 	return (env);
 }
 
@@ -77,8 +76,9 @@ char	**env_to_array(t_minishell *minishell)
 	t_list	*tmp;
 	char	**array;
 
-	if (!(array = malloc(sizeof(char*) * ft_lstsize(minishell->env_list) + 1)))
-		return (NULL);
+	if (!(array = ft_calloc(1, sizeof(char*) * ft_lstsize(minishell->env_list)
+		+ 1)))
+		exit_cmd(minishell);
 	i = 0;
 	tmp = minishell->env_list;
 	while (tmp)
@@ -106,6 +106,10 @@ char	*get_env(t_minishell *minishell, char *env)
 		tmp = tmp->next;
 	}
 	if (ft_strequ(env, "?"))
-		return (ft_itoa(minishell->exit));
+	{
+		ft_strdel(&minishell->exit_str);
+		minishell->exit_str = ft_itoa(minishell->exit);
+		return (minishell->exit_str);
+	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/15 15:34:34 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/17 21:48:18 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,11 @@ int		check_error(t_token *token)
 	if (token->type == T_NEWLINE && token->prev
 		&& token->prev->type == T_REDIRECT)
 		return (0);
-	if (token->type == T_PIPE && token->prev && token->prev->type == T_PIPE)
+	if (token->type == T_PIPE && (token->prev->type == T_PIPE
+		|| token->prev->type == T_SEP || token->prev->type == T_REDIRECT))
 		return (0);
-	if (token->type == T_SEP && token->prev && token->prev->type == T_SEP)
+	if (token->type == T_SEP && (token->prev->type == T_SEP
+		|| token->prev->type == T_PIPE || token->prev->type == T_REDIRECT))
 		return (0);
 	return (1);
 }

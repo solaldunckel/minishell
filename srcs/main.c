@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/17 16:39:07 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/17 18:03:32 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	exec_commands(t_minishell *minishell)
 			pipe(fpipe);
 			if (ft_strequ(tmp->cmd, EXIT_CMD) && tmp->type != T_PIPE &&
 			(!tmp->prev || tmp->prev->type != T_PIPE))
-				exit_cmd();
+				exit_cmd(minishell);
 			else if (ft_strequ(tmp->cmd, EXPORT_CMD) && tmp->args)
 				export_cmd(minishell, tmp, 0);
 			else if (ft_strequ(tmp->cmd, CD_CMD) && tmp->type != T_PIPE &&
@@ -74,7 +74,6 @@ void	wait_for_command(t_minishell *minishell)
 		{
 			while (bracket_odd(minishell->line, 1))
 				next_bracket(minishell);
-			printf("%s\n", minishell->line);
 			start_parse(minishell, minishell->line);
 			ft_strdel(&minishell->line);
 			if (g_minishell->quit == 0)
