@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 03:10:05 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 19:10:53 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,67 @@ void	sighandler(int sig_num)
 	}
 }
 
+void	remove_redirect(t_token *args, t_token **begin)
+{
+	t_token	*tmp;
+	t_token	*next;
+
+	tmp = *begin;
+	if (*begin == args)
+	{
+		next = (*begin)->next->next;
+		// del(*begin_list);
+		*begin = next;
+		return;
+	}
+	while (tmp && tmp->next)
+	{
+		if (tmp == args && tmp->prev)
+		{
+			next = tmp->next->next;
+			tmp->next->next->prev = tmp->prev;
+			tmp->prev->next = next;
+			return;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	create_redirect2(t_minishell *minishell, t_cmd *cmd)
+{
+	t_token	*args;
+
+	(void)minishell;
+	args = cmd->args;
+	while (args)
+	{
+		if (ft_strequ(args->word, ">"))
+		{
+			if ((cmd->out = open(args->next->word, O_TRUNC | O_RDWR | O_CREAT,
+				0644)) < 0)
+				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
+					args->next->word, strerror(errno));
+			remove_redirect(args, &cmd->args);
+		}
+		else if (ft_strequ(args->word, ">>"))
+		{
+			if ((cmd->out = open(args->next->word, O_RDWR | O_CREAT | O_APPEND,
+				0644)) < 0)
+				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
+					args->next->word, strerror(errno));
+			remove_redirect(args, &cmd->args);
+		}
+		else if (ft_strequ(args->word, "<"))
+		{
+			if ((cmd->in = open(args->next->word, O_RDONLY)) < 0)
+				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
+					args->next->word, strerror(errno));
+			remove_redirect(args, &cmd->args);
+		}
+		args = args->next;
+	}
+}
+
 void	exec_commands(t_minishell *minishell)
 {
 	t_cmd	*tmp;
@@ -43,6 +104,7 @@ void	exec_commands(t_minishell *minishell)
 	{
 		if (tmp->cmd)
 		{
+			create_redirect2(minishell, tmp);
 			process_args(minishell, tmp);
 			pipe(fpipe);
 			if (ft_strequ(tmp->cmd, EXIT_CMD) && tmp->type != T_PIPE &&

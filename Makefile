@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/18 03:24:33 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/18 15:50:29 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,5 +78,8 @@ fclean:			clean
 				@make fclean -C $(LIBFT)
 
 re:				fclean all
+
+real:			re
+				./minishell
 
 .PHONY: 		all fclean clean re bonus

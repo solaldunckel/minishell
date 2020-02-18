@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 03:08:07 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 14:35:06 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,20 @@
 void		add_token_list(t_token **begin, t_token *new)
 {
 	t_token	*tmp;
-	t_token *prev;
 
-	prev = NULL;
 	if (!new || !begin)
 		return ;
 	if (*begin)
 	{
 		tmp = *begin;
-		prev = tmp;
 		while (tmp->next)
 		{
-			tmp->next->prev = prev;
-			prev = tmp->next;
+			tmp->next->prev = tmp;
 			tmp = tmp->next;
 		}
 		tmp->next = new;
-		tmp->next->prev = prev;
+		new->prev = tmp;
+		new->next = NULL;
 	}
 	else
 		*begin = new;

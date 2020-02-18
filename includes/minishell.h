@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 03:24:13 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 14:11:39 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 # define T_PIPE 3
 # define T_SEP 4
 # define T_NEWLINE 5
+# define T_REDIRECT_FILE 6
 
 typedef struct		s_minishell
 {
