@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/17 22:38:57 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 03:24:13 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,9 @@ char				*supp_newline(char *src);
 */
 int					bracket_odd(char *s, int ret);
 void				next_bracket(t_minishell *minishell);
+char				*simple_quotes(char *src, int *i);
+char				*double_quotes(char *src, int *i);
+char				*no_quotes(char *src, int *i);
 
 /*
 ** TOKEN_LIST
@@ -166,6 +169,7 @@ void				clear_cmd_list(t_cmd **begin, void (*del)(void *));
 ** UTILS
 */
 void				free_cmd(void *cmd);
+char				*ft_strjoin_double_free(char const *s1, char const *s2);
 void				free_env(void *lst);
 int					get_next_line_no_eof(int fd, char **line, int b);
 void				sighandler(int sig_num);

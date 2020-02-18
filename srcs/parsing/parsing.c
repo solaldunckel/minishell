@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/01 18:10:04 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/15 15:32:06 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 03:20:32 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	start_parse(t_minishell *minishell, char *str)
 {
 	char	*token;
 	t_token *tmp;
-	t_cmd	*tmp2;
 
 	split_tokens(minishell, str);
 	token = iter_tokens(minishell);
