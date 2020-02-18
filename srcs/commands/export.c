@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/17 18:34:14 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 03:22:00 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	env_cmd_export(t_list **begin)
 void	export_no_args(t_minishell *minishell)
 {
 	t_list	*tmp;
-	t_list	*tmp2;
 
 	tmp = minishell->env_list;
 	while (tmp)

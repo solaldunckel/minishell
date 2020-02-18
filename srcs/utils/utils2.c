@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/17 19:55:13 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 03:22:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_cmd(void *cmd)
 	t_cmd	*tmp;
 
 	tmp = cmd;
-	free(tmp->cmd);
+	ft_strdel(&tmp->cmd);
 	free(cmd);
 }
 
@@ -61,15 +61,12 @@ char	*replace_env(t_minishell *minishell, char *str)
 void	process_args(t_minishell *minishell, t_cmd *cmd)
 {
 	t_token	*tmp;
-	char	*to_free;
 
-	if (ft_is_in_stri('$', cmd->cmd) >= 0)
-		cmd->cmd = replace_env(minishell, cmd->cmd);
+	(void)minishell;
+	cmd->cmd = handle_quotes(cmd->cmd);
 	tmp = cmd->args;
 	while (tmp)
 	{
-		if (ft_is_in_stri('$', tmp->word) >= 0)
-			tmp->word = replace_env(minishell, tmp->word);
 		tmp->word = handle_quotes(tmp->word);
 		tmp = tmp->next;
 	}

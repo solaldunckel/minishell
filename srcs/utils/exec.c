@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/17 18:05:37 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 03:38:14 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 {
 	int		status;
-	char	bin;
 	int		spip[2];
 
 	if (pid < 0)
@@ -84,7 +83,7 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 	{
 		execve(bin, tmp->args_array, minishell->env_array);
 		handle_errno(minishell, tmp->cmd, errno);
-		exit(EXIT_FAILURE);
+		exit(minishell->exit);
 	}
 	exit(0);
 }
@@ -92,14 +91,13 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 void	exec_prog(t_minishell *minishell, t_cmd *tmp, int fpip[2], int spip[2])
 {
 	pid_t	pid;
-	int		status;
 	char	*bin;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		if (tmp->out == -1 || tmp->in == -1)
-			exit(-1);
+			exit(1);
 		handle_fd(tmp, fpip, spip);
 		tmp->args_array = join_args(tmp);
 		bin = get_bin(minishell, tmp->cmd);

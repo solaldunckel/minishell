@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/17 18:11:33 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/18 03:08:07 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		clear_token_list(t_token **begin, void (*del)(void *))
 	tmp = *begin;
 	while (tmp)
 	{
-		del(tmp->word);
+		ft_strdel(&tmp->word);
 		free(tmp);
 		tmp = tmp->next;
 	}

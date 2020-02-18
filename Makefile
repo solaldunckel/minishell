@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/17 22:56:23 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/18 03:24:33 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRCS_LIST		= \
 					commands/unset.c \
 					commands/export.c \
 					\
+					utils/command_process.c \
 					utils/utils.c \
 					utils/utils2.c \
 					utils/quotes.c \
@@ -48,7 +49,7 @@ HEADER			= includes
 LIBFT 			= libft
 
 CC				= gcc
-CFLAGS 			= # -Wall -Wextra -Werror
+CFLAGS 			= -Wall -Wextra -Werror
 LFLAGS			= -L libft -lft
 
 RM				= rm -f
@@ -65,7 +66,8 @@ $(NAME):		$(OBJS)
 				@$(CC) $(CFLAGS) -D BONUS=$(BONUS) -I $(HEADER) -o $@ -c $<
 
 bonus:
-				make re BONUS=1
+				@$(RM) $(OBJS)
+				@make BONUS=1
 
 clean:
 				@$(RM) $(OBJS)
