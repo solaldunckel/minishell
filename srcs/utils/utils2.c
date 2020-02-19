@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/18 03:22:26 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 14:27:57 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	process_args(t_minishell *minishell, t_cmd *cmd)
 	t_token	*tmp;
 
 	(void)minishell;
-	cmd->cmd = handle_quotes(cmd->cmd);
+	if (cmd->cmd)
+		cmd->cmd = handle_quotes(cmd->cmd);
 	tmp = cmd->args;
 	while (tmp)
 	{

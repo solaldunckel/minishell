@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/19 04:45:42 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 14:29:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,31 +73,39 @@ void	create_redirect2(t_minishell *minishell, t_cmd *cmd)
 	args = cmd->args;
 	while (args)
 	{
+		printf("%p\n", args->next);
 		if (ft_strequ(args->word, ">"))
 		{
 			if ((cmd->out = open(args->next->word, O_TRUNC | O_RDWR | O_CREAT,
 				0644)) < 0)
+			{
 				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 					args->next->word, strerror(errno));
+				minishell->no_exit = 1;
+			}
 			remove_redirect(args, &cmd->args);
-			minishell->no_exit = 1;
+
 		}
 		else if (ft_strequ(args->word, ">>"))
 		{
 			if ((cmd->out = open(args->next->word, O_RDWR | O_CREAT | O_APPEND,
 				0644)) < 0)
+			{
 				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 					args->next->word, strerror(errno));
+					minishell->no_exit = 1;
+			}
 			remove_redirect(args, &cmd->args);
-			minishell->no_exit = 1;
 		}
 		else if (ft_strequ(args->word, "<"))
 		{
 			if ((cmd->in = open(args->next->word, O_RDONLY)) < 0)
+			{
 				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 					args->next->word, strerror(errno));
+				minishell->no_exit = 1;
+			}
 			remove_redirect(args, &cmd->args);
-			minishell->no_exit = 1;
 		}
 		args = args->next;
 	}
@@ -111,12 +119,12 @@ void	exec_commands(t_minishell *minishell)
 	tmp = minishell->cmd_list;
 	while (tmp)
 	{
+		create_redirect2(minishell, tmp);
+		process_args(minishell, tmp);
 		if (tmp->cmd)
 		{
-			create_redirect2(minishell, tmp);
-			process_args(minishell, tmp);
 			pipe(fpipe);
-			if (ft_strequ(tmp->cmd, EXIT_CMD) && minishell->no_exit
+			if (ft_strequ(tmp->cmd, EXIT_CMD) && !minishell->no_exit
 				&& tmp->type != T_PIPE
 				&& (!tmp->prev || tmp->prev->type != T_PIPE))
 				exit_cmd2(minishell, tmp);
