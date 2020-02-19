@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/18 03:38:14 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 04:44:38 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 	else if (ft_strequ(tmp->cmd, CD_CMD))
 		exit(0);
 	else if (ft_strequ(tmp->cmd, EXIT_CMD))
-		exit_cmd(minishell);
+		exit_cmd2(minishell, tmp);
 	else if (ft_strequ(tmp->cmd, ENV_CMD))
 		env_cmd(&minishell->env_list);
 	else if (ft_strequ(tmp->cmd, PWD_CMD))
@@ -93,6 +93,7 @@ void	exec_prog(t_minishell *minishell, t_cmd *tmp, int fpip[2], int spip[2])
 	pid_t	pid;
 	char	*bin;
 
+	minishell->forked = 1;
 	pid = fork();
 	if (pid == 0)
 	{

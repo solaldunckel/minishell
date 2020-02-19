@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 14:11:39 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 04:34:15 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct		s_minishell
 	int				count;
 	int				out;
 	int				in;
+	int				no_exit;
+	int				forked;
 	char			*exit_str;
 	struct s_cmd	*cmd_list;
 	t_list			*env_list;
@@ -117,6 +119,7 @@ char				*get_bin(t_minishell *minishell, char *cmd);
 void				echo_cmd(t_minishell *minishell, t_cmd *cmd);
 void				cd_cmd(t_minishell *minishell, t_cmd *cmd);
 void				exit_cmd(t_minishell *minishell);
+void				exit_cmd2(t_minishell *minishell, t_cmd *cmd);
 void				env_cmd(t_list **begin);
 void				pwd_cmd(t_minishell *minishell);
 void				export_cmd(t_minishell *minishell, t_cmd *cmd, int forked);

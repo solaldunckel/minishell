@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 19:10:53 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 04:45:42 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ void	sighandler(int sig_num)
 	ft_printf("\b\b  \b\b");
 	if (sig_num == SIGINT)
 	{
-		ft_printf("\n" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET,
-		g_minishell->curdir);
+		ft_printf("\n");
+		if (!g_minishell->forked)
+			g_minishell->exit = 1;
+		else
+			g_minishell->exit = 130;
+		print_prompt(g_minishell);
 		g_minishell->quit = 1;
 	}
 }
@@ -42,7 +46,7 @@ void	remove_redirect(t_token *args, t_token **begin)
 	if (*begin == args)
 	{
 		next = (*begin)->next->next;
-		// del(*begin_list);
+		free(*begin);
 		*begin = next;
 		return;
 	}
@@ -51,8 +55,10 @@ void	remove_redirect(t_token *args, t_token **begin)
 		if (tmp == args && tmp->prev)
 		{
 			next = tmp->next->next;
-			tmp->next->next->prev = tmp->prev;
+			if (tmp->next->next)
+				tmp->next->next->prev = tmp->prev;
 			tmp->prev->next = next;
+			free(tmp->next);
 			return;
 		}
 		tmp = tmp->next;
@@ -74,6 +80,7 @@ void	create_redirect2(t_minishell *minishell, t_cmd *cmd)
 				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 					args->next->word, strerror(errno));
 			remove_redirect(args, &cmd->args);
+			minishell->no_exit = 1;
 		}
 		else if (ft_strequ(args->word, ">>"))
 		{
@@ -82,6 +89,7 @@ void	create_redirect2(t_minishell *minishell, t_cmd *cmd)
 				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 					args->next->word, strerror(errno));
 			remove_redirect(args, &cmd->args);
+			minishell->no_exit = 1;
 		}
 		else if (ft_strequ(args->word, "<"))
 		{
@@ -89,6 +97,7 @@ void	create_redirect2(t_minishell *minishell, t_cmd *cmd)
 				ft_dprintf(2, "%s: %s: %s\n", g_minishell->name,
 					args->next->word, strerror(errno));
 			remove_redirect(args, &cmd->args);
+			minishell->no_exit = 1;
 		}
 		args = args->next;
 	}
@@ -107,9 +116,10 @@ void	exec_commands(t_minishell *minishell)
 			create_redirect2(minishell, tmp);
 			process_args(minishell, tmp);
 			pipe(fpipe);
-			if (ft_strequ(tmp->cmd, EXIT_CMD) && tmp->type != T_PIPE &&
-			(!tmp->prev || tmp->prev->type != T_PIPE))
-				exit_cmd(minishell);
+			if (ft_strequ(tmp->cmd, EXIT_CMD) && minishell->no_exit
+				&& tmp->type != T_PIPE
+				&& (!tmp->prev || tmp->prev->type != T_PIPE))
+				exit_cmd2(minishell, tmp);
 			else if (ft_strequ(tmp->cmd, EXPORT_CMD) && tmp->args)
 				export_cmd(minishell, tmp, 0);
 			else if (ft_strequ(tmp->cmd, CD_CMD) && tmp->type != T_PIPE &&
@@ -132,6 +142,7 @@ void	wait_for_command(t_minishell *minishell)
 		signal(SIGINT, sighandler);
 		g_minishell->quit == 0 ? print_prompt(minishell) : 0;
 		g_minishell->quit = 0;
+		minishell->forked = 0;
 		if (get_next_line_no_eof(0, &minishell->line, 0))
 		{
 			while (bracket_odd(minishell->line, 1))
