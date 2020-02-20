@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:29:29 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/19 14:15:21 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:34:17 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	exit_cmd2(t_minishell *minishell, t_cmd *cmd)
 		ft_dprintf(2, "%s: %s: %s\n", minishell->name, cmd->cmd,
 			"too many arguments");
 		minishell->exit = 1;
+		minishell->no_exit = 1;
 		return ;
 	}
 	if (cmd->args)
@@ -74,7 +75,7 @@ void	exit_cmd2(t_minishell *minishell, t_cmd *cmd)
 		}
 		else
 		{
-			ft_dprintf(2, "\n%s: %s: %s: %s\n", minishell->name, cmd->cmd,
+			ft_dprintf(2, "%s: %s: %s: %s\n", minishell->name, cmd->cmd,
 				((t_token*)cmd->args)->word, "numeric argument required");
 			exit_s = 255;
 		}

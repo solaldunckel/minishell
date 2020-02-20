@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/19 04:34:15 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 21:04:38 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ char				*no_quotes(char *src, int *i);
 ** TOKEN_LIST
 */
 t_token				*create_token(t_minishell *minishell, int i);
-t_token				*create_arg_token(char *word);
+t_token				*create_arg_token(char *word, int type);
 t_token				*create_token_newline(void);
 void				token_remove_last(t_token **begin_list);
 void				clear_token_list(t_token **begin, void (*del)(void *));
@@ -173,6 +173,8 @@ void				clear_cmd_list(t_cmd **begin, void (*del)(void *));
 ** UTILS
 */
 void				free_cmd(void *cmd);
+void				create_redirect(t_minishell *minishell, t_cmd *cmd);
+void				ft_heredoc(t_token **token, t_cmd *cmd);
 char				*ft_strjoin_double_free(char const *s1, char const *s2);
 void				free_env(void *lst);
 int					get_next_line_no_eof(int fd, char **line, int b);
@@ -184,7 +186,7 @@ void				nothing(void *cmd);
 char				**args_to_array(t_minishell *minishell, t_cmd *cmd);
 void				handle_errno(t_minishell *minishell, char *cmd, int type);
 void				exec_prog(t_minishell *minishell, t_cmd *tmp, int f_pipe[2],
-					int f_pipe2[2]);
+						int f_pipe2[2]);
 void				handle_errors(t_minishell *minishell, char *cmd, int type);
 char				*handle_quotes(char *src);
 char				**join_args(t_cmd *cmd);

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 14:35:06 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:44:54 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,13 @@ t_token		*create_token(t_minishell *minishell, int i)
 	return (new);
 }
 
-t_token		*create_arg_token(char *word)
+t_token		*create_arg_token(char *word, int type)
 {
 	t_token	*new;
 
 	if (!(new = ft_calloc(1, sizeof(t_token))))
 		exit_cmd(g_minishell);
 	new->word = word;
+	new->type = type;
 	return (new);
 }

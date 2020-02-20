@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 14:13:37 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/20 16:15:25 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int		split_tokens2(t_minishell *minishell, char *str, int *i)
 {
-	if ((str[*i] == ' ' || str[*i] == '\t') && !in_bracket(str, *i))
+	if ((str[*i] == ' ' || str[*i] == '\t') && !in_bracket(str, *i)
+		&& !is_escaped(str, *i - 1))
 	{
 		add_token_list(&minishell->token_list, create_token(minishell, *i));
 		(*i)++;
 		return (0);
 	}
 	if ((is_char_str(str[*i], "><|;") && !is_char_str(str[*i - 1], "><"))
-		&& !in_bracket(str, *i))
+		&& !in_bracket(str, *i) && !is_escaped(str, *i - 1))
 		add_token_list(&minishell->token_list, create_token(minishell, *i));
 	return (1);
 }
@@ -37,11 +38,11 @@ void	split_tokens(t_minishell *minishell, char *str)
 			continue ;
 		minishell->count++;
 		if ((is_char_str(str[i], "><|;") && !is_char_str(str[i + 1], "><"))
-			&& !in_bracket(str, i))
+			&& !in_bracket(str, i) && !is_escaped(str, i - 1))
 			add_token_list(&minishell->token_list,
 				create_token(minishell, i + 1));
 		if ((is_char_str(str[i], "><") && is_char_str(str[i - 1], "><"))
-			&& !in_bracket(str, i))
+			&& !in_bracket(str, i) && !is_escaped(str, i - 1))
 			add_token_list(&minishell->token_list,
 				create_token(minishell, i + 1));
 		i++;
@@ -50,7 +51,7 @@ void	split_tokens(t_minishell *minishell, char *str)
 	{
 		add_token_list(&minishell->token_list, create_token(minishell, i));
 		add_token_list(&minishell->token_list,
-			create_arg_token(ft_strdup("newline")));
+			create_arg_token(ft_strdup("newline"), T_NEWLINE));
 	}
 }
 

@@ -6,13 +6,13 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/19 14:38:15 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/20 16:26:41 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_heredoc(t_minishell *minishell, t_token **token, t_cmd *cmd)
+void	ft_heredoc(t_token **token, t_cmd *cmd)
 {
 	char	*line;
 	char	*tmp;
@@ -36,17 +36,11 @@ void	ft_heredoc(t_minishell *minishell, t_token **token, t_cmd *cmd)
 		}
 	}
 	ft_strdel(&tmp);
-	if (ft_is_in_stri('$', line) && (*token)->next->word[0] != '\"')
-		line = replace_env(minishell, line);
+	// if (ft_is_in_stri('$', line) && (*token)->next->word[0] != '\"')
+	// 	line = replace_env(minishell, line);
 	ft_putstr_fd(line, pip[1]);
+	ft_strdel(&line);
 	close(pip[1]);
-}
-
-void	create_redirect(t_minishell *minishell, t_token **token, t_cmd *cmd)
-{
-	if (ft_strequ((*token)->word, "<<") && BONUS)
-		ft_heredoc(minishell, token, cmd);
-	*token = (*token)->next;
 }
 
 int		parse_tokens2(t_minishell *minishell, t_token **tmp, t_cmd *cmd)
@@ -54,11 +48,14 @@ int		parse_tokens2(t_minishell *minishell, t_token **tmp, t_cmd *cmd)
 	(void)minishell;
 	if ((*tmp)->type == T_WORD && (cmd->cmd || ((*tmp)->prev
 		&& (*tmp)->prev->type == T_REDIRECT)))
-		add_token_list(&cmd->args, create_arg_token((*tmp)->word));
-	if ((*tmp)->type == T_WORD && !cmd->cmd && (((*tmp)->prev && (*tmp)->prev->type != T_REDIRECT) || !(*tmp)->prev))
+		add_token_list(&cmd->args,
+			create_arg_token((*tmp)->word, (*tmp)->type));
+	if ((*tmp)->type == T_WORD && !cmd->cmd && (((*tmp)->prev
+		&& (*tmp)->prev->type != T_REDIRECT) || !(*tmp)->prev))
 		cmd->cmd = (*tmp)->word;
 	if ((*tmp)->type == T_REDIRECT)
-		add_token_list(&cmd->args, create_arg_token((*tmp)->word));
+		add_token_list(&cmd->args,
+			create_arg_token((*tmp)->word, (*tmp)->type));
 	if ((*tmp)->type == T_PIPE)
 	{
 		cmd->type = T_PIPE;
