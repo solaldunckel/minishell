@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/19 17:38:05 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/20 19:00:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		ft_quotelen(char *src, int type)
 	i = 0;
 	j = 0;
 	esc = 0;
-	while(src[i])
+	while (src[i])
 	{
 		if (!esc && src[i] == '\'' && type == 2)
 			return (i);
@@ -85,7 +85,7 @@ char	*simple_quotes(char *src, int *i)
 	(*i)++;
 	j = ft_quotelen(src + *i, 2);
 	if (!(dest = (char *)ft_calloc(1, j + 1)))
-		exit (1);
+		exit_cmd(g_minishell);
 	j = 0;
 	while (src[*i] && src[*i] != '\'')
 	{
@@ -106,7 +106,7 @@ char	*no_quotes(char *src, int *i)
 
 	k = ft_quotelen(src + *i, 0);
 	if (!(dest = (char *)ft_calloc(1, k + 5)))
-		exit (1);
+		exit_cmd(g_minishell);
 	j = 0;
 	while (src[*i] && j < k)
 	{
@@ -120,7 +120,7 @@ char	*no_quotes(char *src, int *i)
 			continue ;
 		}
 		if ((src[*i] != '\\' || is_escaped(src, *i - 1)) && j < k)
-				dest[j++] = src[*i];
+			dest[j++] = src[*i];
 		(*i)++;
 	}
 	dest[j] = '\0';
@@ -137,7 +137,7 @@ char	*double_quotes(char *src, int *i)
 	(*i)++;
 	k = ft_quotelen(src + *i, 1);
 	if (!(dest = (char *)ft_calloc(1, k + 1)))
-		exit (1);
+		exit_cmd(g_minishell);
 	j = 0;
 	while (src[*i] && j < k)
 	{

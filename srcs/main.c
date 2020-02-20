@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 17:55:48 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/20 18:22:58 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	wait_for_command(t_minishell *minishell)
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);
 		}
-		printf("LOOP\n");
 		ft_strdel(&minishell->line);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 18:49:44 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/19 03:42:14 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/20 18:59:35 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ void	handle_errors(t_minishell *minishell, char *cmd, int type)
 	else if (type == 4)
 		ft_dprintf(2, "%s: %s: %s\n", minishell->name, cmd,
 			"too many arguments");
-	exit(0);
+	exit_cmd(minishell);
 }

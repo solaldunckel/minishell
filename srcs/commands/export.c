@@ -6,36 +6,11 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 03:22:00 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/20 19:13:52 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_sort_list(t_list **begin_list, int (*cmp)())
-{
-	t_list	*ptr;
-	t_list	*ptr2;
-	t_list	*next;
-
-	ptr = *begin_list;
-	while (ptr)
-	{
-		ptr2 = *begin_list;
-		while (ptr2->next)
-		{
-			if ((*cmp)(((t_env*)(ptr2->content))->name,
-				((t_env*)(ptr2->next->content))->name) > 0)
-			{
-				next = ptr2->content;
-				ptr2->content = ptr2->next->content;
-				ptr2->next->content = next;
-			}
-			ptr2 = ptr2->next;
-		}
-		ptr = ptr->next;
-	}
-}
 
 void	env_cmd_export(t_list **begin)
 {
@@ -100,13 +75,27 @@ int		modify_env_list(t_minishell *minishell, char **split, int ex)
 	return (0);
 }
 
-void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
+void	export_cmd2(t_minishell *minishell, t_token *args)
 {
-	t_token *args;
 	char	**split;
 	int		ex;
 
 	ex = 0;
+	ft_is_in_stri('=', args->word) == -1 ? ex = 1 : 0;
+	split = ft_split(args->word, '=');
+	if (!(modify_env_list(minishell, split, ex)))
+		ft_lstadd_back(&minishell->env_list,
+			ft_lstnew(create_env(split, ex)));
+	if (ft_strequ(split[0], "PATH"))
+		parse_bin(minishell);
+	minishell->env_array = env_to_array(minishell);
+	ft_free_split(&split);
+}
+
+void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
+{
+	t_token *args;
+
 	args = cmd->args;
 	if (!args && forked)
 	{
@@ -116,17 +105,7 @@ void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 	while (args)
 	{
 		if (args->word[0] != '=')
-		{
-			ft_is_in_stri('=', args->word) == -1 ? ex = 1 : 0;
-			split = ft_split(args->word, '=');
-			if (!(modify_env_list(minishell, split, ex)))
-				ft_lstadd_back(&minishell->env_list,
-					ft_lstnew(create_env(split, ex)));
-			if (ft_strequ(split[0], "PATH"))
-				parse_bin(minishell);
-			minishell->env_array = env_to_array(minishell);
-			ft_free_split(&split);
-		}
+			export_cmd2(minishell, args);
 		else
 			ft_dprintf(2, "%s: %s: `%s': %s\n", minishell->name, cmd->cmd,
 			args->word, "not a valid identifier");
