@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/18 03:13:07 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:38:05 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,10 @@ int		ft_quotelen(char *src, int type)
 	esc = 0;
 	while(src[i])
 	{
-		if (!esc && src[i] == '\'' && (type == 2 || type == 0))
+		if (!esc && src[i] == '\'' && type == 2)
 			return (i);
+		if (!esc && src[i] == '\'' && type == 0)
+			return (i + j);
 		if (!esc && src[i] == '$' && (type == 0 || type == 1))
 			j += ft_envlen(src, i);
 		if (!esc && src[i] == '\"' && (type == 0 || type == 1))
@@ -98,6 +100,7 @@ char	*simple_quotes(char *src, int *i)
 char	*no_quotes(char *src, int *i)
 {
 	char	*dest;
+	char	*tmp;
 	int		j;
 	int		k;
 
@@ -111,14 +114,13 @@ char	*no_quotes(char *src, int *i)
 			break ;
 		if (src[*i] == '$' && !is_escaped(src, *i - 1))
 		{
-			dest = ft_strjoin_double_free(dest, replace_env2(src, i));
-			j = ft_strlen(dest);
+			tmp = replace_env2(src, i);
+			j = ft_strlcat(dest, tmp, k);
+			free(tmp);
+			continue ;
 		}
 		if ((src[*i] != '\\' || is_escaped(src, *i - 1)) && j < k)
-		{
-			dest[j] = src[*i];
-			j++;
-		}
+				dest[j++] = src[*i];
 		(*i)++;
 	}
 	dest[j] = '\0';
@@ -149,10 +151,7 @@ char	*double_quotes(char *src, int *i)
 			continue ;
 		}
 		if ((src[*i] != '\\' || is_escaped(src, *i - 1)) && j < k)
-		{
-			dest[j] = src[*i];
-			j++;
-		}
+			dest[j++] = src[*i];
 		(*i)++;
 	}
 	dest[j] = '\0';

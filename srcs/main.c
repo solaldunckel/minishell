@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/19 14:29:28 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/20 16:21:47 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	sighandler(int sig_num)
 		print_prompt(g_minishell);
 		g_minishell->quit = 1;
 	}
+	if (sig_num == SIGQUIT)
+		g_minishell->quit = 4;
 }
 
 void	remove_redirect(t_token *args, t_token **begin)
@@ -137,6 +139,8 @@ void	exec_commands(t_minishell *minishell)
 				unset_cmd(minishell, tmp);
 			else if (!tmp->prev || (tmp->prev && !(tmp->prev->type == T_PIPE)))
 				exec_prog(minishell, tmp, fpipe, NULL);
+			close(fpipe[0]);
+			close(fpipe[1]);
 		}
 		tmp = tmp->next;
 	}
@@ -148,7 +152,7 @@ void	wait_for_command(t_minishell *minishell)
 	{
 		signal(SIGQUIT, sighandler);
 		signal(SIGINT, sighandler);
-		g_minishell->quit == 0 ? print_prompt(minishell) : 0;
+		g_minishell->quit <= 0 ? print_prompt(minishell) : 0;
 		g_minishell->quit = 0;
 		minishell->forked = 0;
 		if (get_next_line_no_eof(0, &minishell->line, 0))
@@ -156,12 +160,13 @@ void	wait_for_command(t_minishell *minishell)
 			while (bracket_odd(minishell->line, 1))
 				next_bracket(minishell);
 			start_parse(minishell, minishell->line);
-			ft_strdel(&minishell->line);
-			if (g_minishell->quit == 0)
+			if (g_minishell->quit == 0 || g_minishell->quit == 4)
 				exec_commands(minishell);
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);
 		}
+		printf("LOOP\n");
+		ft_strdel(&minishell->line);
 	}
 }
 

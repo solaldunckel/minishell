@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/19 04:44:38 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 20:14:47 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 		if (!tmp->out && tmp->type == T_PIPE)
 			exec_prog(minishell, tmp->next, fpip, spip);
 		close(fpip[1]);
+		close(spip[1]);
+		close(spip[0]);
 		waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status))
-			if (!WIFSIGNALED(status) || g_minishell->quit == 1)
+			if (!WIFSIGNALED(status) || g_minishell->quit != 0)
 				break ;
 		if (WIFEXITED(status))
 			minishell->exit = WEXITSTATUS(status);
@@ -63,6 +65,13 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 	}
 }
 
+void	degage_frr(int sig_num)
+{
+	dprintf(2, "Quit: %d\n", sig_num);
+	g_minishell->quit = -1;
+	g_minishell->exit = 131;
+}
+
 void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 {
 	if (ft_strequ(tmp->cmd, ECHO_CMD))
@@ -94,6 +103,7 @@ void	exec_prog(t_minishell *minishell, t_cmd *tmp, int fpip[2], int spip[2])
 	char	*bin;
 
 	minishell->forked = 1;
+	signal(SIGQUIT, SIG_DFL);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -106,6 +116,7 @@ void	exec_prog(t_minishell *minishell, t_cmd *tmp, int fpip[2], int spip[2])
 	}
 	else
 	{
+		signal(SIGQUIT, degage_frr);
 		if (tmp->type == T_PIPE && tmp->prev && tmp->prev->type == T_PIPE)
 		{
 			close(fpip[1]);

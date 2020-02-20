@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/19 04:34:15 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:49:16 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct		s_cmd
 	struct s_token	*args;
 	char			**args_array;
 	int				in;
+	int				pip[0];
 	int				out;
 	int				type;
 	struct s_cmd	*prev;

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/19 14:38:15 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/19 21:12:05 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_heredoc(t_minishell *minishell, t_token **token, t_cmd *cmd)
 
 void	create_redirect(t_minishell *minishell, t_token **token, t_cmd *cmd)
 {
-	if (ft_strequ((*token)->word, "<<") && BONUS)
+	if (ft_strequ((*token)->word, "<<"))
 		ft_heredoc(minishell, token, cmd);
 	*token = (*token)->next;
 }
@@ -58,7 +58,7 @@ int		parse_tokens2(t_minishell *minishell, t_token **tmp, t_cmd *cmd)
 	if ((*tmp)->type == T_WORD && !cmd->cmd && (((*tmp)->prev && (*tmp)->prev->type != T_REDIRECT) || !(*tmp)->prev))
 		cmd->cmd = (*tmp)->word;
 	if ((*tmp)->type == T_REDIRECT)
-		add_token_list(&cmd->args, create_arg_token((*tmp)->word));
+		create_redirect(minishell, tmp, cmd);
 	if ((*tmp)->type == T_PIPE)
 	{
 		cmd->type = T_PIPE;
