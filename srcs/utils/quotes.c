@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 17:07:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 20:09:07 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 15:25:45 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ int		last_pipe(char *s, int pos)
 	if (pos > 0 && s[pos] == '|' && !is_escaped(s, pos - 1))
 	{
 		pos = 0;
-		while(s[pos] && s[pos] == ' ')
+		while (s[pos] && s[pos] == ' ')
 			pos++;
 		if (s[pos] != '|')
 		{
-			while(s[pos] && (s[pos] != '|' || is_escaped(s, pos) ||
+			while (s[pos] && (s[pos] != '|' || is_escaped(s, pos) ||
 				in_bracket(s, pos)))
 				pos++;
 			if (!s[pos] || !s[pos + 1])
 				return (1);
 			else
 				pos++;
-			while(s[pos] && s[pos] == ' ')
+			while (s[pos] && s[pos] == ' ')
 				pos++;
 			if (s[pos] != '|')
 				return (1);

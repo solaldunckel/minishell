@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 19:59:28 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 15:25:07 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void				set_env(t_minishell *minishell, char *env, char *value);
 char				*get_env(t_minishell *minishell, char *env);
 char				*replace_env(char *line, int i);
 char				**env_to_array(t_minishell *minishell);
+void				ft_sort_list(t_list **begin_list, int (*cmp)());
 char				*replace_env2(char *str, int *i);
 
 /*
@@ -137,6 +138,9 @@ void				close_pipes(t_minishell *minishell, t_cmd *tmp,
 						int *status, int pid);
 void				exec_commands(t_minishell *minishell);
 void				process_args(t_minishell *minishell, t_cmd *cmd);
+char				**args_to_array(t_minishell *minishell, t_cmd *cmd);
+void				exec_prog(t_minishell *minishell, t_cmd *tmp, int f_pipe[2],
+						int f_pipe2[2]);
 
 /*
 ** PARSING
@@ -146,6 +150,13 @@ void				split_tokens(t_minishell *minishell, char *str);
 char				*iter_tokens(t_minishell *minishell);
 void				parse_tokens(t_minishell *minishell, t_token **tmp);
 char				*supp_newline(char *src);
+
+/*
+** ERRORS
+*/
+void				handle_errors(t_minishell *minishell, char *cmd, int type);
+void				handle_errno(t_minishell *minishell, char *cmd, int type);
+
 /*
 ** BRACKET/QUOTES
 */
@@ -154,6 +165,8 @@ void				next_bracket(t_minishell *minishell);
 char				*simple_quotes(char *src, int *i);
 char				*double_quotes(char *src, int *i);
 char				*no_quotes(char *src, int *i);
+char				*handle_quotes(char *src);
+char				**join_args(t_cmd *cmd);
 int					ft_quotelen(char *src, int type);
 
 /*
@@ -172,15 +185,25 @@ int					token_list_size(t_token **begin);
 */
 void				add_cmd_list(t_cmd **begin, t_cmd *new);
 void				clear_cmd_list(t_cmd **begin, void (*del)(void *));
+void				create_redirect(t_minishell *minishell, t_cmd *cmd);
+
+/*
+** FREE_UTILS
+*/
+void				free_env(void *lst);
+void				free_env2(void *lst);
+void				free_cmd(void *cmd);
+void				nothing(void *cmd);
 
 /*
 ** UTILS
 */
-void				free_cmd(void *cmd);
-void				create_redirect(t_minishell *minishell, t_cmd *cmd);
+int					is_only_digit(char *str);
+int					is_escaped(char *s, int pos);
+int					in_bracket(char *s, int pos);
+int					is_char_str(char c, char *str);
 void				ft_heredoc(t_token **token, t_cmd *cmd);
 char				*ft_strjoin_double_free(char const *s1, char const *s2);
-void				free_env(void *lst);
 int					get_next_line_no_eof(int fd, char **line, int b);
 void				sighandler(int sig_num);
 int					is_escaped(char *s, int pos);
