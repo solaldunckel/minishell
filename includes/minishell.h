@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 17:42:40 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 18:01:52 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,8 +163,8 @@ void				handle_errno(t_minishell *minishell, char *cmd, int type);
 int					bracket_odd(char *s, int ret);
 void				next_bracket(t_minishell *minishell);
 char				*simple_quotes(char *src, int *i);
-char				*double_quotes(char *src, int *i);
-char				*no_quotes(char *src, int *i);
+char				*double_quotes(char *src, int *i, int j);
+char				*no_quotes(char *src, int *i, int j);
 char				*handle_quotes(char *src);
 char				**join_args(t_cmd *cmd);
 int					ft_quotelen(char *src, int type);

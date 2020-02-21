@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 03:29:11 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/21 18:17:23 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ char	*handle_quotes(char *src)
 		if (src[i] == '\'' && !is_escaped(src, i - 1))
 			dest = ft_strjoin_double_free(dest, simple_quotes(src, &i));
 		else if (src[i] == '\"' && !is_escaped(src, i - 1))
-			dest = ft_strjoin_double_free(dest, double_quotes(src, &i));
+			dest = ft_strjoin_double_free(dest, double_quotes(src, &i, 0));
 		else
 		{
-			dest = ft_strjoin_double_free(dest, no_quotes(src, &i));
+			dest = ft_strjoin_double_free(dest, no_quotes(src, &i, 0));
 			continue ;
 		}
 		src[i] ? i++ : 0;

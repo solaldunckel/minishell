@@ -6,11 +6,31 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 18:41:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 19:11:02 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/21 18:17:17 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*replace_env2(char *str, int *i)
+{
+	int		count;
+	char	buf[4096];
+	char	*new;
+
+	new = ft_strdup("");
+	count = 0;
+	(*i)++;
+	ft_bzero(buf, sizeof(buf));
+	while (str[*i] && !is_char_str(str[*i], "$ \'\"\n="))
+	{
+		buf[count] = str[*i];
+		*i = *i + 1;
+		count++;
+	}
+	new = ft_strjoin_free(new, get_env(g_minishell, buf));
+	return (new);
+}
 
 void	free_env2(void *lst)
 {

@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/20 18:44:02 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 17:59:04 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*replace_env(char *str, int i)
 
 	k = ft_quotelen(str, 4);
 	if (!(new = (char *)ft_calloc(1, k + 1)))
-		exit (1);
+		exit(1);
 	j = 0;
 	while (str[i] && j < k)
 	{

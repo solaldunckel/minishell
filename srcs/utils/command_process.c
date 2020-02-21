@@ -6,31 +6,11 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/21 15:27:23 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 18:17:45 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*replace_env2(char *str, int *i)
-{
-	int		count;
-	char	buf[4096];
-	char	*new;
-
-	new = ft_strdup("");
-	count = 0;
-	(*i)++;
-	ft_bzero(buf, sizeof(buf));
-	while (str[*i] && !is_char_str(str[*i], "$ \'\"\n"))
-	{
-		buf[count] = str[*i];
-		*i = *i + 1;
-		count++;
-	}
-	new = ft_strjoin_free(new, get_env(g_minishell, buf));
-	return (new);
-}
 
 int		ft_envlen(char *src, int i)
 {
@@ -40,7 +20,7 @@ int		ft_envlen(char *src, int i)
 	count = 0;
 	ft_bzero(buf, sizeof(buf));
 	i++;
-	while (src[i] && !is_char_str(src[i], "$ \'\"\n"))
+	while (src[i] && !is_char_str(src[i], "$ \'\"\n="))
 	{
 		buf[count] = src[i];
 		i = i + 1;
@@ -97,17 +77,15 @@ char	*simple_quotes(char *src, int *i)
 	return (dest);
 }
 
-char	*no_quotes(char *src, int *i)
+char	*no_quotes(char *src, int *i, int j)
 {
 	char	*dest;
 	char	*tmp;
-	int		j;
 	int		k;
 
 	k = ft_quotelen(src + *i, 0);
 	if (!(dest = (char *)ft_calloc(1, k + 5)))
 		exit_cmd(g_minishell);
-	j = 0;
 	while (src[*i] && j < k)
 	{
 		if ((src[*i] == '\'' || src[*i] == '\"') && !is_escaped(src, *i - 1))
@@ -127,18 +105,16 @@ char	*no_quotes(char *src, int *i)
 	return (dest);
 }
 
-char	*double_quotes(char *src, int *i)
+char	*double_quotes(char *src, int *i, int j)
 {
 	char	*dest;
 	char	*tmp;
-	int		j;
 	int		k;
 
 	(*i)++;
 	k = ft_quotelen(src + *i, 1);
 	if (!(dest = (char *)ft_calloc(1, k + 1)))
 		exit_cmd(g_minishell);
-	j = 0;
 	while (src[*i] && j < k)
 	{
 		if (src[*i] == '\"' && !is_escaped(src, *i - 1))
