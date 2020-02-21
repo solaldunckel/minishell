@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 19:48:08 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:58:21 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,16 @@ void	ft_heredoc(t_token **token, t_cmd *cmd)
 	cmd->in = pip[0];
 	line = ft_strdup("");
 	tmp = NULL;
-	while ((!tmp || !ft_strequ((*token)->next->word, tmp)) && g_minishell->quit == 0)
+	while ((!tmp || !ft_strequ((*token)->next->word, tmp)) &&
+		g_minishell->quit == 0)
 	{
 		ft_strdel(&tmp);
 		write(1, "> ", 2);
-		if (get_next_line_no_eof(0, &tmp, 2))
+		if (get_next_line_no_eof(0, &tmp, 2) &&
+			!ft_strequ((*token)->next->word, tmp))
 		{
-			if (!ft_strequ((*token)->next->word, tmp))
-			{
-				line = ft_strjoin_free(line, tmp);
-				g_minishell->quit != 3 ? line = ft_strjoin_free(line, "\n") : 0;
-			}
+			line = ft_strjoin_free(line, tmp);
+			g_minishell->quit != 3 ? line = ft_strjoin_free(line, "\n") : 0;
 		}
 	}
 	ft_strdel(&tmp);

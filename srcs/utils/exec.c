@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/20 17:54:20 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:49:16 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 void	degage_frr(int sig_num)
 {
 	dprintf(2, "Quit: %d\n", sig_num);
-	g_minishell->quit = -1;
+	g_minishell->quit = 4;
+	g_minishell->quit2 = 1;
 	g_minishell->exit = 131;
 }
 
