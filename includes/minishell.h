@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 15:25:07 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 17:42:40 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ int					is_only_digit(char *str);
 int					is_escaped(char *s, int pos);
 int					in_bracket(char *s, int pos);
 int					is_char_str(char c, char *str);
-void				ft_heredoc(t_token **token, t_cmd *cmd);
+void				ft_heredoc(t_token **token, t_cmd *cmd, char *tmp);
 char				*ft_strjoin_double_free(char const *s1, char const *s2);
 int					get_next_line_no_eof(int fd, char **line, int b);
 void				sighandler(int sig_num);

@@ -6,22 +6,20 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 17:37:27 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 17:40:15 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_heredoc(t_token **token, t_cmd *cmd)
+void	ft_heredoc(t_token **token, t_cmd *cmd, char *tmp)
 {
 	char	*line;
-	char	*tmp;
 	int		pip[2];
 
 	pipe(pip);
 	cmd->in = pip[0];
 	line = ft_strdup("");
-	tmp = NULL;
 	while ((!tmp || !ft_strequ((*token)->next->word, tmp)) &&
 		g_minishell->quit == 0)
 	{

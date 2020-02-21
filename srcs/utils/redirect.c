@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 19:47:25 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 17:51:53 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/21 17:41:06 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	create_redirect(t_minishell *minishell, t_cmd *cmd)
 		else if (ft_strequ(args->word, "<<") && args->type == T_REDIRECT
 			&& BONUS)
 		{
-			ft_heredoc(&args, cmd);
+			ft_heredoc(&args, cmd, NULL);
 			args = remove_redirect(args, &cmd->args);
 			args = remove_redirect(args, &cmd->args);
 		}
