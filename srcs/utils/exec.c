@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/21 17:58:34 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 21:03:00 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 		strerror(errno);
 	else
 	{
-		pipe(spip);
+		if (pipe(spip) < 0)
+		{
+			dprintf(1, "BROKEN1\n");
+			return ;
+		}
 		if (!tmp->out && tmp->type == T_PIPE)
 			exec_prog(minishell, tmp->next, fpip, spip);
 		close(fpip[1]);
@@ -50,24 +54,34 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 	}
 	if (tmp->prev && tmp->prev->type == T_PIPE)
 	{
-		dup2(fpip[0], 0);
+		if (dup2(fpip[0], 0))
+		{
+			dprintf(2, "BROKEN2\n");
+			return ;
+		}
 		close(fpip[1]);
 		if (tmp->type == T_PIPE)
 		{
-			dup2(spip[1], 1);
+			if(dup2(spip[1], 1))
+				return ;
 			close(spip[0]);
 		}
 	}
 	else if (tmp->type == T_PIPE)
 	{
-		dup2(fpip[1], 1);
+		if (dup2(fpip[1], 1))
+		{
+			dprintf(3, "BROKEN3\n");
+			return ;
+		}
 		close(fpip[0]);
 	}
 }
 
 void	degage_frr(int sig_num)
 {
-	dprintf(2, "Quit: %d\n", sig_num);
+	if (sig_num == 3)
+		dprintf(2, "Quit: %d\n", sig_num);
 	g_minishell->quit = 4;
 	g_minishell->quit2 = 1;
 	g_minishell->exit = 131;
@@ -103,11 +117,9 @@ void	exec_prog(t_minishell *minishell, t_cmd *tmp, int fpip[2], int spip[2])
 	pid_t	pid;
 
 	minishell->forked = 1;
-	signal(SIGQUIT, SIG_DFL);
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
 		tmp->out == -1 || tmp->in == -1 ? exit(1) : 0;
 		handle_fd(tmp, fpip, spip);
 		tmp->args_array = join_args(tmp);
@@ -115,7 +127,9 @@ void	exec_prog(t_minishell *minishell, t_cmd *tmp, int fpip[2], int spip[2])
 	}
 	else
 	{
-		signal(SIGQUIT, degage_frr);
+		signal(SIGINT, degage_frr);
+		!ft_strequ(tmp->cmd + 2, minishell->name) ? signal(SIGQUIT, degage_frr)
+			: signal(SIGQUIT, SIG_IGN);
 		if (tmp->type == T_PIPE && tmp->prev && tmp->prev->type == T_PIPE)
 		{
 			close(fpip[1]);
