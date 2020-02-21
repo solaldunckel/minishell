@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 17:56:00 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/20 19:59:28 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct		s_minishell
 	int				exit;
 	char			*line;
 	int				quit;
+	int				quit2;
 	int				count;
 	int				out;
 	int				in;
@@ -105,8 +106,9 @@ void				env_init(t_minishell *minishell, char **env);
 t_env				*create_env(char **split, int ex);
 void				set_env(t_minishell *minishell, char *env, char *value);
 char				*get_env(t_minishell *minishell, char *env);
-char				*replace_env(t_minishell *minishell, char *line);
+char				*replace_env(char *line, int i);
 char				**env_to_array(t_minishell *minishell);
+char				*replace_env2(char *str, int *i);
 
 /*
 ** BIN
@@ -152,6 +154,7 @@ void				next_bracket(t_minishell *minishell);
 char				*simple_quotes(char *src, int *i);
 char				*double_quotes(char *src, int *i);
 char				*no_quotes(char *src, int *i);
+int					ft_quotelen(char *src, int type);
 
 /*
 ** TOKEN_LIST
@@ -191,6 +194,5 @@ void				exec_prog(t_minishell *minishell, t_cmd *tmp, int f_pipe[2],
 void				handle_errors(t_minishell *minishell, char *cmd, int type);
 char				*handle_quotes(char *src);
 char				**join_args(t_cmd *cmd);
-char				*replace_env(t_minishell *minishell, char *str);
 
 #endif

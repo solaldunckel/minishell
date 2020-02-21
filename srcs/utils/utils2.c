@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/19 21:12:13 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/20 18:44:02 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,40 +21,31 @@ void	free_cmd(void *cmd)
 	free(cmd);
 }
 
-char	*replace_env(t_minishell *minishell, char *str)
+char	*replace_env(char *str, int i)
 {
-	int		i;
-	int		count;
-	char	buf[4096];
+	int		k;
+	int		j;
+	char	*tmp;
 	char	*new;
 
-	new = ft_strdup("");
-	i = 0;
-	count = 0;
-	ft_bzero(buf, sizeof(buf));
-	while (str[i])
+	k = ft_quotelen(str, 4);
+	if (!(new = (char *)ft_calloc(1, k + 1)))
+		exit (1);
+	j = 0;
+	while (str[i] && j < k)
 	{
-		while (str[i] && str[i] == '$')
+		if (str[i] == '$' && !is_escaped(str, i - 1))
 		{
-			new = ft_strjoin_free(new, buf);
-			ft_bzero(buf, count);
-			count = 0;
-			i++;
-			while (str[i] && !is_char_str(str[i], "$ \'\"\n"))
-			{
-				buf[count] = str[i];
-				i++;
-				count++;
-			}
-			new = ft_strjoin_free(new, get_env(minishell, buf));
-			ft_bzero(buf, count);
-			count = 0;
+			tmp = replace_env2(str, &i);
+			j = ft_strlcat(new, tmp, k);
+			free(tmp);
+			continue ;
 		}
-		buf[count] = str[i];
-		count++;
+		if ((str[i] != '\\' || is_escaped(str, i - 1)) && j < k)
+			new[j++] = str[i];
 		i++;
 	}
-	new = ft_strjoin_free(new, buf);
+	free(str);
 	return (new);
 }
 

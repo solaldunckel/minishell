@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/19 17:38:05 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/20 19:21:39 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		ft_quotelen(char *src, int type)
 			return (i);
 		if (!esc && src[i] == '\'' && type == 0)
 			return (i + j);
-		if (!esc && src[i] == '$' && (type == 0 || type == 1))
+		if (!esc && src[i] == '$' && (type == 0 || type == 1 || type == 4))
 			j += ft_envlen(src, i);
 		if (!esc && src[i] == '\"' && (type == 0 || type == 1))
 			return (i + j);

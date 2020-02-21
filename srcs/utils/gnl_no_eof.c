@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/20 17:36:43 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/20 20:07:13 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,18 @@ static int		handle_line(char *s[], int fd)
 
 int				ctrl_d_exit(int b)
 {
-	if (b)
+	if (b == 1)
 	{
 		ft_dprintf(2, " %s: unexpected EOF while looking for matching"
 		" `\"\'\n%s: syntax error: unexpected end of file\n", g_minishell->name,
 		g_minishell->name);
 		g_minishell->quit = 1;
+		g_minishell->quit2 = 1;
+	}
+	if (b == 2)
+	{
+		g_minishell->quit = 2;
+		g_minishell->quit2 = 1;
 	}
 	if (!b)
 	{
@@ -64,13 +70,13 @@ int				get_next_line_no_eof(int fd, char **line, int b)
 	{
 		g_minishell->quit == 1 ? ft_strdel(&s[fd]) : 0;
 		g_minishell->quit == 1 ? s[fd] = ft_calloc(1, sizeof(char *)) : 0;
-		if ((buf[ret] = '\0') == 0 && ret == 0 && (ft_strlen(s[fd]) == 0 || b)
-		&& g_minishell->quit != 4)
+		if ((buf[ret] = '\0') == 0 && ret == 0 && (ft_strlen(s[fd]) == 0 ||
+		b == 1) && g_minishell->quit != 4)
 			ctrl_d_exit(b);
 		tmp = s[fd];
 		s[fd] = ft_strjoin(s[fd], buf);
 		free(tmp);
-		if (g_minishell->quit == 1 && (g_minishell->quit = 2) == 2)
+		if (g_minishell->quit != 0 && (g_minishell->quit = 2) == 2)
 			return (0);
 	}
 	s[fd] ? *line = ft_substr(s[fd], 0, ft_strlen_c(s[fd], '\n')) : 0;

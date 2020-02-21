@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 17:07:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 17:56:54 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/20 20:09:07 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	next_bracket(t_minishell *minishell)
 {
 	char	*tmp;
 
+	g_minishell->quit2 = 0;
 	write(1, "> ", 2);
 	if (get_next_line_no_eof(0, &tmp, 1))
 	{
@@ -91,6 +92,5 @@ void	next_bracket(t_minishell *minishell)
 	{
 		ft_strdel(&minishell->line);
 		minishell->line = ft_strjoin("", "");
-		g_minishell->quit = 1;
 	}
 }
