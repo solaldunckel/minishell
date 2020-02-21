@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/20 20:07:13 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/21 15:39:40 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,15 @@ static int		handle_line(char *s[], int fd)
 	return (SUCCESS);
 }
 
-int				ctrl_d_exit(int b)
+int				ctrl_d_exit(int b, char *s)
 {
 	if (b == 1)
 	{
 		ft_dprintf(2, " %s: unexpected EOF while looking for matching"
 		" `\"\'\n%s: syntax error: unexpected end of file\n", g_minishell->name,
 		g_minishell->name);
+		ft_strdel(&s);
+		s = ft_calloc(1, sizeof(char *));
 		g_minishell->quit = 1;
 		g_minishell->quit2 = 1;
 	}
@@ -72,7 +74,7 @@ int				get_next_line_no_eof(int fd, char **line, int b)
 		g_minishell->quit == 1 ? s[fd] = ft_calloc(1, sizeof(char *)) : 0;
 		if ((buf[ret] = '\0') == 0 && ret == 0 && (ft_strlen(s[fd]) == 0 ||
 		b == 1) && g_minishell->quit != 4)
-			ctrl_d_exit(b);
+			ctrl_d_exit(b, s[fd]);
 		tmp = s[fd];
 		s[fd] = ft_strjoin(s[fd], buf);
 		free(tmp);
