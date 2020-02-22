@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 01:51:35 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 20:28:48 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ char	**env_to_array(t_minishell *minishell)
 	t_list	*tmp;
 	char	**array;
 
-	if (!(array = ft_calloc(1, sizeof(char*) * ft_lstsize(minishell->env_list)
-		+ 1)))
+	if (!(array = ft_calloc(1, sizeof(char*) * (ft_lstsize(minishell->env_list)
+		+ 1))))
 		exit_cmd(minishell);
 	i = 0;
 	tmp = minishell->env_list;

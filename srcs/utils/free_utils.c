@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 04:14:18 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 04:15:51 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 17:19:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	free_env(void *lst)
 	if (env->value)
 		ft_strdel(&env->value);
 	free(env);
+	free(lst);
 }
 
 void	free_env2(void *lst)

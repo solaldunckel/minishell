@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/22 04:28:54 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 22:16:00 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,25 @@ void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 	}
 }
 
-void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
+void	handle_fd2(t_cmd *tmp)
 {
 	if (tmp->out)
 	{
-		dup2(tmp->out, STDOUT_FILENO);
+		if (dup2(tmp->out, STDOUT_FILENO))
+			return ;
 		close(tmp->out);
 	}
 	if (tmp->in)
 	{
-		dup2(tmp->in, STDIN_FILENO);
+		if (dup2(tmp->in, STDIN_FILENO))
+			return ;
 		close(tmp->in);
 	}
+}
+
+void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
+{
+	handle_fd2(tmp);
 	if (tmp->prev && tmp->prev->type == T_PIPE)
 	{
 		if (dup2(fpip[0], 0))
@@ -67,15 +74,6 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 			return ;
 		close(fpip[0]);
 	}
-}
-
-void	degage_frr(int sig_num)
-{
-	if (sig_num == 3)
-		ft_dprintf(2, "Quit: %d\n", sig_num);
-	g_minishell->quit = 4;
-	g_minishell->quit2 = 1;
-	g_minishell->exit = 131;
 }
 
 void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)

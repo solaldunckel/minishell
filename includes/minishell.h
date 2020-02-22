@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 04:23:47 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 22:48:24 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,7 @@
 # include <stdio.h>
 # include <dirent.h>
 # include <signal.h>
-
-# include <curses.h>
-# ifdef NCURSES
-#  include <term.h>
-# endif
 # include <errno.h>
-#include <glob.h>
 
 # ifndef BONUS
 #  define BONUS 0
@@ -134,9 +128,12 @@ void				open_pipes(t_minishell *minishell, t_cmd *tmp);
 void				close_pipes(t_minishell *minishell, t_cmd *tmp,
 						int *status, int pid);
 void				exec_commands(t_minishell *minishell);
-void				process_args(t_minishell *minishell, t_cmd *cmd);
+void				process_args(t_cmd *cmd);
 char				**args_to_array(t_minishell *minishell, t_cmd *cmd);
 void				exec_prog(t_minishell *minishell, t_cmd *cmd, int f_pipe[2],
+						int f_pipe2[2]);
+char				**args_to_array(t_minishell *minishell, t_cmd *cmd);
+void				exec_prog(t_minishell *minishell, t_cmd *tmp, int f_pipe[2],
 						int f_pipe2[2]);
 
 /*
@@ -176,6 +173,8 @@ void				clear_token_list(t_token **begin, void (*del)(void *));
 void				add_token_list(t_token **begin, t_token *new);
 int					token_list_size(t_token **begin);
 t_token				*remove_redirect(t_token *args, t_token **begin);
+t_token				*token_split_to_list(char **split);
+void				add_token_front(t_token **begin, t_token *new);
 
 /*
 ** CMDS_LIST
@@ -203,15 +202,12 @@ int					is_char_str(char c, char *str);
 void				ft_heredoc(t_token **token, t_cmd *cmd, char *tmp);
 int					get_next_line_no_eof(int fd, char **line, int b);
 void				sighandler(int sig_num);
+void				degage_frr(int sig_num);
+void				print_prompt(t_minishell *minishell);
 int					is_escaped(char *s, int pos);
 int					in_bracket(char *s, int pos);
 int					is_char_str(char c, char *str);
 void				nothing(void *cmd);
-char				**args_to_array(t_minishell *minishell, t_cmd *cmd);
-void				handle_errno(t_minishell *minishell, char *cmd, int type);
-void				exec_prog(t_minishell *minishell, t_cmd *tmp, int f_pipe[2],
-						int f_pipe2[2]);
-void				handle_errors(t_minishell *minishell, char *cmd, int type);
 char				*handle_quotes(char *src);
 char				**join_args(t_cmd *cmd);
 

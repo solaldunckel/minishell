@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/19 17:44:54 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 20:32:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int			token_list_size(t_token **begin)
 void		clear_token_list(t_token **begin, void (*del)(void *))
 {
 	t_token	*tmp;
+	t_token *tmp2;
 
 	if (!begin || !del)
 		return ;
@@ -59,8 +60,9 @@ void		clear_token_list(t_token **begin, void (*del)(void *))
 	while (tmp)
 	{
 		ft_strdel(&tmp->word);
+		tmp2 = tmp->next;
 		free(tmp);
-		tmp = tmp->next;
+		tmp = tmp2;
 	}
 	*begin = NULL;
 }

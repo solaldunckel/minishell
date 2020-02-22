@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/22 04:36:47 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 20:44:37 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void			set_quit(char **str, int *b)
 	if (g_minishell->quit == 1)
 	{
 		ft_strdel(str);
-		if (!(str = ft_calloc(1, sizeof(char *))))
+		if (!(*str = ft_calloc(1, sizeof(char *))))
 			exit_cmd(g_minishell);
 		if (*b == 1)
-			*b = 1;
+			*b = 0;
 	}
 }
 

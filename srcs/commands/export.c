@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 01:51:39 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 22:30:05 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,26 @@ int		modify_env_list(t_minishell *minishell, char **split, int ex)
 	return (0);
 }
 
-void	export_cmd2(t_minishell *minishell, t_token *args)
+void	export_cmd2(t_minishell *minishell, t_token *args, char **split)
 {
-	char	**split;
 	int		ex;
 	int		i;
 
 	i = -1;
 	ex = 0;
 	ft_is_in_stri('=', args->word) == -1 ? ex = 1 : 0;
-	split = ft_split_n(args->word, '=', 1);
 	if (!(modify_env_list(minishell, split, ex)))
 		ft_lstadd_back(&minishell->env_list,
 			ft_lstnew(create_env(split, ex)));
 	if (ft_strequ(split[0], "PATH"))
 		parse_bin(minishell);
 	minishell->env_array = env_to_array(minishell);
-	ft_free_split(&split);
 }
 
 void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 {
 	t_token *args;
+	char	**split;
 
 	args = cmd->args;
 	if (!args && forked)
@@ -106,11 +104,15 @@ void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 	}
 	while (args)
 	{
-		if (args->word[0] != '=')
-			export_cmd2(minishell, args);
+		split = ft_split_n(args->word, '=', 1);
+		if (ft_strlen(args->word) > 0 && !is_char_str(' ', split[0])
+			&& !is_char_str('=', split[0]) && !is_char_str('|', split[0])
+			&& !is_char_str(';', split[0]) && !is_char_str('&', split[0]))
+			export_cmd2(minishell, args, split);
 		else
 			ft_dprintf(2, "%s: %s: `%s': %s\n", minishell->name, cmd->cmd,
 				args->word, "not a valid identifier");
+		ft_free_split(&split);
 		args = args->next;
 	}
 	minishell->exit = 0;

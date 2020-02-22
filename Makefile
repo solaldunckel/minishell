@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/22 04:34:45 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/22 22:19:01 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRCS_LIST		= \
 					env/env_utils.c \
 					\
 					parsing/token.c \
+					parsing/token2.c \
 					parsing/cmds.c \
 					parsing/bin_path.c \
 					parsing/parsing_token.c \
@@ -39,8 +40,9 @@ SRCS_LIST		= \
 					utils/utils2.c \
 					utils/quotes.c \
 					utils/gnl_no_eof.c\
-					utils/exec.c\
-					utils/errors.c\
+					utils/exec.c \
+					utils/signals.c \
+					utils/errors.c \
 
 SRCS_FOLDER		= srcs
 SRCS			= $(addprefix ${SRCS_FOLDER}/, ${SRCS_LIST})
@@ -79,7 +81,8 @@ fclean:			clean
 				@$(RM) $(NAME)
 				@make fclean -C $(LIBFT)
 
-re:				fclean all
+re:				fclean
+				@ make -j
 
 real:			re
 				./minishell

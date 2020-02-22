@@ -6,26 +6,13 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 04:18:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 04:18:28 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 22:10:10 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	add_token_front(t_token **begin, t_token *new)
-{
-	if (*begin)
-	{
-		new->next = *begin;
-		(*begin)->prev = new;
-		*begin = new;
-	}
-	else
-		*begin = new;
-
-}
-
-void	add_more_args(t_cmd *cmd, char **split)
+void		add_more_args(t_cmd *cmd, char **split)
 {
 	int		i;
 	char	*tmp;
@@ -42,22 +29,75 @@ void	add_more_args(t_cmd *cmd, char **split)
 	}
 }
 
-void	process_args(t_minishell *minishell, t_cmd *cmd)
+t_token		*add_more_args2(t_cmd *cmd, t_token **token, char **split)
+{
+	t_token *new;
+	t_token *end_new;
+	t_token *next;
+
+	new = token_split_to_list(split);
+	end_new = new;
+	while (end_new->next)
+		end_new = end_new->next;
+	next = (*token)->next;
+	end_new->next = next;
+	if ((*token)->next)
+		(*token)->next->prev = end_new;
+	if ((*token)->prev)
+		(*token)->prev->next = new;
+	else
+	{
+		cmd->args = new;
+		free((*token)->word);
+		free(*token);
+		return (end_new);
+	}
+	free((*token)->word);
+	free(*token);
+	return (end_new);
+}
+
+void		process_args2(t_cmd *cmd)
+{
+	int		env;
+	char	**split;
+
+	env = 0;
+	if (cmd->cmd && cmd->cmd[0] == '$')
+		env = 1;
+	if (cmd->cmd)
+		cmd->cmd = handle_quotes(cmd->cmd);
+	if (env)
+	{
+		split = ft_split(cmd->cmd, ' ');
+		if (ft_count_split(split) > 1)
+			add_more_args(cmd, split);
+		ft_free_split(&split);
+	}
+}
+
+void		process_args(t_cmd *cmd)
 {
 	t_token	*tmp;
 	char	**split;
+	int		env;
 
-	(void)minishell;
+	env = 0;
 	tmp = cmd->args;
 	while (tmp)
 	{
+		env = 0;
+		if (tmp->word && tmp->word[0] == '$')
+			env = 1;
 		tmp->word = handle_quotes(tmp->word);
+		if (env)
+		{
+			split = ft_split(tmp->word, ' ');
+			if (ft_count_split(split) > 1)
+				tmp = add_more_args2(cmd, &tmp, split);
+			ft_free_split(&split);
+		}
 		tmp = tmp->next;
 	}
-	if (cmd->cmd)
-		cmd->cmd = handle_quotes(cmd->cmd);
-	split = ft_split(cmd->cmd, ' ');
-	if (ft_count_split(split) > 1)
-		add_more_args(cmd, split);
-	ft_free_split(&split);
+	process_args2(cmd);
 }
