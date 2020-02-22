@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:29:29 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 18:58:50 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 03:59:34 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,12 @@ void	exit_cmd2(t_minishell *minishell, t_cmd *cmd)
 	int		exit_s;
 
 	exit_s = 0;
-	if (minishell->no_exit)
-		return ;
 	ft_dprintf(2, "exit\n");
 	if (token_list_size(&cmd->args) > 1)
 	{
 		ft_dprintf(2, "%s: %s: %s\n", minishell->name, cmd->cmd,
 			"too many arguments");
 		minishell->exit = 1;
-		minishell->no_exit = 1;
 		return ;
 	}
 	exit_s = exit_status(minishell, cmd);

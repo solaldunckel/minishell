@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 19:13:52 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 01:51:39 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		modify_env_list(t_minishell *minishell, char **split, int ex)
 				return (1);
 			free(((t_env*)(tmp->content))->value);
 			if (split[1])
-				((t_env*)(tmp->content))->value = ft_strdup(split[1]);
+				((t_env*)(tmp->content))->value = ft_strndup(split[1], 4096);
 			else
 				((t_env*)(tmp->content))->value = ft_strdup("");
 			return (1);
@@ -79,10 +79,12 @@ void	export_cmd2(t_minishell *minishell, t_token *args)
 {
 	char	**split;
 	int		ex;
+	int		i;
 
+	i = -1;
 	ex = 0;
 	ft_is_in_stri('=', args->word) == -1 ? ex = 1 : 0;
-	split = ft_split(args->word, '=');
+	split = ft_split_n(args->word, '=', 1);
 	if (!(modify_env_list(minishell, split, ex)))
 		ft_lstadd_back(&minishell->env_list,
 			ft_lstnew(create_env(split, ex)));
@@ -108,7 +110,7 @@ void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 			export_cmd2(minishell, args);
 		else
 			ft_dprintf(2, "%s: %s: `%s': %s\n", minishell->name, cmd->cmd,
-			args->word, "not a valid identifier");
+				args->word, "not a valid identifier");
 		args = args->next;
 	}
 	minishell->exit = 0;

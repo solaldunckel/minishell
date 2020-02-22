@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 18:31:48 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/22 04:03:17 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,13 @@ void	exec_commands(t_minishell *minishell)
 		if (tmp->cmd && tmp->out != -1 && tmp->in != -1)
 		{
 			pipe(fpipe);
-			if (ft_strequ(tmp->cmd, EXIT_CMD) && !minishell->no_exit
-				&& tmp->type != T_PIPE
+			if (ft_strequ(tmp->cmd, EXIT_CMD) && tmp->type != T_PIPE
 				&& (!tmp->prev || tmp->prev->type != T_PIPE))
 				exit_cmd2(minishell, tmp);
 			else if (ft_strequ(tmp->cmd, EXPORT_CMD) && tmp->args)
 				export_cmd(minishell, tmp, 0);
 			else if (ft_strequ(tmp->cmd, CD_CMD) && tmp->type != T_PIPE &&
-			(!tmp->prev || tmp->prev->type != T_PIPE))
+				(!tmp->prev || tmp->prev->type != T_PIPE))
 				cd_cmd(minishell, tmp);
 			else if (ft_strequ(tmp->cmd, UNSET_CMD))
 				unset_cmd(minishell, tmp);
@@ -67,8 +66,6 @@ void	exec_commands(t_minishell *minishell)
 				exec_prog(minishell, tmp, fpipe, NULL);
 			close(fpipe[0]);
 			close(fpipe[1]);
-			if (minishell->no_exit)
-				break ;
 		}
 		tmp = tmp->next;
 	}

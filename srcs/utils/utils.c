@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 18:17:23 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/22 04:25:14 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,6 @@ char	**join_args(t_cmd *cmd)
 	}
 	args[i] = NULL;
 	return (args);
-}
-
-char	*ft_strjoin_double_free(char const *s1, char const *s2)
-{
-	char	*str;
-
-	if (!s2)
-	{
-		str = ft_strdup(s1);
-		free((void*)s1);
-		return (str);
-	}
-	if (!(str = (char*)ft_calloc(1, sizeof(char)
-		* (ft_strlen(s1) + ft_strlen(s2) + 1))))
-		return (NULL);
-	ft_strcpy(str, s1);
-	free((void*)s1);
-	ft_strcat(str, s2);
-	free((void*)s2);
-	return (str);
 }
 
 char	*handle_quotes(char *src)
@@ -106,7 +86,27 @@ char	*supp_newline(char *src)
 	return (dest);
 }
 
-void	nothing(void *cmd)
+void	ft_sort_list(t_list **begin_list, int (*cmp)())
 {
-	(void)cmd;
+	t_list	*ptr;
+	t_list	*ptr2;
+	t_list	*next;
+
+	ptr = *begin_list;
+	while (ptr)
+	{
+		ptr2 = *begin_list;
+		while (ptr2->next)
+		{
+			if ((*cmp)(((t_env*)(ptr2->content))->name,
+				((t_env*)(ptr2->next->content))->name) > 0)
+			{
+				next = ptr2->content;
+				ptr2->content = ptr2->next->content;
+				ptr2->next->content = next;
+			}
+			ptr2 = ptr2->next;
+		}
+		ptr = ptr->next;
+	}
 }

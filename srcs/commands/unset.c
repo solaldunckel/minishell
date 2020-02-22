@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:50:10 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/17 17:31:01 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/22 04:15:46 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,6 @@ int		is_env(t_env *env, char *data)
 	if (ft_strequ(env->name, data))
 		return (0);
 	return (1);
-}
-
-void	free_env(void *lst)
-{
-	t_env	*env;
-
-	env = ((t_list*)lst)->content;
-	if (env->name)
-		ft_strdel(&env->name);
-	if (env->value)
-		ft_strdel(&env->value);
-	free(env);
 }
 
 void	unset_cmd(t_minishell *minishell, t_cmd *cmd)

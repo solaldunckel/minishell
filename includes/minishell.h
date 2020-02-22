@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 18:01:52 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/22 04:23:47 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #  include <term.h>
 # endif
 # include <errno.h>
+#include <glob.h>
 
 # ifndef BONUS
 #  define BONUS 0
@@ -57,9 +58,6 @@ typedef struct		s_minishell
 	int				quit;
 	int				quit2;
 	int				count;
-	int				out;
-	int				in;
-	int				no_exit;
 	int				forked;
 	char			*exit_str;
 	struct s_cmd	*cmd_list;
@@ -82,7 +80,6 @@ typedef struct		s_cmd
 	struct s_token	*args;
 	char			**args_array;
 	int				in;
-	int				pip[0];
 	int				out;
 	int				type;
 	struct s_cmd	*prev;
@@ -139,7 +136,7 @@ void				close_pipes(t_minishell *minishell, t_cmd *tmp,
 void				exec_commands(t_minishell *minishell);
 void				process_args(t_minishell *minishell, t_cmd *cmd);
 char				**args_to_array(t_minishell *minishell, t_cmd *cmd);
-void				exec_prog(t_minishell *minishell, t_cmd *tmp, int f_pipe[2],
+void				exec_prog(t_minishell *minishell, t_cmd *cmd, int f_pipe[2],
 						int f_pipe2[2]);
 
 /*
@@ -154,7 +151,6 @@ char				*supp_newline(char *src);
 /*
 ** ERRORS
 */
-void				handle_errors(t_minishell *minishell, char *cmd, int type);
 void				handle_errno(t_minishell *minishell, char *cmd, int type);
 
 /*
@@ -179,6 +175,7 @@ void				token_remove_last(t_token **begin_list);
 void				clear_token_list(t_token **begin, void (*del)(void *));
 void				add_token_list(t_token **begin, t_token *new);
 int					token_list_size(t_token **begin);
+t_token				*remove_redirect(t_token *args, t_token **begin);
 
 /*
 ** CMDS_LIST
@@ -190,9 +187,10 @@ void				create_redirect(t_minishell *minishell, t_cmd *cmd);
 /*
 ** FREE_UTILS
 */
+void				free_cmd(void *cmd);
 void				free_env(void *lst);
 void				free_env2(void *lst);
-void				free_cmd(void *cmd);
+void				free_redirect(t_token *tmp);
 void				nothing(void *cmd);
 
 /*
@@ -203,7 +201,6 @@ int					is_escaped(char *s, int pos);
 int					in_bracket(char *s, int pos);
 int					is_char_str(char c, char *str);
 void				ft_heredoc(t_token **token, t_cmd *cmd, char *tmp);
-char				*ft_strjoin_double_free(char const *s1, char const *s2);
 int					get_next_line_no_eof(int fd, char **line, int b);
 void				sighandler(int sig_num);
 int					is_escaped(char *s, int pos);

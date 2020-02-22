@@ -6,16 +6,38 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 19:47:25 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 17:41:06 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/22 04:15:09 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_redirect(t_token *tmp)
+void	ft_heredoc(t_token **token, t_cmd *cmd, char *tmp)
 {
-	ft_strdel(&tmp->word);
-	free(tmp);
+	char	*line;
+	int		pip[2];
+
+	pipe(pip);
+	cmd->in = pip[0];
+	line = ft_strdup("");
+	while ((!tmp || !ft_strequ((*token)->next->word, tmp)) &&
+		g_minishell->quit == 0)
+	{
+		ft_strdel(&tmp);
+		write(1, "> ", 2);
+		if (get_next_line_no_eof(0, &tmp, 2) &&
+			!ft_strequ((*token)->next->word, tmp))
+		{
+			line = ft_strjoin_free(line, tmp);
+			g_minishell->quit != 3 ? line = ft_strjoin_free(line, "\n") : 0;
+		}
+	}
+	ft_strdel(&tmp);
+	if (ft_is_in_stri('$', line) > -1 && (*token)->next->word[0] != '\"')
+		line = replace_env(line, 0);
+	g_minishell->quit != 2 ? ft_putstr_fd(line, pip[1]) : 0;
+	ft_strdel(&line);
+	close(pip[1]);
 }
 
 t_token	*remove_redirect(t_token *args, t_token **begin)
@@ -32,13 +54,13 @@ t_token	*remove_redirect(t_token *args, t_token **begin)
 		next ? next->prev = NULL : 0;
 		return (next);
 	}
-	while (tmp && tmp->next)
+	while (tmp)
 	{
 		if (tmp == args && tmp->prev)
 		{
 			next = tmp->next;
 			tmp->prev->next = next;
-			tmp->next->prev = tmp->prev;
+			tmp->next ? tmp->next->prev = tmp->prev : 0;
 			free_redirect(args);
 			return (next);
 		}

@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_strjoin_double_free.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/01 18:10:04 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 03:20:32 by sdunckel         ###   ########.fr       */
+/*   Created: 2020/02/22 04:22:58 by sdunckel          #+#    #+#             */
+/*   Updated: 2020/02/22 04:23:03 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	start_parse(t_minishell *minishell, char *str)
+char	*ft_strjoin_double_free(char const *s1, char const *s2)
 {
-	char	*token;
-	t_token *tmp;
+	char	*str;
 
-	split_tokens(minishell, str);
-	token = iter_tokens(minishell);
-	if (token)
+	if (!s2)
 	{
-		ft_dprintf(2, "%s: syntax error near unexpected token `%s'\n",
-			minishell->name, token);
-		return ;
+		str = ft_strdup(s1);
+		free((void*)s1);
+		return (str);
 	}
-	tmp = minishell->token_list;
-	while (tmp)
-		parse_tokens(minishell, &tmp);
+	if (!(str = (char*)ft_calloc(1, sizeof(char)
+		* (ft_strlen(s1) + ft_strlen(s2) + 1))))
+		return (NULL);
+	ft_strcpy(str, s1);
+	free((void*)s1);
+	ft_strcat(str, s2);
+	free((void*)s2);
+	return (str);
 }

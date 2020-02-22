@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/20 18:44:48 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/22 04:34:45 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ SRCS_LIST		= \
 					\
 					parsing/token.c \
 					parsing/cmds.c \
-					parsing/parsing.c \
 					parsing/bin_path.c \
 					parsing/parsing_token.c \
 					parsing/parsing_cmds.c \
@@ -34,9 +33,10 @@ SRCS_LIST		= \
 					\
 					utils/redirect.c \
 					utils/command_process.c \
+					utils/command_process2.c \
+					utils/free_utils.c \
 					utils/utils.c \
 					utils/utils2.c \
-					utils/utils3.c \
 					utils/quotes.c \
 					utils/gnl_no_eof.c\
 					utils/exec.c\
