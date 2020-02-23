@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 04:25:14 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 00:43:22 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,10 @@ void	ft_sort_list(t_list **begin_list, int (*cmp)())
 		}
 		ptr = ptr->next;
 	}
+}
+
+int		freer(void *to_free)
+{
+	free(to_free);
+	return (1);
 }

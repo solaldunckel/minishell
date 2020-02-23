@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/23 23:28:05 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 00:53:12 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,11 @@ char				**env_to_array(t_minishell *minishell);
 void				ft_sort_list(t_list **begin_list, int (*cmp)());
 char				*replace_env2(char *str, int *i);
 int					modify_env_list(t_minishell *minishell, char **split,
-						int ex);
+						int ex, int jn);
 int					env_valid_character(char *str);
 int					is_valid_env(char *str);
 void				add_tmp_env_variable(t_minishell *minishell, t_cmd *cmd);
+void				env_cmd_export(t_list **begin);
 
 /*
 ** BIN
@@ -219,5 +220,6 @@ int					is_char_str(char c, char *str);
 void				nothing(void *cmd);
 char				*handle_quotes(char *src);
 char				**join_args(t_cmd *cmd);
+int					freer(void *to_free);
 
 #endif

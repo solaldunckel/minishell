@@ -6,11 +6,38 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 22:52:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/23 23:27:40 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 00:53:01 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	env_cmd_export(t_list **begin)
+{
+	int		i;
+	t_list	*tmp;
+
+	i = 0;
+	tmp = *begin;
+	if (!*begin)
+		return ;
+	while (tmp)
+	{
+		if (!ft_strequ(((t_env*)(tmp->content))->name, "_"))
+		{
+			if (((t_env*)(tmp->content))->value
+				&& !((t_env*)(tmp->content))->tmp)
+				ft_printf("declare -x %s=\"%s\"\n",
+					((t_env*)(tmp->content))->name,
+					((t_env*)(tmp->content))->value);
+			else if (!((t_env*)(tmp->content))->value
+				&& !((t_env*)(tmp->content))->tmp)
+				ft_printf("declare -x %s\n",
+					((t_env*)(tmp->content))->name);
+		}
+		tmp = tmp->next;
+	}
+}
 
 int		env_valid_character(char *str)
 {
@@ -39,7 +66,10 @@ int		is_valid_env(char *str)
 	{
 		if (i == 0 && (ft_isdigit(str[i]) || str[i] == '='))
 			return (0);
-		if (!ft_isalnum(str[i]) && str[i] != '_' && str[i] != '=')
+		if (!ft_isalnum(str[i]) && str[i] != '_' && str[i] != '='
+			&& str[i] != '+')
+			return (0);
+		if (eq_count == 0 && str[i] == '+' && str[i + 1] != '=')
 			return (0);
 		if (str[i] == '=')
 			eq_count++;
@@ -69,12 +99,22 @@ void	add_tmp_env_variable(t_minishell *minishell, t_cmd *cmd)
 {
 	char	**split;
 	t_list	*tmp;
+	char	*to_free;
+	int		join;
 
+	join = 0;
 	tmp = cmd->env_list;
 	while (tmp)
 	{
 		split = ft_split_n(tmp->content, '=', 1);
-		if (!(modify_env_list(minishell, split, 0)))
+		if (ft_str_end(split[0], "+"))
+		{
+			to_free = split[0];
+			split[0] = ft_strndup(split[0], ft_strlen(split[0]) - 1);
+			free(to_free);
+			join = 1;
+		}
+		if (!(modify_env_list(minishell, split, 0, join)))
 			ft_lstadd_back(&minishell->env_list,
 				ft_lstnew(create_tmp_env(split)));
 		ft_free_split(&split);
