@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/22 22:19:01 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/23 22:59:18 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCS_LIST		= \
 					main.c \
 					\
 					env/env_utils.c \
+					env/env_utils2.c \
 					\
 					parsing/token.c \
 					parsing/token2.c \

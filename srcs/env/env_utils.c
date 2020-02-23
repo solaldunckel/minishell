@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 20:28:48 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:25:16 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_env	*create_env(char **split, int ex)
 		env->value = NULL;
 	else
 		env->value = ft_strdup("");
+	env->tmp = 0;
 	return (env);
 }
 

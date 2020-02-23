@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 04:18:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 22:10:10 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 22:22:52 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void		add_more_args(t_cmd *cmd, char **split)
 	free(tmp);
 	while (i > 0)
 	{
-		add_token_front(&cmd->args, create_arg_token(ft_strdup(split[i]),
-			T_WORD));
+		add_token_front(&cmd->args, create_arg_token(split[i], T_WORD));
 		i--;
 	}
 }
@@ -61,12 +60,17 @@ void		process_args2(t_cmd *cmd)
 {
 	int		env;
 	char	**split;
+	char	*tmp;
 
 	env = 0;
 	if (cmd->cmd && cmd->cmd[0] == '$')
 		env = 1;
 	if (cmd->cmd)
+	{
+		tmp = cmd->cmd;
 		cmd->cmd = handle_quotes(cmd->cmd);
+		ft_strdel(&tmp);
+	}
 	if (env)
 	{
 		split = ft_split(cmd->cmd, ' ');
@@ -81,6 +85,7 @@ void		process_args(t_cmd *cmd)
 	t_token	*tmp;
 	char	**split;
 	int		env;
+	char	*tmp2;
 
 	env = 0;
 	tmp = cmd->args;
@@ -89,7 +94,9 @@ void		process_args(t_cmd *cmd)
 		env = 0;
 		if (tmp->word && tmp->word[0] == '$')
 			env = 1;
+		tmp2 = tmp->word;
 		tmp->word = handle_quotes(tmp->word);
+		ft_strdel(&tmp2);
 		if (env)
 		{
 			split = ft_split(tmp->word, ' ');

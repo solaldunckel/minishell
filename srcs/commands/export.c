@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 22:30:05 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:34:15 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ void	env_cmd_export(t_list **begin)
 	{
 		if (!ft_strequ(((t_env*)(tmp->content))->name, "_"))
 		{
-			if (((t_env*)(tmp->content))->value)
+			if (((t_env*)(tmp->content))->value
+				&& !((t_env*)(tmp->content))->tmp)
 				ft_printf("declare -x %s=\"%s\"\n",
 					((t_env*)(tmp->content))->name,
 					((t_env*)(tmp->content))->value);
-			else if (!((t_env*)(tmp->content))->value)
+			else if (!((t_env*)(tmp->content))->value
+				&& !((t_env*)(tmp->content))->tmp)
 				ft_printf("declare -x %s\n",
 					((t_env*)(tmp->content))->name);
 		}
@@ -62,7 +64,12 @@ int		modify_env_list(t_minishell *minishell, char **split, int ex)
 		if (ft_strequ(((t_env*)(tmp->content))->name, split[0]))
 		{
 			if (ex)
+			{
+				if (((t_env*)(tmp->content))->tmp)
+					((t_env*)(tmp->content))->tmp = 0;
 				return (1);
+			}
+			((t_env*)(tmp->content))->tmp = 0;
 			free(((t_env*)(tmp->content))->value);
 			if (split[1])
 				((t_env*)(tmp->content))->value = ft_strndup(split[1], 4096);
@@ -105,9 +112,7 @@ void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 	while (args)
 	{
 		split = ft_split_n(args->word, '=', 1);
-		if (ft_strlen(args->word) > 0 && !is_char_str(' ', split[0])
-			&& !is_char_str('=', split[0]) && !is_char_str('|', split[0])
-			&& !is_char_str(';', split[0]) && !is_char_str('&', split[0]))
+		if (ft_strlen(args->word) > 0 && env_valid_character(split[0]))
 			export_cmd2(minishell, args, split);
 		else
 			ft_dprintf(2, "%s: %s: `%s': %s\n", minishell->name, cmd->cmd,

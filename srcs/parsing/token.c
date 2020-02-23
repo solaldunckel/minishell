@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 16:36:48 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 20:32:26 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 21:26:31 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_token		*create_arg_token(char *word, int type)
 
 	if (!(new = ft_calloc(1, sizeof(t_token))))
 		exit_cmd(g_minishell);
-	new->word = word;
+	new->word = ft_strdup(word);
 	new->type = type;
 	return (new);
 }

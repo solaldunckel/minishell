@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 12:56:11 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 20:34:31 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:20:05 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ void	clear_cmd_list(t_cmd **begin, void (*del)(void *))
 	tmp = *begin;
 	while (tmp)
 	{
-		del(tmp->cmd);
+		ft_strdel(&tmp->cmd);
+		ft_lstclear(&tmp->env_list, nothing);
 		args = tmp->args;
 		while (args)
 		{
-			del(args->word);
+			ft_strdel(&args->word);
 			args2 = args->next;
 			del(args);
 			args = args2;

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/23 16:18:43 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:28:05 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define T_PIPE 3
 # define T_SEP 4
 # define T_NEWLINE 5
-# define T_REDIRECT_FILE 6
+# define T_ENV 6
 
 typedef struct		s_minishell
 {
@@ -66,12 +66,14 @@ typedef struct		s_env
 {
 	char	*name;
 	char	*value;
+	int		tmp;
 }					t_env;
 
 typedef struct		s_cmd
 {
 	char			*cmd;
 	struct s_token	*args;
+	t_list			*env_list;
 	char			**args_array;
 	int				in;
 	int				out;
@@ -102,6 +104,11 @@ char				*replace_env(char *line, int i);
 char				**env_to_array(t_minishell *minishell);
 void				ft_sort_list(t_list **begin_list, int (*cmp)());
 char				*replace_env2(char *str, int *i);
+int					modify_env_list(t_minishell *minishell, char **split,
+						int ex);
+int					env_valid_character(char *str);
+int					is_valid_env(char *str);
+void				add_tmp_env_variable(t_minishell *minishell, t_cmd *cmd);
 
 /*
 ** BIN
@@ -116,6 +123,7 @@ void				echo_cmd(t_minishell *minishell, t_cmd *cmd);
 void				cd_cmd(t_minishell *minishell, t_cmd *cmd);
 void				exit_cmd(t_minishell *minishell);
 void				exit_cmd2(t_minishell *minishell, t_cmd *cmd);
+void				exit_cmd4(t_minishell *minishell);
 void				env_cmd(t_list **begin);
 void				pwd_cmd(t_minishell *minishell);
 void				export_cmd(t_minishell *minishell, t_cmd *cmd, int forked);
