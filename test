@@ -1,0 +1,10 @@
+total 128
+drwxr-xr-x   9 sdunckel  2019_paris    306 Feb 23 16:00 .
+drwxr-xr-x  18 sdunckel  2019_paris    612 Feb 22 22:54 ..
+drwxr-xr-x  16 sdunckel  2019_paris    544 Feb 23 16:00 .git
+-rw-r--r--   1 sdunckel  2019_paris   2267 Feb 22 22:19 Makefile
+drwxr-xr-x   3 sdunckel  2019_paris    102 Feb 22 15:51 includes
+drwxr-xr-x   6 sdunckel  2019_paris    204 Feb 23 16:00 libft
+-rwxr-xr-x   1 sdunckel  2019_paris  58440 Feb 23 16:00 minishell
+drwxr-xr-x   8 sdunckel  2019_paris    272 Feb 23 15:15 srcs
+-rw-r--r--   1 sdunckel  2019_paris      0 Feb 23 16:00 test

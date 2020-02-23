@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/22 22:16:00 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 16:23:52 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@ void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 	{
 		if (pipe(spip) < 0)
 			return ;
-		if (!tmp->out && tmp->type == T_PIPE)
+		if (tmp->type == T_PIPE)
+		{
+			process_args(tmp->next);
+			create_redirect(minishell, tmp->next);
 			exec_prog(minishell, tmp->next, fpip, spip);
+		}
 		close(fpip[1]);
 		close(spip[1]);
 		close(spip[0]);
@@ -41,25 +45,21 @@ void	handle_fd2(t_cmd *tmp)
 {
 	if (tmp->out)
 	{
-		if (dup2(tmp->out, STDOUT_FILENO))
-			return ;
+		dup2(tmp->out, STDOUT_FILENO);
 		close(tmp->out);
 	}
 	if (tmp->in)
 	{
-		if (dup2(tmp->in, STDIN_FILENO))
-			return ;
+		dup2(tmp->in, STDIN_FILENO);
 		close(tmp->in);
 	}
 }
 
 void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 {
-	handle_fd2(tmp);
 	if (tmp->prev && tmp->prev->type == T_PIPE)
 	{
-		if (dup2(fpip[0], 0))
-			return ;
+		dup2(fpip[0], 0);
 		close(fpip[1]);
 		if (tmp->type == T_PIPE)
 		{
@@ -70,10 +70,10 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 	}
 	else if (tmp->type == T_PIPE)
 	{
-		if (dup2(fpip[1], 1))
-			return ;
+		dup2(fpip[1], 1);
 		close(fpip[0]);
 	}
+	handle_fd2(tmp);
 }
 
 void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)

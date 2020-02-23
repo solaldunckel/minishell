@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 22:48:24 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 16:18:43 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct		s_cmd
 	char			**args_array;
 	int				in;
 	int				out;
+	int				pipe[2];
 	int				type;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
