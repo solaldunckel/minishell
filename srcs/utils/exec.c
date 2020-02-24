@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/24 15:47:26 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/24 16:35:47 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,7 @@ void	exec(t_minishell *minishell, t_cmd *tmp)
 		export_cmd(minishell, tmp, 1);
 	else if (ft_strequ(tmp->cmd, UNSET_CMD))
 		exit(0);
-	else if (tmp->bin != NULL && minishell->env_array != NULL
-		&& tmp->args_array != NULL)
+	else if (minishell->env_array != NULL && tmp->args_array != NULL)
 	{
 		execve(tmp->bin, tmp->args_array, minishell->env_array);
 		handle_errno(minishell, tmp->cmd, errno);
