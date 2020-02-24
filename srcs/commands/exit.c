@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:29:29 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/23 20:40:15 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:01:21 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		exit_status(t_minishell *minishell, t_cmd *cmd)
 {
 	int		exit_s;
 
-	exit_s = 0;
+	exit_s = minishell->exit;
 	if (cmd->args)
 	{
 		if (is_only_digit(((t_token*)cmd->args)->word))

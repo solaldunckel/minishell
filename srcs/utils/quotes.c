@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 17:07:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 22:34:52 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:55:21 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		last_pipe(char *s, int pos)
 	if (pos > 0 && s[pos] == '|' && !is_escaped(s, pos - 1))
 	{
 		pos = 0;
-		while (s[pos] && s[pos] == ' ')
+		while (s[pos] && (s[pos] == ' ' || s[pos] == '\n'))
 			pos++;
 		if (s[pos] != '|')
 		{
@@ -43,7 +43,7 @@ int		last_pipe(char *s, int pos)
 				return (1);
 			else
 				pos++;
-			while (s[pos] && s[pos] == ' ')
+			while (s[pos] && (s[pos] == ' ' || s[pos] == '\n'))
 				pos++;
 			if (s[pos] != '|')
 				return (1);
@@ -73,8 +73,7 @@ int		bracket_odd(char *s, int ret)
 	}
 	if (bracket1 % 2 != 0 || bracket2 % 2 != 0)
 		return (1);
-	(void)ret;
-	return (0);
+	return (ret ? last_pipe(s, i - 1) : 0);
 }
 
 void	next_bracket(t_minishell *minishell)
@@ -82,7 +81,7 @@ void	next_bracket(t_minishell *minishell)
 	char	*tmp;
 
 	g_minishell->quit2 = 0;
-	write(1, "> ", 2);
+	write(2, "> ", 2);
 	if (get_next_line_no_eof(0, &tmp, 1))
 	{
 		minishell->line = ft_strjoin_free(minishell->line, "\n");

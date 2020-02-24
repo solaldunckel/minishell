@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/24 03:12:55 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:47:26 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ void	exec(t_minishell *minishell, t_cmd *tmp)
 		export_cmd(minishell, tmp, 1);
 	else if (ft_strequ(tmp->cmd, UNSET_CMD))
 		exit(0);
-	else
+	else if (tmp->bin != NULL && minishell->env_array != NULL
+		&& tmp->args_array != NULL)
 	{
 		execve(tmp->bin, tmp->args_array, minishell->env_array);
 		handle_errno(minishell, tmp->cmd, errno);
@@ -121,7 +122,7 @@ void	exec_prog(t_minishell *minishell, t_cmd *cmd, int fpip[2], int spip[2])
 		!ft_strequ(cmd->cmd + 2, minishell->name) ? signal(SIGQUIT, degage_frr)
 			: signal(SIGQUIT, SIG_IGN);
 		if (cmd->type == T_PIPE && cmd->prev && cmd->prev->type == T_PIPE
-			&& !close(fpip[1]))
+			&& !close(fpip[1]) && !close(fpip[0]))
 			exec_prog2(minishell, cmd, pid, spip);
 		else
 			exec_prog2(minishell, cmd, pid, fpip);

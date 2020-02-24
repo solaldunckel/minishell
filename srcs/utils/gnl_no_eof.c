@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/24 14:09:52 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/24 14:48:01 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ void			set_quit(char **str, int *b)
 int				get_next_line_no_eof(int fd, char **line, int b)
 {
 	static char		*s[2];
-	char			buf[4097];
+	char			buf[2];
 	int				ret;
 	char			*tmp;
 
 	if (fd < 0 || !line || BUFFER_SIZE < 1 || read(fd, buf, 0) < 0
 		|| (!s[fd] && !(s[fd] = ft_calloc(1, sizeof(char *)))))
 		return (ERROR);
-	while ((ft_is_in_stri('\n', s[fd]) < 0 && (ret = read(fd, buf, 4096)) >= 0))
+	while ((ft_is_in_stri('\n', s[fd]) < 0 && (ret = read(fd, buf, 1)) >= 0))
 	{
 		set_quit(&s[fd], &b);
 		if ((buf[ret] = '\0') == 0 && ret == 0 && ft_strlen(s[fd]) == 0

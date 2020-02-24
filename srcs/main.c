@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 12:22:36 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:51:45 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	print_prompt(t_minishell *minishell)
 {
 	if (minishell->exit == 0)
-		ft_printf("" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET,
+		ft_dprintf(2, "" BOLDGREEN "➜ " RESET BOLDCYAN " %s " RESET,
 			minishell->curdir);
 	else
-		ft_printf("" BOLDRED "➜ " RESET BOLDCYAN " %s " RESET,
+		ft_dprintf(2, "" BOLDRED "➜ " RESET BOLDCYAN " %s " RESET,
 			minishell->curdir);
 }
 
@@ -95,9 +95,13 @@ void	wait_for_command(t_minishell *minishell)
 int		main(int argc, char **argv, char **env)
 {
 	t_minishell		minishell;
+	int				fd;
 
 	(void)argc;
 	(void)argv;
+	if ((fd = dup(0)) == -1)
+		return (0);
+	close(fd);
 	ft_bzero(&minishell, sizeof(t_minishell));
 	ft_printf("\nMINISHELL 42 by sdunckel & haguerni\n\n");
 	minishell.name = ft_strtrim(argv[0], "./");
