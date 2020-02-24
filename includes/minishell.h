@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 12:22:08 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 17:56:20 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,8 @@ void				add_token_front(t_token **begin, t_token *new);
 void				add_cmd_list(t_cmd **begin, t_cmd *new);
 void				clear_cmd_list(t_cmd **begin, void (*del)(void *));
 void				create_redirect(t_minishell *minishell, t_cmd *cmd);
+void				process_wildcard(t_token *arg, char *path, int i,
+					int slash);
 
 /*
 ** FREE_UTILS
