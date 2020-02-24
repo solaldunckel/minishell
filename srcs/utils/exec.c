@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/23 20:55:42 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 03:12:55 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 	handle_fd2(tmp);
 }
 
-void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
+void	exec(t_minishell *minishell, t_cmd *tmp)
 {
 	if (ft_strequ(tmp->cmd, ECHO_CMD))
 		echo_cmd(minishell, tmp);
@@ -94,7 +94,7 @@ void	exec(t_minishell *minishell, t_cmd *tmp, char *bin)
 		exit(0);
 	else
 	{
-		execve(bin, tmp->args_array, minishell->env_array);
+		execve(tmp->bin, tmp->args_array, minishell->env_array);
 		handle_errno(minishell, tmp->cmd, errno);
 		exit(minishell->exit);
 	}
@@ -106,24 +106,23 @@ void	exec_prog(t_minishell *minishell, t_cmd *cmd, int fpip[2], int spip[2])
 	pid_t	pid;
 
 	minishell->forked = 1;
+	cmd->bin = get_bin(minishell, cmd->cmd);
+	cmd->args_array = join_args(cmd);
 	pid = fork();
 	if (pid == 0)
 	{
 		cmd->out == -1 || cmd->in == -1 ? exit(1) : 0;
 		handle_fd(cmd, fpip, spip);
-		cmd->args_array = join_args(cmd);
-		exec(minishell, cmd, get_bin(minishell, cmd->cmd));
+		exec(minishell, cmd);
 	}
 	else
 	{
 		signal(SIGINT, degage_frr);
 		!ft_strequ(cmd->cmd + 2, minishell->name) ? signal(SIGQUIT, degage_frr)
 			: signal(SIGQUIT, SIG_IGN);
-		if (cmd->type == T_PIPE && cmd->prev && cmd->prev->type == T_PIPE)
-		{
-			close(fpip[1]);
+		if (cmd->type == T_PIPE && cmd->prev && cmd->prev->type == T_PIPE
+			&& !close(fpip[1]))
 			exec_prog2(minishell, cmd, pid, spip);
-		}
 		else
 			exec_prog2(minishell, cmd, pid, fpip);
 	}

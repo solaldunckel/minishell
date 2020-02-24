@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 00:53:12 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 02:28:17 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct		s_env
 typedef struct		s_cmd
 {
 	char			*cmd;
+	char			*bin;
 	struct s_token	*args;
 	t_list			*env_list;
 	char			**args_array;

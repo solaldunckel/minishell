@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 19:38:50 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/12 16:37:28 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/24 03:07:35 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ void	cd_cmd(t_minishell *minishell, t_cmd *cmd)
 		}
 	}
 	minishell->exit = 0;
-	edit_pwd(minishell);
+	//edit_pwd(minishell);
 }
