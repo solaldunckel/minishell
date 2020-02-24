@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 18:31:48 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:22:36 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,20 @@ void	print_prompt(t_minishell *minishell)
 			minishell->curdir);
 }
 
-void	sighandler(int sig_num)
+void	exec_commands2(t_minishell *minishell, t_cmd *tmp, int fpipe[2])
 {
-	ft_printf("\b\b  \b\b");
-	if (sig_num == SIGINT)
-	{
-		ft_printf("\n");
-		if (!g_minishell->forked)
-			g_minishell->exit = 1;
-		else
-			g_minishell->exit = 130;
-		print_prompt(g_minishell);
-		g_minishell->quit = 1;
-	}
-	if (sig_num == SIGQUIT)
-		g_minishell->quit = 4;
+	if (ft_strequ(tmp->cmd, EXIT_CMD) && tmp->type != T_PIPE
+		&& (!tmp->prev || tmp->prev->type != T_PIPE))
+		exit_cmd2(minishell, tmp);
+	else if (ft_strequ(tmp->cmd, EXPORT_CMD) && tmp->args)
+		export_cmd(minishell, tmp, 0);
+	else if (ft_strequ(tmp->cmd, CD_CMD) && tmp->type != T_PIPE &&
+		(!tmp->prev || tmp->prev->type != T_PIPE))
+		cd_cmd(minishell, tmp);
+	else if (ft_strequ(tmp->cmd, UNSET_CMD))
+		unset_cmd(minishell, tmp);
+	else if (!tmp->prev || (tmp->prev && !(tmp->prev->type == T_PIPE)))
+		exec_prog(minishell, tmp, fpipe, NULL);
 }
 
 void	exec_commands(t_minishell *minishell)
@@ -47,29 +46,23 @@ void	exec_commands(t_minishell *minishell)
 	tmp = minishell->cmd_list;
 	while (tmp)
 	{
-		process_args(minishell, tmp);
+		process_args(tmp);
 		create_redirect(minishell, tmp);
 		if (tmp->cmd && tmp->out != -1 && tmp->in != -1)
 		{
-			pipe(fpipe);
-			if (ft_strequ(tmp->cmd, EXIT_CMD) && !minishell->no_exit
-				&& tmp->type != T_PIPE
-				&& (!tmp->prev || tmp->prev->type != T_PIPE))
-				exit_cmd2(minishell, tmp);
-			else if (ft_strequ(tmp->cmd, EXPORT_CMD) && tmp->args)
-				export_cmd(minishell, tmp, 0);
-			else if (ft_strequ(tmp->cmd, CD_CMD) && tmp->type != T_PIPE &&
-			(!tmp->prev || tmp->prev->type != T_PIPE))
-				cd_cmd(minishell, tmp);
-			else if (ft_strequ(tmp->cmd, UNSET_CMD))
-				unset_cmd(minishell, tmp);
-			else if (!tmp->prev || (tmp->prev && !(tmp->prev->type == T_PIPE)))
-				exec_prog(minishell, tmp, fpipe, NULL);
+			if (pipe(fpipe))
+				return ;
+			exec_commands2(minishell, tmp, fpipe);
 			close(fpipe[0]);
 			close(fpipe[1]);
-			if (minishell->no_exit)
-				break ;
 		}
+		if (!tmp->cmd && tmp->type != T_PIPE)
+		{
+			process_args_env(tmp);
+			add_tmp_env_variable(minishell, tmp);
+		}
+		while (tmp->type == T_PIPE)
+			tmp = tmp->next;
 		tmp = tmp->next;
 	}
 }

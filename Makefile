@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/20 18:44:48 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/23 22:59:18 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,11 @@ SRCS_LIST		= \
 					main.c \
 					\
 					env/env_utils.c \
+					env/env_utils2.c \
 					\
 					parsing/token.c \
+					parsing/token2.c \
 					parsing/cmds.c \
-					parsing/parsing.c \
 					parsing/bin_path.c \
 					parsing/parsing_token.c \
 					parsing/parsing_cmds.c \
@@ -34,13 +35,15 @@ SRCS_LIST		= \
 					\
 					utils/redirect.c \
 					utils/command_process.c \
+					utils/command_process2.c \
+					utils/free_utils.c \
 					utils/utils.c \
 					utils/utils2.c \
-					utils/utils3.c \
 					utils/quotes.c \
 					utils/gnl_no_eof.c\
-					utils/exec.c\
-					utils/errors.c\
+					utils/exec.c \
+					utils/signals.c \
+					utils/errors.c \
 
 SRCS_FOLDER		= srcs
 SRCS			= $(addprefix ${SRCS_FOLDER}/, ${SRCS_LIST})
@@ -79,7 +82,8 @@ fclean:			clean
 				@$(RM) $(NAME)
 				@make fclean -C $(LIBFT)
 
-re:				fclean all
+re:				fclean
+				@ make -j
 
 real:			re
 				./minishell

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 16:15:25 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:06:13 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	split_tokens(t_minishell *minishell, char *str)
 	{
 		add_token_list(&minishell->token_list, create_token(minishell, i));
 		add_token_list(&minishell->token_list,
-			create_arg_token(ft_strdup("newline"), T_NEWLINE));
+			create_arg_token("newline", T_NEWLINE));
 	}
 }
 
@@ -63,7 +63,7 @@ int		check_error(t_token *token)
 		&& token->prev->type == T_REDIRECT))
 		return (0);
 	if (token->type == T_NEWLINE && token->prev
-		&& token->prev->type == T_REDIRECT)
+		&& (token->prev->type == T_REDIRECT || token->prev->type == T_PIPE))
 		return (0);
 	if (token->type == T_PIPE && (token->prev->type == T_PIPE
 		|| token->prev->type == T_SEP || token->prev->type == T_REDIRECT))
@@ -90,6 +90,8 @@ char	*iter_tokens(t_minishell *minishell)
 			tmp->type = T_SEP;
 		else if (ft_strequ(tmp->word, "newline") && !tmp->next)
 			tmp->type = T_NEWLINE;
+		else if (is_valid_env(tmp->word))
+			tmp->type = T_ENV;
 		else
 			tmp->type = T_WORD;
 		if (!check_error(tmp))

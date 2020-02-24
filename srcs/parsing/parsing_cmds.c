@@ -6,53 +6,44 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/21 17:40:15 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:26:07 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_heredoc(t_token **token, t_cmd *cmd, char *tmp)
+void	start_parse(t_minishell *minishell, char *str)
 {
-	char	*line;
-	int		pip[2];
+	char	*token;
+	t_token *tmp;
 
-	pipe(pip);
-	cmd->in = pip[0];
-	line = ft_strdup("");
-	while ((!tmp || !ft_strequ((*token)->next->word, tmp)) &&
-		g_minishell->quit == 0)
+	split_tokens(minishell, str);
+	token = iter_tokens(minishell);
+	if (token)
 	{
-		ft_strdel(&tmp);
-		write(1, "> ", 2);
-		if (get_next_line_no_eof(0, &tmp, 2) &&
-			!ft_strequ((*token)->next->word, tmp))
-		{
-			line = ft_strjoin_free(line, tmp);
-			g_minishell->quit != 3 ? line = ft_strjoin_free(line, "\n") : 0;
-		}
+		ft_dprintf(2, "%s: syntax error near unexpected token `%s'\n",
+			minishell->name, token);
+		return ;
 	}
-	ft_strdel(&tmp);
-	if (ft_is_in_stri('$', line) > -1 && (*token)->next->word[0] != '\"')
-		line = replace_env(line, 0);
-	g_minishell->quit != 2 ? ft_putstr_fd(line, pip[1]) : 0;
-	ft_strdel(&line);
-	close(pip[1]);
+	tmp = minishell->token_list;
+	while (tmp)
+		parse_tokens(minishell, &tmp);
 }
 
-int		parse_tokens2(t_minishell *minishell, t_token **tmp, t_cmd *cmd)
+int		parse_tokens2(t_token **tmp, t_cmd *cmd)
 {
-	(void)minishell;
 	if ((*tmp)->type == T_WORD && (cmd->cmd || ((*tmp)->prev
 		&& (*tmp)->prev->type == T_REDIRECT)))
 		add_token_list(&cmd->args,
 			create_arg_token((*tmp)->word, (*tmp)->type));
 	if ((*tmp)->type == T_WORD && !cmd->cmd && (((*tmp)->prev
 		&& (*tmp)->prev->type != T_REDIRECT) || !(*tmp)->prev))
-		cmd->cmd = (*tmp)->word;
+		cmd->cmd = ft_strdup((*tmp)->word);
 	if ((*tmp)->type == T_REDIRECT)
 		add_token_list(&cmd->args,
 			create_arg_token((*tmp)->word, (*tmp)->type));
+	if ((*tmp)->type == T_ENV && !cmd->cmd)
+		ft_lstadd_back(&cmd->env_list, ft_lstnew(ft_strdup((*tmp)->word)));
 	if ((*tmp)->type == T_PIPE)
 	{
 		cmd->type = T_PIPE;
@@ -81,8 +72,11 @@ void	parse_tokens(t_minishell *minishell, t_token **tmp)
 		return ;
 	while (*tmp)
 	{
-		if (!parse_tokens2(minishell, tmp, cmd))
+		if (!parse_tokens2(tmp, cmd))
 			break ;
+		if ((*tmp)->type == T_ENV && cmd->cmd)
+			add_token_list(&cmd->args,
+				create_arg_token((*tmp)->word, (*tmp)->type));
 		*tmp = (*tmp)->next;
 	}
 	add_cmd_list(&minishell->cmd_list, cmd);

@@ -6,36 +6,11 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/20 19:13:52 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:12:49 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	env_cmd_export(t_list **begin)
-{
-	int		i;
-	t_list	*tmp;
-
-	i = 0;
-	tmp = *begin;
-	if (!*begin)
-		return ;
-	while (tmp)
-	{
-		if (!ft_strequ(((t_env*)(tmp->content))->name, "_"))
-		{
-			if (((t_env*)(tmp->content))->value)
-				ft_printf("declare -x %s=\"%s\"\n",
-					((t_env*)(tmp->content))->name,
-					((t_env*)(tmp->content))->value);
-			else if (!((t_env*)(tmp->content))->value)
-				ft_printf("declare -x %s\n",
-					((t_env*)(tmp->content))->name);
-		}
-		tmp = tmp->next;
-	}
-}
 
 void	export_no_args(t_minishell *minishell)
 {
@@ -52,7 +27,7 @@ void	export_no_args(t_minishell *minishell)
 	ft_lstclear(&minishell->sort_env_list, nothing);
 }
 
-int		modify_env_list(t_minishell *minishell, char **split, int ex)
+int		modify_env_list(t_minishell *minishell, char **split, int ex, int jn)
 {
 	t_list	*tmp;
 
@@ -61,13 +36,19 @@ int		modify_env_list(t_minishell *minishell, char **split, int ex)
 	{
 		if (ft_strequ(((t_env*)(tmp->content))->name, split[0]))
 		{
-			if (ex)
+			if (ex == 1)
+			{
+				((t_env*)(tmp->content))->tmp = 0;
 				return (1);
-			free(((t_env*)(tmp->content))->value);
-			if (split[1])
-				((t_env*)(tmp->content))->value = ft_strdup(split[1]);
-			else
+			}
+			ex != 2 ? ((t_env*)(tmp->content))->tmp = 0 : 0;
+			if (split[1] && !jn && freer(((t_env*)(tmp->content))->value))
+				((t_env*)(tmp->content))->value = ft_strndup(split[1], 4096);
+			else if (!split[1] && !jn && freer(((t_env*)(tmp->content))->value))
 				((t_env*)(tmp->content))->value = ft_strdup("");
+			else if (split[1] && jn)
+				((t_env*)(tmp->content))->value = ft_strjoin_free(
+					((t_env*)(tmp->content))->value, split[1]);
 			return (1);
 		}
 		tmp = tmp->next;
@@ -75,26 +56,47 @@ int		modify_env_list(t_minishell *minishell, char **split, int ex)
 	return (0);
 }
 
-void	export_cmd2(t_minishell *minishell, t_token *args)
+void	export_cmd2(t_minishell *minishell, t_token *args, char **split, int jn)
 {
-	char	**split;
 	int		ex;
+	int		i;
 
+	i = -1;
 	ex = 0;
 	ft_is_in_stri('=', args->word) == -1 ? ex = 1 : 0;
-	split = ft_split(args->word, '=');
-	if (!(modify_env_list(minishell, split, ex)))
+	if (!(modify_env_list(minishell, split, ex, jn)))
 		ft_lstadd_back(&minishell->env_list,
 			ft_lstnew(create_env(split, ex)));
 	if (ft_strequ(split[0], "PATH"))
 		parse_bin(minishell);
 	minishell->env_array = env_to_array(minishell);
-	ft_free_split(&split);
+}
+
+void	export_cmd3(t_minishell *minishell, t_cmd *cmd, char **split,
+					t_token *args)
+{
+	char	*to_free;
+	int		join;
+
+	join = 0;
+	if (ft_str_end(split[0], "+"))
+	{
+		to_free = split[0];
+		split[0] = ft_strndup(split[0], ft_strlen(split[0]) - 1);
+		free(to_free);
+		join = 1;
+	}
+	if (ft_strlen(args->word) > 0 && env_valid_character(split[0]))
+		export_cmd2(minishell, args, split, join);
+	else
+		ft_dprintf(2, "%s: %s: `%s': %s\n", minishell->name, cmd->cmd,
+			args->word, "not a valid identifier");
 }
 
 void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 {
 	t_token *args;
+	char	**split;
 
 	args = cmd->args;
 	if (!args && forked)
@@ -104,11 +106,9 @@ void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 	}
 	while (args)
 	{
-		if (args->word[0] != '=')
-			export_cmd2(minishell, args);
-		else
-			ft_dprintf(2, "%s: %s: `%s': %s\n", minishell->name, cmd->cmd,
-			args->word, "not a valid identifier");
+		split = ft_split_n(args->word, '=', 1);
+		export_cmd3(minishell, cmd, split, args);
+		ft_free_split(&split);
 		args = args->next;
 	}
 	minishell->exit = 0;

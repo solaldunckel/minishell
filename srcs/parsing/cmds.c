@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 12:56:11 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/18 03:09:49 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:26:42 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,26 +57,38 @@ char	**args_to_array(t_minishell *minishell, t_cmd *cmd)
 	return (array);
 }
 
+void	clear_cmd_list_free(t_cmd *cmd)
+{
+	ft_strdel(&cmd->cmd);
+	ft_strdel(&cmd->bin);
+	ft_free_split(&cmd->args_array);
+	ft_lstclear(&cmd->env_list, free);
+}
+
 void	clear_cmd_list(t_cmd **begin, void (*del)(void *))
 {
 	t_cmd	*tmp;
+	t_cmd	*tmp2;
 	t_token *args;
+	t_token *args2;
 
 	if (!begin || !del)
 		return ;
 	tmp = *begin;
 	while (tmp)
 	{
-		del(tmp->cmd);
+		clear_cmd_list_free(tmp);
 		args = tmp->args;
 		while (args)
 		{
-			del(args->word);
+			ft_strdel(&args->word);
+			args2 = args->next;
 			del(args);
-			args = args->next;
+			args = args2;
 		}
+		tmp2 = tmp->next;
 		free(tmp);
-		tmp = tmp->next;
+		tmp = tmp2;
 	}
 	*begin = NULL;
 }

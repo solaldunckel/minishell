@@ -6,20 +6,11 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/21 17:59:04 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/23 22:29:29 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_cmd(void *cmd)
-{
-	t_cmd	*tmp;
-
-	tmp = cmd;
-	ft_strdel(&tmp->cmd);
-	free(cmd);
-}
 
 char	*replace_env(char *str, int i)
 {
@@ -49,19 +40,24 @@ char	*replace_env(char *str, int i)
 	return (new);
 }
 
-void	process_args(t_minishell *minishell, t_cmd *cmd)
+char	*replace_env2(char *str, int *i)
 {
-	t_token	*tmp;
+	int		count;
+	char	buf[4096];
+	char	*new;
 
-	(void)minishell;
-	if (cmd->cmd)
-		cmd->cmd = handle_quotes(cmd->cmd);
-	tmp = cmd->args;
-	while (tmp)
+	new = ft_strdup("");
+	count = 0;
+	(*i)++;
+	ft_bzero(buf, sizeof(buf));
+	while (str[*i] && !is_char_str(str[*i], "$ \'\"\n="))
 	{
-		tmp->word = handle_quotes(tmp->word);
-		tmp = tmp->next;
+		buf[count] = str[*i];
+		*i = *i + 1;
+		count++;
 	}
+	new = ft_strjoin_free(new, get_env(g_minishell, buf));
+	return (new);
 }
 
 int		in_bracket(char *s, int pos)
@@ -86,6 +82,20 @@ int		in_bracket(char *s, int pos)
 	if (bracket1 % 2 != 0 || bracket2 % 2 != 0)
 		return (1);
 	return (0);
+}
+
+int		is_only_digit(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int		is_char_str(char c, char *str)

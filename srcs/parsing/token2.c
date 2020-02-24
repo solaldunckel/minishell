@@ -1,34 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_str_end.c                                       :+:      :+:    :+:   */
+/*   token2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/23 17:40:29 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 12:13:12 by sdunckel         ###   ########.fr       */
+/*   Created: 2020/02/22 22:08:23 by sdunckel          #+#    #+#             */
+/*   Updated: 2020/02/23 22:11:24 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int		ft_str_end(char *str, char *end)
+void		add_token_front(t_token **begin, t_token *new)
 {
-	int		i;
-	int		j;
-
-	if (!str)
-		return (0);
-	i = ft_strlen(str) - 1;
-	j = ft_strlen(end) - 1;
-	if (i < j)
-		return (0);
-	while (str[i] && end[j])
+	if (*begin)
 	{
-		if (str[i] != end[j])
-			return (0);
-		j--;
-		i--;
+		new->next = *begin;
+		(*begin)->prev = new;
+		*begin = new;
 	}
-	return (1);
+	else
+		*begin = new;
+}
+
+t_token		*token_split_to_list(char **split)
+{
+	t_token *new;
+	int		i;
+	int		count;
+
+	i = 0;
+	count = ft_count_split(split);
+	new = NULL;
+	while (i < count)
+	{
+		add_token_list(&new, create_arg_token(split[i], T_WORD));
+		i++;
+	}
+	return (new);
 }

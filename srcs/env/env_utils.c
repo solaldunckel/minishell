@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/17 19:46:28 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:25:16 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,12 @@ t_env	*create_env(char **split, int ex)
 		exit_cmd(g_minishell);
 	env->name = ft_strdup(split[0]);
 	if (split[1])
-		env->value = ft_strdup(split[1]);
+		env->value = ft_strndup(split[1], 4096);
 	else if (ex)
 		env->value = NULL;
 	else
 		env->value = ft_strdup("");
+	env->tmp = 0;
 	return (env);
 }
 
@@ -76,8 +77,8 @@ char	**env_to_array(t_minishell *minishell)
 	t_list	*tmp;
 	char	**array;
 
-	if (!(array = ft_calloc(1, sizeof(char*) * ft_lstsize(minishell->env_list)
-		+ 1)))
+	if (!(array = ft_calloc(1, sizeof(char*) * (ft_lstsize(minishell->env_list)
+		+ 1))))
 		exit_cmd(minishell);
 	i = 0;
 	tmp = minishell->env_list;
