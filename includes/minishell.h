@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 02:28:17 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:22:08 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int					env_valid_character(char *str);
 int					is_valid_env(char *str);
 void				add_tmp_env_variable(t_minishell *minishell, t_cmd *cmd);
 void				env_cmd_export(t_list **begin);
+void				process_args_env(t_cmd *cmd);
 
 /*
 ** BIN

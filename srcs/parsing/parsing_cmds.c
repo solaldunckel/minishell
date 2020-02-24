@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/23 23:16:37 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:26:07 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		parse_tokens2(t_token **tmp, t_cmd *cmd)
 		add_token_list(&cmd->args,
 			create_arg_token((*tmp)->word, (*tmp)->type));
 	if ((*tmp)->type == T_ENV && !cmd->cmd)
-		ft_lstadd_back(&cmd->env_list, ft_lstnew((*tmp)->word));
+		ft_lstadd_back(&cmd->env_list, ft_lstnew(ft_strdup((*tmp)->word)));
 	if ((*tmp)->type == T_PIPE)
 	{
 		cmd->type = T_PIPE;

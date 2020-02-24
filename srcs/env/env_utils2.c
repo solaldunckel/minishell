@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 22:52:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 00:53:01 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:16:01 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ int		is_valid_env(char *str)
 		if (i == 0 && (ft_isdigit(str[i]) || str[i] == '='))
 			return (0);
 		if (!ft_isalnum(str[i]) && str[i] != '_' && str[i] != '='
-			&& str[i] != '+')
+			&& str[i] != '+' && str[i] != '\'' && str[i] != '\"')
+			return (0);
+		if ((str[i] == '\'' || str[i] == '\"') && eq_count < 1)
 			return (0);
 		if (eq_count == 0 && str[i] == '+' && str[i + 1] != '=')
 			return (0);
@@ -114,7 +116,7 @@ void	add_tmp_env_variable(t_minishell *minishell, t_cmd *cmd)
 			free(to_free);
 			join = 1;
 		}
-		if (!(modify_env_list(minishell, split, 0, join)))
+		if (!(modify_env_list(minishell, split, 2, join)))
 			ft_lstadd_back(&minishell->env_list,
 				ft_lstnew(create_tmp_env(split)));
 		ft_free_split(&split);

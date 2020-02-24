@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 02:59:20 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:22:36 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	exec_commands(t_minishell *minishell)
 			close(fpipe[1]);
 		}
 		if (!tmp->cmd && tmp->type != T_PIPE)
+		{
+			process_args_env(tmp);
 			add_tmp_env_variable(minishell, tmp);
+		}
 		while (tmp->type == T_PIPE)
 			tmp = tmp->next;
 		tmp = tmp->next;

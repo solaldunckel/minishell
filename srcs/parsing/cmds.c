@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 12:56:11 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 03:04:08 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:26:42 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ char	**args_to_array(t_minishell *minishell, t_cmd *cmd)
 	return (array);
 }
 
+void	clear_cmd_list_free(t_cmd *cmd)
+{
+	ft_strdel(&cmd->cmd);
+	ft_strdel(&cmd->bin);
+	ft_free_split(&cmd->args_array);
+	ft_lstclear(&cmd->env_list, free);
+}
+
 void	clear_cmd_list(t_cmd **begin, void (*del)(void *))
 {
 	t_cmd	*tmp;
@@ -69,10 +77,7 @@ void	clear_cmd_list(t_cmd **begin, void (*del)(void *))
 	tmp = *begin;
 	while (tmp)
 	{
-		ft_strdel(&tmp->cmd);
-		ft_strdel(&tmp->bin);
-		ft_free_split(&tmp->args_array);
-		ft_lstclear(&tmp->env_list, nothing);
+		clear_cmd_list_free(tmp);
 		args = tmp->args;
 		while (args)
 		{

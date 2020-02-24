@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 04:18:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/23 22:22:52 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/24 12:26:27 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,21 @@ void		process_args2(t_cmd *cmd)
 		if (ft_count_split(split) > 1)
 			add_more_args(cmd, split);
 		ft_free_split(&split);
+	}
+}
+
+void		process_args_env(t_cmd *cmd)
+{
+	t_list	*tmp;
+	char	*tmp2;
+
+	tmp = cmd->env_list;
+	while (tmp)
+	{
+		tmp2 = tmp->content;
+		tmp->content = handle_quotes(tmp->content);
+		ft_strdel(&tmp2);
+		tmp = tmp->next;
 	}
 }
 
