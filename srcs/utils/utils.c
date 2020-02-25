@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 03:03:57 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/25 04:04:01 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	**join_args(t_cmd *cmd)
 	int		i;
 
 	i = 1;
+	if (!cmd->cmd)
+		return (NULL);
 	if (!(args = (char **)ft_calloc(1, sizeof(char *) *
 		(token_list_size(&cmd->args) + 2))))
 		exit_cmd(g_minishell);
