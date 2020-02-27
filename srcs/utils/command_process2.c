@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 04:18:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 21:50:40 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/27 23:36:35 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,6 @@ void		process_args(t_cmd *cmd)
 	tmp = cmd->args;
 	while (tmp)
 	{
-		if (ft_is_in_stri('*', tmp->word) > -1)
-			tmp->word[0] != '/' ? process_wildcard(tmp, ".", 0, 0) :
-				process_wildcard(tmp, "/.", 0, 1);
 		env = 0;
 		if (tmp->word && tmp->word[0] == '$')
 			env = 1;

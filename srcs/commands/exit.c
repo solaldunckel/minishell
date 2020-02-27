@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:29:29 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 15:01:21 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/27 23:26:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	exit_cmd2(t_minishell *minishell, t_cmd *cmd)
 void	exit_cmd4(t_minishell *minishell)
 {
 	ft_dprintf(2, "exit\n");
-	exit_cmd3(minishell, 0);
+	exit_cmd3(minishell, minishell->exit);
 }
 
 void	exit_cmd(t_minishell *minishell)

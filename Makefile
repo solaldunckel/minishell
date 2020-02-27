@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/24 18:02:00 by haguerni         ###   ########.fr        #
+#    Updated: 2020/02/27 23:45:24 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,6 @@ SRCS_LIST		= \
 					parsing/bin_path.c \
 					parsing/parsing_token.c \
 					parsing/parsing_cmds.c \
-					parsing/wildcard.c \
 					\
 					commands/echo.c \
 					commands/cd.c \
@@ -60,8 +59,6 @@ LFLAGS			= -L libft -lft
 
 RM				= rm -f
 
-BONUS			= 0
-
 all:			$(NAME)
 
 $(NAME):		$(OBJS)
@@ -69,11 +66,8 @@ $(NAME):		$(OBJS)
 				@$(CC) $(CFLAGS) $(LFLAGS) -I $(HEADER) $(OBJS) -o $(NAME)
 
 %.o: %.c
-				@$(CC) $(CFLAGS) -D BONUS=$(BONUS) -I $(HEADER) -o $@ -c $<
+				@$(CC) $(CFLAGS) -I $(HEADER) -o $@ -c $<
 
-bonus:
-				@$(RM) $(OBJS)
-				@make BONUS=1
 
 clean:
 				@$(RM) $(OBJS)
