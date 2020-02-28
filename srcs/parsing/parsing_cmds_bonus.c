@@ -6,17 +6,41 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 00:11:39 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/28 20:38:53 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		iter_tokens2(t_token *tmp)
+{
+	if (ft_strequ(tmp->word, "|"))
+		tmp->type = T_PIPE;
+	else if (ft_strequ(tmp->word, ";"))
+		tmp->type = T_SEP;
+	else if (ft_strequ(tmp->word, "newline") && !tmp->next)
+		tmp->type = T_NEWLINE;
+	else if (is_valid_env(tmp->word))
+		tmp->type = T_ENV;
+	else if (ft_strequ(tmp->word, "&&"))
+		tmp->type = T_AND;
+	else if (ft_strequ(tmp->word, "||"))
+		tmp->type = T_OR;
+	else if (ft_strequ(tmp->word, "("))
+		tmp->type = T_PAR_OPEN;
+	else if (ft_strequ(tmp->word, ")"))
+		tmp->type = T_PAR_CLOSE;
+	else
+		return (0);
+	return (1);
+}
 
 void	start_parse(t_minishell *minishell, char *str)
 {
 	char	*token;
 	t_token *tmp;
 
+	minishell->scope_p = 0;
 	split_tokens(minishell, str);
 	token = iter_tokens(minishell);
 	if (token)
@@ -59,10 +83,36 @@ int		parse_tokens2(t_token **tmp, t_cmd *cmd)
 	return (1);
 }
 
+int		parse_tokens3(t_token **tmp, t_cmd *cmd, int *dec)
+{
+	if ((*tmp)->type == T_PAR_OPEN)
+		g_minishell->scope_p++;
+	if ((*tmp)->type == T_PAR_CLOSE)
+		*dec = 1;
+	if ((*tmp)->type == T_AND)
+	{
+		cmd->type = T_AND;
+		*tmp = (*tmp)->next;
+		return (0);
+	}
+	if ((*tmp)->type == T_OR)
+	{
+		cmd->type = T_OR;
+		*tmp = (*tmp)->next;
+		return (0);
+	}
+	if ((*tmp)->type == T_ENV && cmd->cmd)
+		add_token_list(&cmd->args,
+			create_arg_token((*tmp)->word, (*tmp)->type));
+	return (1);
+}
+
 void	parse_tokens(t_minishell *minishell, t_token **tmp)
 {
 	t_cmd	*cmd;
+	int		dec;
 
+	dec = 0;
 	if ((*tmp)->type == T_NEWLINE)
 	{
 		*tmp = (*tmp)->next;
@@ -74,22 +124,12 @@ void	parse_tokens(t_minishell *minishell, t_token **tmp)
 	{
 		if (!parse_tokens2(tmp, cmd))
 			break ;
-		if ((*tmp)->type == T_AND)
-		{
-			cmd->type = T_AND;
-			*tmp = (*tmp)->next;
+		if (!parse_tokens3(tmp, cmd, &dec))
 			break ;
-		}
-		if ((*tmp)->type == T_OR)
-		{
-			cmd->type = T_OR;
-			*tmp = (*tmp)->next;
-			break ;
-		}
-		if ((*tmp)->type == T_ENV && cmd->cmd)
-			add_token_list(&cmd->args,
-				create_arg_token((*tmp)->word, (*tmp)->type));
 		*tmp = (*tmp)->next;
 	}
+	cmd->scope = minishell->scope_p;
 	add_cmd_list(&minishell->cmd_list, cmd);
+	if (dec && (dec = 0) == 0)
+		minishell->scope_p--;
 }

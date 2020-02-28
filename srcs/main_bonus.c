@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 01:03:13 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/28 20:28:16 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,95 +39,44 @@ void	exec_commands2(t_minishell *minishell, t_cmd *tmp, int fpipe[2])
 		exec_prog(minishell, tmp, fpipe, NULL);
 }
 
+void	exec_real_command(t_minishell *minishell, t_cmd **tmp)
+{
+	int		fpipe[2];
+
+	and_or_subshell(minishell, tmp);
+	if (!*tmp)
+		return ;
+	process_args(*tmp);
+	create_redirect(minishell, *tmp);
+	if ((*tmp)->cmd && (*tmp)->out != -1 && (*tmp)->in != -1)
+	{
+		if (pipe(fpipe))
+			return ;
+		exec_commands2(minishell, *tmp, fpipe);
+		close(fpipe[0]);
+		close(fpipe[1]);
+	}
+	if (!(*tmp)->cmd && (*tmp)->type != T_PIPE)
+	{
+		process_args_env(*tmp);
+		add_tmp_env_variable(minishell, *tmp);
+	}
+	while ((*tmp)->type == T_PIPE)
+		*tmp = (*tmp)->next;
+}
+
 void	exec_commands(t_minishell *minishell)
 {
 	t_cmd	*tmp;
-	int		fpipe[2];
 
 	tmp = minishell->cmd_list;
+	minishell->scope_p = 0;
 	while (tmp)
 	{
-		if (tmp->prev && ((tmp->prev->type == T_AND && minishell->exit)
-			|| (tmp->prev->type == T_OR && !minishell->exit)))
-		{
-			tmp = tmp->next;
-			continue;
-		}
-		process_args(tmp);
-		create_redirect(minishell, tmp);
-		if (tmp->cmd && tmp->out != -1 && tmp->in != -1)
-		{
-			if (pipe(fpipe))
-				return ;
-			exec_commands2(minishell, tmp, fpipe);
-			close(fpipe[0]);
-			close(fpipe[1]);
-		}
-		if (!tmp->cmd && tmp->type != T_PIPE)
-		{
-			process_args_env(tmp);
-			add_tmp_env_variable(minishell, tmp);
-		}
-		while (tmp->type == T_PIPE)
-			tmp = tmp->next;
+		exec_real_command(minishell, &tmp);
+		if (!tmp)
+			break ;
 		tmp = tmp->next;
-	}
-}
-
-void	wait_for_command_tty(t_minishell *minishell)
-{
-	while (1)
-	{
-		signal(SIGQUIT, sighandler);
-		signal(SIGINT, sighandler);
-		if (g_minishell->quit == 0 || g_minishell->quit2)
-			print_prompt(minishell);
-		g_minishell->quit = 0;
-		g_minishell->quit2 = 0;
-		minishell->forked = 0;
-		if (get_next_line_no_eof(0, &minishell->line, 0))
-		{
-			while (g_minishell->quit == 0 && bracket_odd(minishell->line, 1))
-				next_bracket(minishell);
-			start_parse(minishell, minishell->line);
-			if (g_minishell->quit == 0 || g_minishell->quit == 4)
-				exec_commands(minishell);
-			clear_token_list(&minishell->token_list, free);
-			clear_cmd_list(&minishell->cmd_list, free);
-		}
-		ft_strdel(&minishell->line);
-	}
-}
-
-void	wait_for_command(t_minishell *minishell)
-{
-	init_term();
-	init_tc();
-	while (1)
-	{
-		signal(SIGQUIT, sighandler);
-		signal(SIGINT, sighandler);
-		print_prompt(minishell);
-		get_cursor_position(&g_tc->curcol, &g_tc->start_row);
-		g_tc->mod_offset = 0;
-		if (termcaps_loop())
-		{
-			// while (bracket_odd(minishell->line, 1))
-			// 	next_bracket(minishell);
-			tcsetattr(0, TCSANOW, &g_tc->term_backup);
-			add_cmd_to_history(minishell->line);
-			if (minishell->line)
-				start_parse(minishell, minishell->line);
-			exec_commands(minishell);
-			clear_token_list(&minishell->token_list, free);
-			clear_cmd_list(&minishell->cmd_list, free);
-			tcsetattr(0, TCSANOW, &g_tc->term);
-		}
-		ft_strdel(&g_tc->backup_cmd);
-		g_tc->rowoffset = 0;
-		g_tc->cur_history = NULL;
-		g_tc->cur_pos = 0;
-		ft_strdel(&minishell->line);
 	}
 }
 
@@ -151,7 +100,10 @@ int		main(int argc, char **argv, char **env)
 	g_minishell = &minishell;
 	g_tc = &tc;
 	if (isatty(0))
+	{
+		init_term();
 		wait_for_command(&minishell);
+	}
 	else
 		wait_for_command_tty(&minishell);
 	return (0);

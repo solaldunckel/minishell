@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 00:37:20 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/28 20:39:03 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct		s_minishell
 	int				quit;
 	int				quit2;
 	int				count;
+	int				scope_p;
 	int				forked;
 	char			*exit_str;
 	struct s_cmd	*cmd_list;
@@ -75,6 +76,7 @@ typedef struct		s_cmd
 	char			*cmd;
 	char			*bin;
 	struct s_token	*args;
+	int				scope;
 	t_list			*env_list;
 	char			**args_array;
 	int				in;
@@ -157,6 +159,7 @@ void				split_tokens(t_minishell *minishell, char *str);
 char				*iter_tokens(t_minishell *minishell);
 void				parse_tokens(t_minishell *minishell, t_token **tmp);
 char				*supp_newline(char *src);
+int					iter_tokens2(t_token *tmp);
 
 /*
 ** ERRORS
@@ -211,6 +214,11 @@ void				nothing(void *cmd);
 void				process_wildcard(t_token *arg, char *path, int i,
 						char **split);
 char				*create_wildpath(char *s);
+void				launch_subshell(t_minishell *minishell, t_cmd **tmp);
+void				and_or_subshell(t_minishell *minishell, t_cmd **tmp);
+void				exec_real_command(t_minishell *minishell, t_cmd **tmp);
+void				wait_for_command_tty(t_minishell *minishell);
+void				wait_for_command(t_minishell *minishell);
 
 /*
 ** UTILS

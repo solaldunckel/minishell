@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 00:11:12 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/28 20:38:46 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,22 +103,8 @@ char	*iter_tokens(t_minishell *minishell)
 		if (ft_strequ(tmp->word, ">") || ft_strequ(tmp->word, ">>")
 			|| ft_strequ(tmp->word, "<<") || ft_strequ(tmp->word, "<"))
 			tmp->type = T_REDIRECT;
-		else if (ft_strequ(tmp->word, "|"))
-			tmp->type = T_PIPE;
-		else if (ft_strequ(tmp->word, ";"))
-			tmp->type = T_SEP;
-		else if (ft_strequ(tmp->word, "newline") && !tmp->next)
-			tmp->type = T_NEWLINE;
-		else if (is_valid_env(tmp->word))
-			tmp->type = T_ENV;
-		else if (ft_strequ(tmp->word, "&&"))
-			tmp->type = T_AND;
-		else if (ft_strequ(tmp->word, "||"))
-			tmp->type = T_OR;
-		else if (ft_strequ(tmp->word, "("))
-			tmp->type = T_PAR_OPEN;
-		else if (ft_strequ(tmp->word, ")"))
-			tmp->type = T_PAR_CLOSE;
+		else if (iter_tokens2(tmp))
+			;
 		else
 			tmp->type = T_WORD;
 		if (!check_error(tmp))

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 12:56:11 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 12:26:42 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/28 18:48:39 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	add_cmd_list(t_cmd **begin, t_cmd *new)
 	t_cmd	*tmp;
 
 	if (!new || !begin)
+		return ;
+	if (!new->cmd && !new->args)
 		return ;
 	new->cmd = supp_newline(new->cmd);
 	if (*begin)

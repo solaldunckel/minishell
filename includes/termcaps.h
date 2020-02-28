@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 03:50:22 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 00:47:33 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/28 16:33:18 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,64 +53,58 @@ typedef struct		s_termcap
 	t_hist			*cur_history;
 	char			*backup_cmd;
 	char			*copy_cmd;
-	int				cur_col;
-	int				cur_row;
 	int				start_row;
+	int				start_col;
 	int				col;
 	int				row;
 	int				plen;
 	int				cur_pos;
 	int				currow;
+	int				curcol;
 	int				lenlen;
 	int				rowoffset;
-	int				curcol;
 	int				mod_offset;
 	int				endcol;
 	int				endrow;
-	char			*dc; // delete char
-	char			*cm; // cursor move
-	char			*ce; // clear end
-	char			*cd; // clear line full
-	char			*kb; // backspace
-	char			*kl; // left
-	char			*kr; // right
-	char			*ku; // up
-	char			*kd; // down
+	char			*cm;
+	char			*ce;
 }					t_termcap;
 
 t_termcap			*g_tc;
 
-void	add_cmd_to_history(char *cmd);
-void	add_history_list(t_hist **begin, t_hist *new);
+void				add_cmd_to_history(char *cmd);
+void				add_history_list(t_hist **begin, t_hist *new);
 
-int		putchar_tc(int tc);
+int					putchar_tc(int tc);
 
-void	move_cursor_left(void);
-void	move_cursor_right(void);
-void	move_cursor_begin(void);
-void	move_cursor_end(void);
+void				move_cursor_left(void);
+void				move_cursor_right(void);
+void				move_cursor_begin(void);
+void				move_cursor_end(void);
 
-void	move_prev_word(void);
-void	move_next_word(void);
+void				move_prev_word(void);
+void				move_next_word(void);
 
-void	move_prev_line(void);
-void	move_next_line(void);
+void				move_prev_line(void);
+void				move_next_line(void);
 
-void	up_history(void);
-void	down_history(void);
+void				up_history(void);
+void				down_history(void);
 
-void	cut_line(void);
-void	copy_line(void);
-void	paste_line(void);
+void				cut_line(void);
+void				copy_line(void);
+void				paste_line(void);
 
+void				print_char(long c);
+void				delete_char(void);
 /*
 ** UTILS
 */
 
-int       		 	termcaps_loop(void);
+int					termcaps_loop(void);
 void				init_term();
 void				init_tc();
-void     			cursor_win();
+void				cursor_win();
 void				get_cursor_position(int *col, int *rows);
 char				*ft_strjoin_middle(char *s1, const char *s2, int div);
 

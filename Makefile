@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/28 01:04:55 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/28 20:24:41 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,11 +79,16 @@ SRCS_LIST_BONUS	= \
 					utils/exec_bonus.c \
 					utils/signals_bonus.c \
 					utils/errors.c \
+					utils/subshell_bonus.c \
+					utils/wait_commmand_bonus.c \
 					\
 					termcaps/cursor.c \
+					termcaps/move_word.c \
+					termcaps/move_line.c \
 					termcaps/history.c \
 					termcaps/init.c \
 					termcaps/loop.c \
+					termcaps/utils.c \
 					termcaps/string_manip.c
 
 SRCS_FOLDER		= srcs

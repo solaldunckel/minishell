@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 17:06:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/26 19:35:07 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/28 13:59:25 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,6 @@ void	add_cmd_to_history(char *cmd)
 	add_history_list(&g_tc->history, new);
 }
 
-// ls -la      test      mdr
-
-// ls -la
-// test -> ls -la
-// mdr -> test -> ls -la
 void	add_history_list(t_hist **begin, t_hist *new)
 {
 	if (*begin)
