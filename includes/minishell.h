@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 17:56:20 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/02/28 00:37:20 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/includes/libft.h"
+# include "termcaps.h"
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -23,10 +24,6 @@
 # include <dirent.h>
 # include <signal.h>
 # include <errno.h>
-
-# ifndef BONUS
-#  define BONUS 0
-# endif
 
 # define ECHO_CMD "echo"
 # define EXIT_CMD "exit"
@@ -42,6 +39,10 @@
 # define T_SEP 4
 # define T_NEWLINE 5
 # define T_ENV 6
+# define T_AND 7
+# define T_OR 8
+# define T_PAR_OPEN 9
+# define T_PAR_CLOSE 10
 
 typedef struct		s_minishell
 {
@@ -194,8 +195,6 @@ void				add_token_front(t_token **begin, t_token *new);
 void				add_cmd_list(t_cmd **begin, t_cmd *new);
 void				clear_cmd_list(t_cmd **begin, void (*del)(void *));
 void				create_redirect(t_minishell *minishell, t_cmd *cmd);
-void				process_wildcard(t_token *arg, char *path, int i,
-					int slash);
 
 /*
 ** FREE_UTILS
@@ -205,6 +204,13 @@ void				free_env(void *lst);
 void				free_env2(void *lst);
 void				free_redirect(t_token *tmp);
 void				nothing(void *cmd);
+
+/*
+** BONUS
+*/
+void				process_wildcard(t_token *arg, char *path, int i,
+						char **split);
+char				*create_wildpath(char *s);
 
 /*
 ** UTILS

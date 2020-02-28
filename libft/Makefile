@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/02/22 04:23:30 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/02/28 00:18:23 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,6 +92,7 @@ SRCS_LIST	= \
 				ft_str_end.c \
 				ft_count_split.c \
 				ft_strjoin_free.c \
+				ft_strfree_join.c \
 				ft_strjoin_double_free.c \
 				ft_free_split.c \
 				ft_strndup.c \

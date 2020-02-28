@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 10:57:51 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/22 04:23:18 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/02/28 00:18:24 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int					ft_str_isdigit(char *str);
 int					ft_str_end(char *str, char *end);
 char				*ft_strndup(const char *s1, int n);
 char				*ft_strjoin_free(char const *s1, char const *s2);
+char				*ft_strfree_join(char const *s1, char const *s2);
 char				*ft_strjoin_double_free(char const *s1, char const *s2);
 
 /*
