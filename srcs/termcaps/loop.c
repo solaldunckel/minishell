@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 01:58:56 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 20:42:02 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/02 20:33:42 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ void		print_line(long c)
 	if ((g_tc->lenlen + g_tc->plen) % g_tc->col == 0)
 	{
 		g_tc->start_row -= 1;
-		g_tc->currow += 1;
+		c != BACKSPACE ? g_tc->currow += 1 : 0;
 		c == BACKSPACE ? g_tc->rowoffset -= 1 : 0;
 		c != BACKSPACE ? g_tc->rowoffset += 1 : 0;
-		g_tc->mod_offset += (g_tc->lenlen + g_tc->plen) / g_tc->col;
+		c != BACKSPACE ? g_tc->mod_offset += 1 : 0;
+		c == BACKSPACE ? g_tc->mod_offset -= 1 : 0;
 	}
 	if ((g_tc->cur_pos + g_tc->plen) % g_tc->col == 0)
 	{
-		g_tc->mod_offset -= (g_tc->lenlen + g_tc->plen) / g_tc->col;
+		c != BACKSPACE ? g_tc->mod_offset -= 1: 0;
+		c == BACKSPACE ? g_tc->mod_offset += 1: 0;
 		if (g_tc->currow >= g_tc->row)
 			write(1, "\n", 1);
 	}

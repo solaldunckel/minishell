@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 17:06:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 13:59:25 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/02 20:31:44 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ void	up_history(void)
 		g_tc->cur_history = g_tc->cur_history->next;
 	g_minishell->line = ft_strdup(g_tc->cur_history->cmd);
 	g_tc->cur_pos = ft_strlen(g_minishell->line);
+	tputs(tgoto(g_tc->dl, 0, 5), 5, putchar_tc);;
+	g_tc->mod_offset = 0;
+	g_tc->rowoffset = (g_tc->cur_pos + g_tc->plen) / g_tc->col;
+	g_tc->currow = g_tc->start_row + g_tc->rowoffset;
 }
 
 void	down_history(void)
@@ -48,6 +52,10 @@ void	down_history(void)
 		g_tc->cur_history = NULL;
 		g_minishell->line = NULL;
 	}
+	tputs(tgoto(g_tc->dl, 0, 5), 5, putchar_tc);
+	g_tc->mod_offset = 0;
+	g_tc->rowoffset = (g_tc->cur_pos + g_tc->plen) / g_tc->col;
+	g_tc->currow = g_tc->start_row + g_tc->rowoffset;
 }
 
 void	add_cmd_to_history(char *cmd)

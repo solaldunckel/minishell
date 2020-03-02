@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 01:58:24 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 20:37:23 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/02 20:01:17 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,5 @@ void	init_tc(void)
 {
 	g_tc->cm = tgetstr("cm", NULL);
 	g_tc->ce = tgetstr("ce", NULL);
+	g_tc->dl = tgetstr("DL", NULL);
 }
