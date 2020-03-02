@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 00:21:50 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 00:21:57 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:41:53 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void		process_args(t_cmd *cmd)
 		if (ft_is_in_stri('*', tmp->word) > -1)
 			process_wildcard(tmp, create_wildpath(tmp->word), 0,
 				ft_split(tmp->word, '/'));
-		tmp->type == 8 ? remove_redirect(tmp, &cmd->args) : 0;
+		tmp->type == 11 ? remove_redirect(tmp, &cmd->args) : 0;
 		if (tmp->word && tmp->word[0] == '$')
 			env = 1;
 		tmp2 = tmp->word;
