@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_process.c                                  :+:      :+:    :+:   */
+/*   command_process_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/21 18:17:45 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:41:31 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,10 @@ char	*double_quotes(char *src, int *i, int j)
 			free(tmp);
 			continue ;
 		}
-		if ((src[*i] != '\\' || is_escaped(src, *i - 1)) && j < k)
+		if ((src[*i] != '\\' || is_escaped(src, *i - 1) ||
+			(src[*i + 1] != '\"' && src[*i + 1] != '\\')) && j < k)
 			dest[j++] = src[*i];
 		(*i)++;
 	}
-	dest[j] = '\0';
-	return (dest);
+	return ((dest[j] = '\0') == 0 ? dest : dest);
 }
