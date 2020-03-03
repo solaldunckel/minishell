@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 18:25:25 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 16:54:49 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:42:42 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	move_cursor_right(void)
 	if (g_tc->cur_pos == (int)ft_strlen(g_minishell->line))
 		return ;
 	g_tc->cur_pos++;
-	(g_tc->cur_pos + g_tc->plen - 1) % g_tc->col == 0 ? g_tc->currow += 1 : 0;
-	(g_tc->cur_pos + g_tc->plen - 1) % g_tc->col == 0 ? g_tc->mod_offset -= 1
+	(g_tc->cur_pos + g_tc->plen) % g_tc->col == 0 ? g_tc->currow += 1 : 0;
+	(g_tc->cur_pos + g_tc->plen) % g_tc->col == 0 ? g_tc->mod_offset -= 1
 		: 0;
 	tputs(tgoto(g_tc->cm, (g_tc->cur_pos + g_tc->plen) % g_tc->col,
 		g_tc->currow), 1, putchar_tc);

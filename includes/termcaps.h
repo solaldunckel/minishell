@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 03:50:22 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 16:33:18 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 20:09:21 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ typedef struct		s_termcap
 	int				endrow;
 	char			*cm;
 	char			*ce;
+	char			*dl;
+	long			backspace;
 }					t_termcap;
 
 t_termcap			*g_tc;
@@ -107,5 +109,6 @@ void				init_tc();
 void				cursor_win();
 void				get_cursor_position(int *col, int *rows);
 char				*ft_strjoin_middle(char *s1, const char *s2, int div);
+void				empty_space(int len);
 
 #endif
