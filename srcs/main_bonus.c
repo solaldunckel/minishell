@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 20:28:16 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/02 23:49:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	exec_commands(t_minishell *minishell)
 	minishell->scope_p = 0;
 	while (tmp)
 	{
+		if (!tmp)
+			break ;
 		exec_real_command(minishell, &tmp);
 		if (!tmp)
 			break ;

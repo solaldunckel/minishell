@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   exec_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/25 04:03:51 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 10:37:12 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	handle_fd2(t_cmd *tmp)
 
 void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 {
-	if (tmp->prev && tmp->prev->type == T_PIPE)
+	if ((tmp->prev && tmp->prev->type == T_PIPE))
 	{
 		dup2(fpip[0], 0);
 		close(fpip[1]);

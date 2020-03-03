@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 20:39:03 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 10:37:37 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct		s_cmd
 	char			*bin;
 	struct s_token	*args;
 	int				scope;
+	int				forked;
 	t_list			*env_list;
 	char			**args_array;
 	int				in;
@@ -219,7 +220,7 @@ void				and_or_subshell(t_minishell *minishell, t_cmd **tmp);
 void				exec_real_command(t_minishell *minishell, t_cmd **tmp);
 void				wait_for_command_tty(t_minishell *minishell);
 void				wait_for_command(t_minishell *minishell);
-
+int					and_or_next_pipe(t_minishell *minishell, t_cmd **tmp);
 /*
 ** UTILS
 */
