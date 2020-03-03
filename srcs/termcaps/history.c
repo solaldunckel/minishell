@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 17:06:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/02 20:31:44 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/03 20:10:08 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ void	up_history(void)
 		g_tc->cur_history = g_tc->history;
 	else if (g_tc->cur_history->next)
 		g_tc->cur_history = g_tc->cur_history->next;
+	g_minishell->line ? empty_space(ft_strlen(g_minishell->line) + g_tc->plen)
+		: 0;
 	g_minishell->line = ft_strdup(g_tc->cur_history->cmd);
 	g_tc->cur_pos = ft_strlen(g_minishell->line);
-	tputs(tgoto(g_tc->dl, 0, 5), 5, putchar_tc);;
-	g_tc->mod_offset = 0;
 	g_tc->rowoffset = (g_tc->cur_pos + g_tc->plen) / g_tc->col;
+	g_tc->mod_offset = 0;
 	g_tc->currow = g_tc->start_row + g_tc->rowoffset;
 }
 
@@ -34,6 +35,8 @@ void	down_history(void)
 {
 	if (!g_tc->cur_history)
 		return ;
+	g_minishell->line ? empty_space(ft_strlen(g_minishell->line) + g_tc->plen)
+		: 0;
 	if (g_tc->cur_history->prev)
 	{
 		g_tc->cur_history = g_tc->cur_history->prev;
@@ -52,9 +55,8 @@ void	down_history(void)
 		g_tc->cur_history = NULL;
 		g_minishell->line = NULL;
 	}
-	tputs(tgoto(g_tc->dl, 0, 5), 5, putchar_tc);
-	g_tc->mod_offset = 0;
 	g_tc->rowoffset = (g_tc->cur_pos + g_tc->plen) / g_tc->col;
+	g_tc->mod_offset = 0;
 	g_tc->currow = g_tc->start_row + g_tc->rowoffset;
 }
 

@@ -6,19 +6,45 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 14:02:30 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 14:22:48 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 20:11:50 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			putchar_tc(int tc)
+void	empty_space(int len)
+{
+	int		i;
+	int		j;
+	char	space[1028];
+
+	g_tc->start_row + g_tc->rowoffset >= g_tc->row ?
+		g_tc->start_row = g_tc->currow - g_tc->rowoffset : 0;
+	tputs(tgoto(g_tc->cm, g_tc->start_col, g_tc->start_row), 1, putchar_tc);
+	tputs(g_tc->ce, 1, putchar_tc);
+	i = 0;
+	j = 0;
+	while (j < len)
+	{
+		space[i] = ' ';
+		i++;
+		j++;
+		if (i == g_tc->col)
+		{
+			write(1, space, i);
+			i = 0;
+		}
+	}
+	write(1, space, i);
+}
+
+int		putchar_tc(int tc)
 {
 	write(1, &tc, 1);
 	return (0);
 }
 
-void		print_char(long c)
+void	print_char(long c)
 {
 	char	c2[2];
 
@@ -32,7 +58,7 @@ void		print_char(long c)
 	g_tc->cur_pos++;
 }
 
-void		delete_char(void)
+void	delete_char(void)
 {
 	char	*str;
 	int		len;
@@ -50,7 +76,6 @@ void		delete_char(void)
 		return ;
 	ft_strlcpy(str, g_minishell->line, g_tc->cur_pos);
 	ft_strncat(str, g_minishell->line + g_tc->cur_pos, len - g_tc->cur_pos);
-	str[len - 1] = '\0';
 	ft_strdel(&g_minishell->line);
 	g_minishell->line = str;
 	g_tc->cur_pos--;

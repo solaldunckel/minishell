@@ -6,16 +6,38 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 01:58:56 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/02 20:33:42 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/03 20:11:16 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void		print_line2(long c)
+{
+	if ((g_tc->cur_pos + g_tc->plen) % g_tc->col == 0 || ((g_tc->cur_pos +
+		g_tc->plen + 1) % g_tc->col == 0 && c == BACKSPACE && g_tc->backspace
+		!= BACKSPACE) || ((g_tc->cur_pos + g_tc->plen - 1) % g_tc->col == 0 &&
+		c != BACKSPACE && g_tc->backspace == BACKSPACE))
+	{
+		c != BACKSPACE ? g_tc->mod_offset -= 1 : 0;
+		c == BACKSPACE ? g_tc->mod_offset += 1 : 0;
+		if (g_tc->currow >= g_tc->row)
+		{
+			g_tc->start_row -= 1;
+			write(1, "\n", 1);
+		}
+	}
+	g_tc->backspace = c;
+	(g_tc->lenlen + g_tc->plen) % g_tc->col == 0 && c == BACKSPACE ?
+		write(1, " ", 1) : 0;
+	tputs(tgoto(g_tc->cm, (g_tc->cur_pos + g_tc->plen)
+		% g_tc->col, g_tc->currow - g_tc->mod_offset), 1, putchar_tc);
+}
+
 void		print_line(long c)
 {
-	tputs(tgoto(g_tc->cm, g_tc->start_col,
-		g_tc->currow - g_tc->rowoffset + g_tc->mod_offset), 1, putchar_tc);
+	tputs(tgoto(g_tc->cm, g_tc->start_col, g_tc->currow - g_tc->rowoffset +
+		g_tc->mod_offset), 1, putchar_tc);
 	tputs(g_tc->ce, 1, putchar_tc);
 	print_prompt(g_minishell);
 	if (g_minishell->line)
@@ -23,24 +45,19 @@ void		print_line(long c)
 	get_cursor_position(&g_tc->curcol, &g_tc->currow);
 	get_cursor_position(&g_tc->endcol, &g_tc->endrow);
 	tputs(g_tc->ce, 1, putchar_tc);
-	if ((g_tc->lenlen + g_tc->plen) % g_tc->col == 0)
+	if ((g_tc->lenlen + g_tc->plen) % g_tc->col == 0 || ((g_tc->lenlen +
+		g_tc->plen + 1) % g_tc->col == 0 && c == BACKSPACE && g_tc->backspace
+		!= BACKSPACE) || ((g_tc->lenlen + g_tc->plen - 1) % g_tc->col == 0 && c
+		!= BACKSPACE && g_tc->backspace == BACKSPACE))
 	{
-		g_tc->start_row -= 1;
-		c != BACKSPACE ? g_tc->currow += 1 : 0;
+		c != BACKSPACE && (g_tc->lenlen + g_tc->plen) % g_tc->col == 0 ?
+			g_tc->currow += 1 : 0;
 		c == BACKSPACE ? g_tc->rowoffset -= 1 : 0;
 		c != BACKSPACE ? g_tc->rowoffset += 1 : 0;
 		c != BACKSPACE ? g_tc->mod_offset += 1 : 0;
 		c == BACKSPACE ? g_tc->mod_offset -= 1 : 0;
 	}
-	if ((g_tc->cur_pos + g_tc->plen) % g_tc->col == 0)
-	{
-		c != BACKSPACE ? g_tc->mod_offset -= 1: 0;
-		c == BACKSPACE ? g_tc->mod_offset += 1: 0;
-		if (g_tc->currow >= g_tc->row)
-			write(1, "\n", 1);
-	}
-	tputs(tgoto(g_tc->cm, (g_tc->cur_pos + g_tc->plen)
-		% g_tc->col, g_tc->currow - g_tc->mod_offset), 1, putchar_tc);
+	print_line2(c);
 }
 
 void		handle_move_keys(long c)
@@ -67,6 +84,7 @@ void		handle_keys(long c)
 {
 	cursor_win();
 	get_cursor_position(&g_tc->curcol, &g_tc->currow);
+	g_tc->currow < g_tc->start_row ? g_tc->start_row = g_tc->currow : 0;
 	if (ft_isprint(c))
 		print_char(c);
 	else if (c == BACKSPACE && g_tc->cur_pos > 0)
