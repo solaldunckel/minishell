@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/27 23:46:23 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 18:50:00 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ int		split_utils(int i, char *str, char *splt, int sign)
 	if (sign == 1 && is_char_str(str[i], splt) && !is_char_str(str[i + 1], splt)
 		&& !in_bracket(str, i) && !is_escaped(str, i - 1))
 		return (1);
-	else if (!sign && is_char_str(str[i], splt) && is_char_str(str[i - 1], splt)
-		&& !in_bracket(str, i) && !is_escaped(str, i - 1))
+	else if (!sign && is_char_str(str[i], splt) && i > 0
+		&& is_char_str(str[i - 1], splt) && !in_bracket(str, i)
+		&& !is_escaped(str, i - 1))
 		return (1);
 	else if (sign == 2 && is_char_str(str[i], splt)
-		&& is_char_str(str[i - 1], splt) && !in_bracket(str, i)
+		&& i > 0 && is_char_str(str[i - 1], splt) && !in_bracket(str, i)
 		&& !is_escaped(str, i - 1))
 		return (1);
 	else if (sign == 3 && is_char_str(str[i], splt) && !in_bracket(str, i)
@@ -40,8 +41,9 @@ int		split_tokens2(t_minishell *minishell, char *str, int *i,
 		(*i)++;
 		return (0);
 	}
-	if ((is_char_str(str[*i], "|;<>") && !is_char_str(str[*i - 1], "<>"))
-		&& !in_bracket(str, *i) && !is_escaped(str, *i - 1))
+	if (is_char_str(str[*i], "|;<>") && !in_bracket(str, *i)
+		&& !is_escaped(str, *i - 1) && *i > 0
+		&& !is_char_str(str[*i - 1], "<>"))
 		add_token_list(begin, create_token(minishell, *i));
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 19:47:25 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 00:24:14 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 18:49:06 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,11 @@ int		create_redirect2(t_minishell *minishell, t_cmd *cmd, t_token **args,
 			(*args)->next->word, strerror(errno));
 		minishell->exit = 1;
 	}
+	if ((ft_strequ((*args)->word, ">") || ft_strequ((*args)->word, ">>"))
+		&& cmd->out)
+		close(cmd->out);
+	if (ft_strequ((*args)->word, "<") && cmd->in)
+		close(cmd->in);
 	*args = remove_redirect(*args, &cmd->args);
 	*args = remove_redirect(*args, &cmd->args);
 	return (fd);

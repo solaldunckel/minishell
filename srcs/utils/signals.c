@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 22:10:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 14:20:16 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:33:06 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,8 @@ void	degage_frr(int sig_num)
 		ft_dprintf(2, "Quit: %d\n", sig_num);
 	g_minishell->quit = 4;
 	g_minishell->quit2 = 1;
-	g_minishell->exit = 131;
+	if (sig_num == SIGQUIT)
+		g_minishell->exit = 131;
+	if (sig_num == SIGINT)
+		g_minishell->exit = 130;
 }

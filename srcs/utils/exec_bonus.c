@@ -6,11 +6,18 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/03 10:37:12 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 18:52:51 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	close_fds(int fpip[2], int spip[2])
+{
+	close(fpip[1]);
+	close(spip[1]);
+	close(spip[0]);
+}
 
 void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 {
@@ -23,33 +30,22 @@ void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 	{
 		process_args(tmp->next);
 		create_redirect(minishell, tmp->next);
-		while (!tmp->next->cmd)
+		while (tmp->next && !tmp->next->cmd)
+		{
+			process_args(tmp->next);
+			create_redirect(minishell, tmp->next);
 			tmp = tmp->next;
-		exec_prog(minishell, tmp->next, fpip, spip);
+		}
+		if (tmp->next)
+			exec_prog(minishell, tmp->next, fpip, spip);
 	}
-	close(fpip[1]);
-	close(spip[1]);
-	close(spip[0]);
+	close_fds(fpip, spip);
 	waitpid(pid, &status, WUNTRACED);
 	while (!WIFEXITED(status))
 		if (!WIFSIGNALED(status) || g_minishell->quit != 0)
 			break ;
-	if (WIFEXITED(status))
+	if (WIFEXITED(status) && tmp->type != T_PIPE)
 		minishell->exit = WEXITSTATUS(status);
-}
-
-void	handle_fd2(t_cmd *tmp)
-{
-	if (tmp->out)
-	{
-		dup2(tmp->out, STDOUT_FILENO);
-		close(tmp->out);
-	}
-	if (tmp->in)
-	{
-		dup2(tmp->in, STDIN_FILENO);
-		close(tmp->in);
-	}
 }
 
 void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
@@ -60,8 +56,7 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 		close(fpip[1]);
 		if (tmp->type == T_PIPE)
 		{
-			if (dup2(spip[1], 1))
-				return ;
+			dup2(spip[1], 1);
 			close(spip[0]);
 		}
 	}
@@ -70,7 +65,16 @@ void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 		dup2(fpip[1], 1);
 		close(fpip[0]);
 	}
-	handle_fd2(tmp);
+	if (tmp->out)
+	{
+		dup2(tmp->out, STDOUT_FILENO);
+		close(tmp->out);
+	}
+	if (tmp->in)
+	{
+		dup2(tmp->in, STDIN_FILENO);
+		close(tmp->in);
+	}
 }
 
 void	exec(t_minishell *minishell, t_cmd *tmp)

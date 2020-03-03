@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 16:03:58 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/25 04:04:27 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 20:30:52 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ char	*get_bin(t_minishell *minishell, char *cmd)
 		return (NULL);
 	if (ft_is_in_stri('/', cmd) >= 0)
 		return (ft_strdup(cmd));
+	if (!minishell->bin)
+		return (ft_strjoin("./", cmd));
 	while (minishell->bin && minishell->bin[i])
 	{
 		try = try_opendir(minishell->bin[i], cmd);
