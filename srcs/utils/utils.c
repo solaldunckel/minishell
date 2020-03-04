@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/25 04:04:01 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 01:21:58 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,20 @@ void	ft_sort_list(t_list **begin_list, int (*cmp)())
 		}
 		ptr = ptr->next;
 	}
+}
+
+int		is_only_ascii(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isascii(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int		freer(void *to_free)

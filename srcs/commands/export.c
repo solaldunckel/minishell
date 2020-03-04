@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 12:12:49 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 00:32:15 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	export_no_args(t_minishell *minishell)
 int		modify_env_list(t_minishell *minishell, char **split, int ex, int jn)
 {
 	t_list	*tmp;
+	char	*to_free;
 
 	tmp = minishell->env_list;
 	while (tmp)
@@ -42,10 +43,18 @@ int		modify_env_list(t_minishell *minishell, char **split, int ex, int jn)
 				return (1);
 			}
 			ex != 2 ? ((t_env*)(tmp->content))->tmp = 0 : 0;
-			if (split[1] && !jn && freer(((t_env*)(tmp->content))->value))
+			if (split[1] && !jn)
+			{
+				to_free = ((t_env*)(tmp->content))->value;
 				((t_env*)(tmp->content))->value = ft_strndup(split[1], 4096);
-			else if (!split[1] && !jn && freer(((t_env*)(tmp->content))->value))
+				free(to_free);
+			}
+			else if (!split[1] && !jn)
+			{
+				to_free = ((t_env*)(tmp->content))->value;
 				((t_env*)(tmp->content))->value = ft_strdup("");
+				free(to_free);
+			}
 			else if (split[1] && jn)
 				((t_env*)(tmp->content))->value = ft_strjoin_free(
 					((t_env*)(tmp->content))->value, split[1]);

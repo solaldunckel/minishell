@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_token.c                                    :+:      :+:    :+:   */
+/*   parsing_token_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 18:50:00 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 18:47:51 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,8 @@ int		split_tokens2(t_minishell *minishell, char *str, int *i,
 		(*i)++;
 		return (0);
 	}
-	if (is_char_str(str[*i], "|;<>") && !in_bracket(str, *i)
-		&& !is_escaped(str, *i - 1) && *i > 0
-		&& !is_char_str(str[*i - 1], "<>"))
+	if ((is_char_str(str[*i], "|;<>&()") && *i > 0 && !is_char_str(str[*i - 1],
+		"|;<>&()")) && !in_bracket(str, *i) && !is_escaped(str, *i - 1))
 		add_token_list(begin, create_token(minishell, *i));
 	return (1);
 }
@@ -60,9 +59,10 @@ void	split_tokens(t_minishell *minishell, char *str)
 		if (!split_tokens2(minishell, str, &i, begin))
 			continue ;
 		minishell->count++;
-		if (split_utils(i, str, "|;", 3) || split_utils(i, str, ">", 1)
-			|| split_utils(i, str, ">", 0) || split_utils(i, str, "<", 1)
-			|| split_utils(i, str, "<", 0))
+		if (split_utils(i, str, "|", 1) || split_utils(i, str, "|", 0) ||
+			split_utils(i, str, ">", 1) || split_utils(i, str, ">", 0) ||
+			split_utils(i, str, "<", 1) || split_utils(i, str, "<", 0) ||
+			split_utils(i, str, "&", 2) || split_utils(i, str, ";()", 3))
 			add_token_list(begin, create_token(minishell, i + 1));
 		i++;
 	}
@@ -76,17 +76,21 @@ void	split_tokens(t_minishell *minishell, char *str)
 
 int		check_error(t_token *token)
 {
-	if ((token->type == T_PIPE || token->type == T_SEP) && !token->prev)
+	if ((token->type == T_PIPE || token->type == T_SEP || token->type == T_AND
+		|| token->type == T_OR) && !token->prev)
 		return (0);
 	if (token->type == T_REDIRECT && (token->prev
 		&& token->prev->type == T_REDIRECT))
 		return (0);
 	if (token->type == T_NEWLINE && token->prev
-		&& (token->prev->type == T_REDIRECT || token->prev->type == T_PIPE))
+		&& (token->prev->type == T_REDIRECT || token->prev->type == T_PIPE
+			|| token->prev->type == T_AND || token->prev->type == T_OR))
 		return (0);
-	if ((token->type == T_PIPE || token->type == T_SEP)
+	if ((token->type == T_PIPE || token->type == T_SEP || token->type == T_AND
+		|| token->type == T_OR)
 		&& (token->prev->type == T_PIPE || token->prev->type == T_SEP
-		|| token->prev->type == T_REDIRECT))
+			|| token->prev->type == T_REDIRECT || token->prev->type == T_AND
+			|| token->prev->type == T_OR))
 		return (0);
 	return (1);
 }
@@ -101,14 +105,8 @@ char	*iter_tokens(t_minishell *minishell)
 		if (ft_strequ(tmp->word, ">") || ft_strequ(tmp->word, ">>")
 			|| ft_strequ(tmp->word, "<<") || ft_strequ(tmp->word, "<"))
 			tmp->type = T_REDIRECT;
-		else if (ft_strequ(tmp->word, "|"))
-			tmp->type = T_PIPE;
-		else if (ft_strequ(tmp->word, ";"))
-			tmp->type = T_SEP;
-		else if (ft_strequ(tmp->word, "newline") && !tmp->next)
-			tmp->type = T_NEWLINE;
-		else if (is_valid_env(tmp->word))
-			tmp->type = T_ENV;
+		else if (iter_tokens2(tmp))
+			;
 		else
 			tmp->type = T_WORD;
 		if (!check_error(tmp))

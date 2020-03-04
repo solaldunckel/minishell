@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   exec_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/03 19:08:16 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 18:52:51 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 
 void	handle_fd(t_cmd *tmp, int fpip[2], int spip[2])
 {
-	if (tmp->prev && tmp->prev->type == T_PIPE)
+	if ((tmp->prev && tmp->prev->type == T_PIPE))
 	{
 		dup2(fpip[0], 0);
 		close(fpip[1]);

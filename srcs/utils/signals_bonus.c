@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 22:10:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 16:33:06 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/03 17:33:05 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	sighandler(int sig_num)
 {
-	ft_printf("\b\b  \b\b");
 	if (sig_num == SIGINT)
 	{
 		ft_printf("\n");
@@ -22,7 +21,9 @@ void	sighandler(int sig_num)
 			g_minishell->exit = 1;
 		else
 			g_minishell->exit = 130;
+		g_tc->cur_pos = 0;
 		print_prompt(g_minishell);
+		ft_strdel(&g_minishell->line);
 		g_minishell->quit = 1;
 	}
 	if (sig_num == SIGQUIT)

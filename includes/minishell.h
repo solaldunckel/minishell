@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 17:56:20 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 01:08:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/includes/libft.h"
+# include "termcaps.h"
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -23,10 +24,6 @@
 # include <dirent.h>
 # include <signal.h>
 # include <errno.h>
-
-# ifndef BONUS
-#  define BONUS 0
-# endif
 
 # define ECHO_CMD "echo"
 # define EXIT_CMD "exit"
@@ -42,6 +39,10 @@
 # define T_SEP 4
 # define T_NEWLINE 5
 # define T_ENV 6
+# define T_AND 7
+# define T_OR 8
+# define T_PAR_OPEN 9
+# define T_PAR_CLOSE 10
 
 typedef struct		s_minishell
 {
@@ -52,6 +53,7 @@ typedef struct		s_minishell
 	int				quit;
 	int				quit2;
 	int				count;
+	int				scope_p;
 	int				forked;
 	char			*exit_str;
 	struct s_cmd	*cmd_list;
@@ -74,6 +76,8 @@ typedef struct		s_cmd
 	char			*cmd;
 	char			*bin;
 	struct s_token	*args;
+	int				scope;
+	int				forked;
 	t_list			*env_list;
 	char			**args_array;
 	int				in;
@@ -156,6 +160,7 @@ void				split_tokens(t_minishell *minishell, char *str);
 char				*iter_tokens(t_minishell *minishell);
 void				parse_tokens(t_minishell *minishell, t_token **tmp);
 char				*supp_newline(char *src);
+int					iter_tokens2(t_token *tmp);
 
 /*
 ** ERRORS
@@ -194,8 +199,6 @@ void				add_token_front(t_token **begin, t_token *new);
 void				add_cmd_list(t_cmd **begin, t_cmd *new);
 void				clear_cmd_list(t_cmd **begin, void (*del)(void *));
 void				create_redirect(t_minishell *minishell, t_cmd *cmd);
-void				process_wildcard(t_token *arg, char *path, int i,
-					int slash);
 
 /*
 ** FREE_UTILS
@@ -207,9 +210,22 @@ void				free_redirect(t_token *tmp);
 void				nothing(void *cmd);
 
 /*
+** BONUS
+*/
+void				process_wildcard(t_token *arg, char *path, int i,
+						char **split);
+char				*create_wildpath(char *s);
+void				launch_subshell(t_minishell *minishell, t_cmd **tmp);
+void				and_or_subshell(t_minishell *minishell, t_cmd **tmp);
+void				exec_real_command(t_minishell *minishell, t_cmd **tmp);
+void				wait_for_command_tty(t_minishell *minishell);
+void				wait_for_command(t_minishell *minishell);
+int					and_or_next_pipe(t_minishell *minishell, t_cmd **tmp);
+/*
 ** UTILS
 */
 int					is_only_digit(char *str);
+int					is_only_ascii(char *str);
 int					is_escaped(char *s, int pos);
 int					in_bracket(char *s, int pos);
 int					is_char_str(char c, char *str);

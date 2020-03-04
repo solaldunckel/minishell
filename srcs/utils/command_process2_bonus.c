@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_process2.c                                 :+:      :+:    :+:   */
+/*   command_process2_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/22 04:18:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 01:20:04 by sdunckel         ###   ########.fr       */
+/*   Created: 2020/02/28 00:21:50 by sdunckel          #+#    #+#             */
+/*   Updated: 2020/03/02 17:41:53 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		process_args2(t_cmd *cmd)
 	{
 		tmp = cmd->cmd;
 		cmd->cmd = handle_quotes(cmd->cmd);
-		free(tmp);
+		ft_strdel(&tmp);
 	}
 	if (env)
 	{
@@ -79,8 +79,6 @@ void		process_args2(t_cmd *cmd)
 			add_more_args(cmd, split);
 		ft_free_split(&split);
 	}
-	if (env && ft_strlen(cmd->cmd) == 0)
-		ft_strdel(&cmd->cmd);
 }
 
 void		process_args_env(t_cmd *cmd)
@@ -105,21 +103,21 @@ void		process_args(t_cmd *cmd)
 	int		env;
 	char	*tmp2;
 
-	env = 0;
 	tmp = cmd->args;
-	while (tmp)
+	while (tmp && (env = 0) == 0)
 	{
-		env = 0;
+		if (ft_is_in_stri('*', tmp->word) > -1)
+			process_wildcard(tmp, create_wildpath(tmp->word), 0,
+				ft_split(tmp->word, '/'));
+		tmp->type == 11 ? remove_redirect(tmp, &cmd->args) : 0;
 		if (tmp->word && tmp->word[0] == '$')
 			env = 1;
 		tmp2 = tmp->word;
 		tmp->word = handle_quotes(tmp->word);
-		free(tmp2);
+		ft_strdel(&tmp2);
 		if (env && (split = ft_ssplit(tmp->word, " \n")) != NULL)
 			if (ft_count_split(split) > 1)
 				tmp = add_more_args2(cmd, &tmp, split);
-		if (env && ft_strlen(tmp->word) == 0)
-			remove_redirect(tmp, &cmd->args);
 		tmp = tmp->next;
 	}
 	process_args2(cmd);
