@@ -6,11 +6,27 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 18:33:36 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 19:19:51 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:19:19 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		ft_strlen_s(char *s)
+{
+	int		i;
+	int		count;
+
+	i = 0;
+	count = 0;
+	while (s[i])
+	{
+		if (s[i] != ' ')
+			count++;
+		i++;
+	}
+	return (count);
+}
 
 void	echo_cmd(t_minishell *minishell, t_cmd *cmd)
 {

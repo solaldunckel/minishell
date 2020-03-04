@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 01:13:23 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:20:37 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	wait_for_command(t_minishell *minishell)
 			if (minishell->cmd_list && (g_minishell->quit == 0
 				|| g_minishell->quit == 4))
 				exec_commands(minishell);
+			if (ft_strlen_s(minishell->line) == 0)
+				minishell->exit = 0;
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);
 		}

@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/04 16:10:30 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:04:39 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,13 @@ void	exec_prog2(t_minishell *minishell, t_cmd *tmp, pid_t pid, int fpip[2])
 			create_redirect(minishell, tmp->next);
 			tmp = tmp->next;
 		}
-		if (tmp->next)
-			exec_prog(minishell, tmp->next, fpip, spip);
+		tmp->next ? exec_prog(minishell, tmp->next, fpip, spip) : 0;
 	}
 	close_fds(fpip, spip);
-	//(void)pid;
-	//printf("YES %s\n", tmp->cmd);
 	tmp->type != T_PIPE ? waitpid(pid, &status, WUNTRACED) : 0;
 	while (!WIFEXITED(status))
-		if (!WIFSIGNALED(status) || g_minishell->quit != 0 || tmp->type == T_PIPE)
+		if (!WIFSIGNALED(status) || g_minishell->quit != 0
+			|| tmp->type == T_PIPE)
 			break ;
 	if (WIFEXITED(status) && tmp->type != T_PIPE)
 		minishell->exit = WEXITSTATUS(status);

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 01:08:28 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:19:36 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,5 +241,6 @@ void				nothing(void *cmd);
 char				*handle_quotes(char *src);
 char				**join_args(t_cmd *cmd);
 int					freer(void *to_free);
+int					ft_strlen_s(char *s);
 
 #endif

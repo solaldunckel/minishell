@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 14:52:17 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 16:51:25 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,11 @@ void	export_cmd3(t_minishell *minishell, t_cmd *cmd, char **split,
 	if (ft_strlen(args->word) > 0 && env_valid_character(split[0]))
 		export_cmd2(minishell, args, split, join);
 	else
+	{
 		ft_dprintf(2, "%s: %s: `%s': %s\n", minishell->name, cmd->cmd,
 			args->word, "not a valid identifier");
+		minishell->exit = 1;
+	}
 }
 
 void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
@@ -99,6 +102,7 @@ void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 	char	**split;
 
 	args = cmd->args;
+	minishell->exit = 0;
 	if (!args && forked)
 	{
 		export_no_args(minishell);
@@ -111,5 +115,4 @@ void	export_cmd(t_minishell *minishell, t_cmd *cmd, int forked)
 		ft_free_split(&split);
 		args = args->next;
 	}
-	minishell->exit = 0;
 }
