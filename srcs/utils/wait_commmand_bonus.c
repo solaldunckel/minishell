@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 20:24:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 17:27:27 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 01:24:59 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	wait_for_command_tty(t_minishell *minishell)
 			while (g_minishell->quit == 0 && bracket_odd(minishell->line, 1))
 				next_bracket(minishell);
 			start_parse(minishell, minishell->line);
-			if (g_minishell->quit == 0 || g_minishell->quit == 4)
+			if (minishell->cmd_list && (g_minishell->quit == 0
+				|| g_minishell->quit == 4))
 				exec_commands(minishell);
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);
@@ -53,7 +54,7 @@ void	wait_for_command(t_minishell *minishell)
 			add_cmd_to_history(minishell->line);
 			if (minishell->line)
 				start_parse(minishell, minishell->line);
-			exec_commands(minishell);
+			minishell->cmd_list ? exec_commands(minishell) : 0;
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);
 			tcsetattr(0, TCSANOW, &g_tc->term);

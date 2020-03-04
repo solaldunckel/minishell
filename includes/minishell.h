@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 10:37:37 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 01:08:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,6 +225,7 @@ int					and_or_next_pipe(t_minishell *minishell, t_cmd **tmp);
 ** UTILS
 */
 int					is_only_digit(char *str);
+int					is_only_ascii(char *str);
 int					is_escaped(char *s, int pos);
 int					in_bracket(char *s, int pos);
 int					is_char_str(char c, char *str);

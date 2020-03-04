@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 15:51:45 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 01:13:23 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	wait_for_command(t_minishell *minishell)
 			while (g_minishell->quit == 0 && bracket_odd(minishell->line, 1))
 				next_bracket(minishell);
 			start_parse(minishell, minishell->line);
-			if (g_minishell->quit == 0 || g_minishell->quit == 4)
+			if (minishell->cmd_list && (g_minishell->quit == 0
+				|| g_minishell->quit == 4))
 				exec_commands(minishell);
 			clear_token_list(&minishell->token_list, free);
 			clear_cmd_list(&minishell->cmd_list, free);

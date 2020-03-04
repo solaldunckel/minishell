@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 20:38:53 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 01:21:28 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ void	start_parse(t_minishell *minishell, char *str)
 	char	*token;
 	t_token *tmp;
 
+	if (!is_only_ascii(str))
+	{
+		ft_dprintf(2, "%s: invalid ascii characters found in string\n",
+			minishell->name);
+		return ;
+	}
 	minishell->scope_p = 0;
 	split_tokens(minishell, str);
 	token = iter_tokens(minishell);
