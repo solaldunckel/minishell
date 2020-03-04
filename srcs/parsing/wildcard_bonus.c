@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 00:13:06 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/28 00:26:24 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 20:05:11 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	add_arg(t_token *arg, char *tmp)
 	tmp += 2;
 	word = ft_strdup(tmp);
 	new = create_arg_token(word, T_WORD);
+	free(word);
 	new->prev = arg;
 	new->next = arg->next;
 	new->next ? new->next->prev = new : 0;

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 01:08:28 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 20:42:07 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ char				*get_bin(t_minishell *minishell, char *cmd);
 void				echo_cmd(t_minishell *minishell, t_cmd *cmd);
 void				cd_cmd(t_minishell *minishell, t_cmd *cmd);
 void				exit_cmd(t_minishell *minishell);
-void				exit_cmd2(t_minishell *minishell, t_cmd *cmd);
+void				exit_cmd2(t_minishell *minishell, t_cmd *cmd, int ex);
 void				exit_cmd4(t_minishell *minishell);
 void				env_cmd(t_list **begin);
 void				pwd_cmd(t_minishell *minishell);

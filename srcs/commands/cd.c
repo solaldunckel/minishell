@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 19:38:50 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 12:01:20 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 20:11:58 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ void	edit_pwd(t_minishell *minishell)
 {
 	ft_strdel(&minishell->curdir);
 	set_env(minishell, "OLDPWD", get_env(minishell, "PWD"));
+	printf("Y0S\n");
 	minishell->curdir = getcwd(NULL, 0);
+	printf("YAS %s\n", minishell->curdir);
 	set_env(minishell, "PWD", minishell->curdir);
+	printf("YAS\n");
 }
 
 void	cd_cmd(t_minishell *minishell, t_cmd *cmd)
@@ -43,6 +46,7 @@ void	cd_cmd(t_minishell *minishell, t_cmd *cmd)
 			minishell->exit = 1;
 			return ;
 		}
+		printf("YES\n");
 	}
 	minishell->exit = 0;
 	edit_pwd(minishell);
