@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 14:02:30 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 20:11:50 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:51:35 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,23 @@ void	delete_char(void)
 	ft_strdel(&g_minishell->line);
 	g_minishell->line = str;
 	g_tc->cur_pos--;
+}
+
+char	*ft_sdpfr(const char *s1, char *s2)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	if (!(str = (char*)malloc(sizeof(char) * ft_strlen(s1) + 1)))
+		return (NULL);
+	while (s1[i])
+	{
+		str[i] = (char)s1[i];
+		i++;
+	}
+	str[i] = '\0';
+	free(s2);
+	s2 = NULL;
+	return (str);
 }

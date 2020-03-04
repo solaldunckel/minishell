@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:41:27 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 00:32:15 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:52:17 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,18 @@ int		modify_env_list(t_minishell *minishell, char **split, int ex, int jn)
 	{
 		if (ft_strequ(((t_env*)(tmp->content))->name, split[0]))
 		{
-			if (ex == 1)
-			{
-				((t_env*)(tmp->content))->tmp = 0;
-				return (1);
-			}
 			ex != 2 ? ((t_env*)(tmp->content))->tmp = 0 : 0;
+			if (ex == 1)
+				return (1);
+			ex != 2 ? ((t_env*)(tmp->content))->tmp = 0 : 0;
+			!jn ? to_free = ((t_env*)(tmp->content))->value : 0;
 			if (split[1] && !jn)
-			{
-				to_free = ((t_env*)(tmp->content))->value;
 				((t_env*)(tmp->content))->value = ft_strndup(split[1], 4096);
-				free(to_free);
-			}
 			else if (!split[1] && !jn)
-			{
-				to_free = ((t_env*)(tmp->content))->value;
 				((t_env*)(tmp->content))->value = ft_strdup("");
-				free(to_free);
-			}
-			else if (split[1] && jn)
-				((t_env*)(tmp->content))->value = ft_strjoin_free(
-					((t_env*)(tmp->content))->value, split[1]);
+			split[1] && jn ? ((t_env*)(tmp->content))->value = ft_strjoin_free(
+				((t_env*)(tmp->content))->value, split[1]) : 0;
+			!jn ? free(to_free) : 0;
 			return (1);
 		}
 		tmp = tmp->next;

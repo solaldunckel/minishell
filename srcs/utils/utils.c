@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 01:21:58 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:42:33 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,5 @@ int		is_only_ascii(char *str)
 			return (0);
 		i++;
 	}
-	return (1);
-}
-
-int		freer(void *to_free)
-{
-	free(to_free);
 	return (1);
 }

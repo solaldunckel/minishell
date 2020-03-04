@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 03:50:22 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 20:09:21 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:52:41 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,6 @@ void				cursor_win();
 void				get_cursor_position(int *col, int *rows);
 char				*ft_strjoin_middle(char *s1, const char *s2, int div);
 void				empty_space(int len);
+char				*ft_sdpfr(const char *s1, char *s2);
 
 #endif

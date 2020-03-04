@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 21:01:10 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/03 16:00:00 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 15:45:31 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	cut_line(void)
 	to_free = NULL;
 	if (!g_minishell->line)
 		return ;
+	else
+		empty_space(ft_strlen(g_minishell->line) + g_tc->plen);
 	to_free = g_tc->copy_cmd;
 	g_tc->copy_cmd = ft_substr(g_minishell->line, g_tc->cur_pos,
 		ft_strlen(g_minishell->line) - g_tc->cur_pos);
@@ -76,6 +78,8 @@ void	cut_line(void)
 	to_free = g_minishell->line;
 	g_minishell->line = ft_substr(g_minishell->line, 0, g_tc->cur_pos);
 	free(to_free);
+	g_tc->rowoffset = g_tc->rowoffset - g_tc->mod_offset;
+	g_tc->mod_offset = 0;
 }
 
 void	copy_line(void)
@@ -100,6 +104,7 @@ void	paste_line(void)
 		return ;
 	if (g_minishell->line)
 	{
+		empty_space(ft_strlen(g_minishell->line) + g_tc->plen);
 		to_free = g_minishell->line;
 		g_minishell->line = ft_strjoin_middle2(g_minishell->line,
 			g_tc->copy_cmd, g_tc->cur_pos);
@@ -108,4 +113,8 @@ void	paste_line(void)
 	else
 		g_minishell->line = ft_strdup(g_tc->copy_cmd);
 	g_tc->cur_pos += ft_strlen(g_tc->copy_cmd);
+	g_tc->rowoffset = (ft_strlen(g_minishell->line) + g_tc->plen) / g_tc->col;
+	g_tc->mod_offset = (ft_strlen(g_minishell->line) - g_tc->cur_pos +
+		g_tc->plen) / g_tc->col;
+	g_tc->currow = g_tc->start_row + g_tc->rowoffset;
 }

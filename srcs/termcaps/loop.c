@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 01:58:56 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 20:11:16 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 15:21:40 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void		print_line(long c)
 	print_prompt(g_minishell);
 	if (g_minishell->line)
 		ft_dprintf(0, "%s", g_minishell->line);
-	get_cursor_position(&g_tc->curcol, &g_tc->currow);
 	get_cursor_position(&g_tc->endcol, &g_tc->endrow);
+	get_cursor_position(&g_tc->curcol, &g_tc->currow);
 	tputs(g_tc->ce, 1, putchar_tc);
 	if ((g_tc->lenlen + g_tc->plen) % g_tc->col == 0 || ((g_tc->lenlen +
 		g_tc->plen + 1) % g_tc->col == 0 && c == BACKSPACE && g_tc->backspace
@@ -117,7 +117,8 @@ int			termcaps_loop(void)
 	{
 		if (c == '\n')
 		{
-			get_cursor_position(&g_tc->endcol, &g_tc->endrow);
+			if (!g_minishell->line)
+				get_cursor_position(&g_tc->endcol, &g_tc->endrow);
 			break ;
 		}
 		if ((c == EOF_KEY && !g_minishell->line && (ret = -1) == -1))
