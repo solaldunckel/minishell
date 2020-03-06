@@ -241,5 +241,6 @@ void				nothing(void *cmd);
 char				*handle_quotes(char *src);
 char				**join_args(t_cmd *cmd);
 int					freer(void *to_free);
+int					ft_strlen_s(char *s);
 
 #endif

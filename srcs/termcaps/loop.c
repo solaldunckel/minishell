@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 01:58:56 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 15:21:40 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:06:04 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,6 @@ int			termcaps_loop(void)
 		c = 0;
 	}
 	tputs(tgoto(g_tc->cm, g_tc->endcol, g_tc->endrow), 1, putchar_tc);
-	printf("\n");
+	ft_printf("\n");
 	return (1);
 }

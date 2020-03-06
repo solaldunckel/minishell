@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 22:52:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 00:28:55 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:20:25 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	add_tmp_env_variable(t_minishell *minishell, t_cmd *cmd)
 			ft_lstadd_back(&minishell->env_list,
 				ft_lstnew(create_tmp_env(split)));
 		ft_free_split(&split);
+		minishell->exit = 0;
 		tmp = tmp->next;
 	}
 }
