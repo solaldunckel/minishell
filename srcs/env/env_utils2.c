@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/23 22:52:55 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 17:20:25 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 19:52:30 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int		env_valid_character(char *str)
 	int		i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		if (i == 0 && ft_isdigit(str[i]))

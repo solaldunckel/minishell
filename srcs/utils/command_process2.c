@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 04:18:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 01:20:04 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 19:56:17 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,13 @@ void		process_args(t_cmd *cmd)
 		tmp2 = tmp->word;
 		tmp->word = handle_quotes(tmp->word);
 		free(tmp2);
-		if (env && (split = ft_ssplit(tmp->word, " \n")) != NULL)
+		if (env)
+		{
+			split = ft_ssplit(tmp->word, " \n");
 			if (ft_count_split(split) > 1)
 				tmp = add_more_args2(cmd, &tmp, split);
+			ft_free_split(&split);
+		}
 		if (env && ft_strlen(tmp->word) == 0)
 			remove_redirect(tmp, &cmd->args);
 		tmp = tmp->next;
