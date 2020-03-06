@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 19:38:50 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/24 12:01:20 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/06 15:01:56 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,21 @@
 
 void	edit_pwd(t_minishell *minishell)
 {
+	char	*backup;
+
+	backup = ft_strdup(minishell->curdir);
 	ft_strdel(&minishell->curdir);
 	set_env(minishell, "OLDPWD", get_env(minishell, "PWD"));
 	minishell->curdir = getcwd(NULL, 0);
+	if (!minishell->curdir)
+	{
+		ft_dprintf(2, "cd: error retrieving current directory: getcwd: "
+			"cannot access parent directories: No such file or directory\n");
+		minishell->curdir = ft_strjoin_free(backup, "/.");
+		return ;
+	}
 	set_env(minishell, "PWD", minishell->curdir);
+	free(backup);
 }
 
 void	cd_cmd(t_minishell *minishell, t_cmd *cmd)
