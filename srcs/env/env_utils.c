@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:08 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/02/23 23:25:16 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/04 19:55:33 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ void	env_init(t_minishell *minishell, char **env)
 	{
 		tmp_split = ft_split(env[i], '=');
 		if (!(tmp = create_env(tmp_split, 0)))
+		{
+			ft_free_split(&tmp_split);
 			return ;
+		}
 		ft_lstadd_back(&minishell->env_list, ft_lstnew(tmp));
 		ft_free_split(&tmp_split);
 		i++;
