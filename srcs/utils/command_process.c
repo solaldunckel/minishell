@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/02 17:26:04 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/06 15:22:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ int		ft_envlen(char *src, int i)
 	count = 0;
 	ft_bzero(buf, sizeof(buf));
 	i++;
-	while (src[i] && !is_char_str(src[i], "$ \'\"\n="))
+	while (src[i] && (ft_isalnum(src[i]) || is_char_str(src[i], "?_")))
 	{
+		if (ft_isdigit(src[i] && count == 0))
+			return (0);
 		buf[count] = src[i];
 		i = i + 1;
 		count++;
@@ -90,7 +92,8 @@ char	*no_quotes(char *src, int *i, int j)
 	{
 		if ((src[*i] == '\'' || src[*i] == '\"') && !is_escaped(src, *i - 1))
 			break ;
-		if (src[*i] == '$' && !is_escaped(src, *i - 1))
+		if (src[*i] == '$' && !is_escaped(src, *i - 1)
+			&& (ft_isalnum(src[*i + 1]) || is_char_str(src[*i + 1], "?_")))
 		{
 			tmp = replace_env2(src, i);
 			j = ft_strlcat(dest, tmp, k);
@@ -119,7 +122,8 @@ char	*double_quotes(char *src, int *i, int j)
 	{
 		if (src[*i] == '\"' && !is_escaped(src, *i - 1))
 			break ;
-		if (src[*i] == '$' && !is_escaped(src, *i - 1))
+		if (src[*i] == '$' && !is_escaped(src, *i - 1)
+			&& (ft_isalnum(src[*i + 1]) || is_char_str(src[*i + 1], "?_")))
 		{
 			tmp = replace_env2(src, i);
 			j = ft_strlcat(dest, tmp, k);

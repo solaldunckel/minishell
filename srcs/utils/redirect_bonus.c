@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 19:47:25 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 18:49:06 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/06 15:40:17 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,16 @@ void	create_redirect(t_minishell *minishell, t_cmd *cmd)
 	args = cmd->args;
 	while (args && args->next)
 	{
-		if (ft_strequ(args->word, ">") && args->type == T_REDIRECT)
+		if (ft_strequ(args->word, ">") && args->type == T_REDIRECT
+			&& cmd->out != -1)
 			cmd->out = create_redirect2(minishell, cmd, &args,
 				O_TRUNC | O_RDWR | O_CREAT);
-		else if (ft_strequ(args->word, ">>") && args->type == T_REDIRECT)
+		else if (ft_strequ(args->word, ">>") && args->type == T_REDIRECT
+			&& cmd->out != -1)
 			cmd->out = create_redirect2(minishell, cmd, &args,
 				O_RDWR | O_CREAT | O_APPEND);
-		else if (ft_strequ(args->word, "<") && args->type == T_REDIRECT)
+		else if (ft_strequ(args->word, "<") && args->type == T_REDIRECT
+			&& cmd->in != -1)
 			cmd->in = create_redirect2(minishell, cmd, &args, O_RDONLY);
 		else if (ft_strequ(args->word, "<<") && args->type == T_REDIRECT)
 		{

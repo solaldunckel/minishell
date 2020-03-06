@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 20:42:07 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/06 16:03:19 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,6 @@ void				nothing(void *cmd);
 void				process_wildcard(t_token *arg, char *path, int i,
 						char **split);
 char				*create_wildpath(char *s);
-void				launch_subshell(t_minishell *minishell, t_cmd **tmp);
 void				and_or_subshell(t_minishell *minishell, t_cmd **tmp);
 void				exec_real_command(t_minishell *minishell, t_cmd **tmp);
 void				wait_for_command_tty(t_minishell *minishell);

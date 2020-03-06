@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/04 01:12:51 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/06 15:22:08 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*replace_env2(char *str, int *i)
 	count = 0;
 	(*i)++;
 	ft_bzero(buf, sizeof(buf));
-	while (str[*i] && !is_char_str(str[*i], "$ \'\"\n="))
+	while (str[*i] && (ft_isalnum(str[*i]) || is_char_str(str[*i], "?_")))
 	{
 		buf[count] = str[*i];
 		*i = *i + 1;

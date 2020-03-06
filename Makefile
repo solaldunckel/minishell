@@ -6,7 +6,7 @@
 #    By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 12:02:19 by sdunckel          #+#    #+#              #
-#    Updated: 2020/03/03 17:50:20 by sdunckel         ###   ########.fr        #
+#    Updated: 2020/03/06 16:04:23 by sdunckel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,14 +69,14 @@ SRCS_LIST_BONUS	= \
 					parsing/wildcard_bonus.c \
 					\
 					utils/redirect_bonus.c \
-					utils/command_process_bonus.c \
+					utils/command_process.c \
 					utils/command_process2_bonus.c \
 					utils/free_utils.c \
 					utils/utils.c \
 					utils/utils2.c \
 					utils/quotes.c \
 					utils/gnl_no_eof.c\
-					utils/exec_bonus.c \
+					utils/exec.c \
 					utils/signals_bonus.c \
 					utils/errors.c \
 					utils/subshell_bonus.c \
