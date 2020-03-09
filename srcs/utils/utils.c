@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 14:42:33 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/09 13:38:26 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*handle_quotes(char *src)
 		}
 		src[i] ? i++ : 0;
 	}
+	ft_strdel(&src);
 	return (dest);
 }
 
