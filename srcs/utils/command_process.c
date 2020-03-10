@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/09 18:16:21 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/09 16:08:46 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		ft_envlen(char *src, int i)
 	i++;
 	while (src[i] && (ft_isalnum(src[i]) || is_char_str(src[i], "?_")))
 	{
-		if (ft_isdigit(src[i] && count == 0))
+		if (ft_isdigit(src[i]) && count == 0)
 			return (0);
 		buf[count] = src[i];
 		i = i + 1;
