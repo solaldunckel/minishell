@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 01:58:56 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/10 15:34:47 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/10 16:35:46 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ void		print_line2(long c)
 		}
 	}
 	g_tc->backspace = c;
-	(g_tc->lenlen + g_tc->plen + g_tc->start_col) % g_tc->col == 0 &&
-		c == BACKSPACE ?
+	(g_tc->lenlen + g_tc->plen + g_tc->start_col) % g_tc->col == 0 && c == BACKSPACE ?
 		write(1, " ", 1) : 0;
 	tputs(tgoto(g_tc->cm, (g_tc->start_col + g_tc->cur_pos + g_tc->plen)
 		% g_tc->col, g_tc->currow - g_tc->mod_offset), 1, putchar_tc);

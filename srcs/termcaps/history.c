@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/26 17:06:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/04 14:58:05 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/10 16:32:13 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	up_history(void)
 		g_tc->cur_history = g_tc->history;
 	else if (g_tc->cur_history->next)
 		g_tc->cur_history = g_tc->cur_history->next;
-	g_minishell->line ? empty_space(ft_strlen(g_minishell->line) + g_tc->plen)
-		: 0;
+	if (g_minishell->line)
+		empty_space(ft_strlen(g_minishell->line) + g_tc->plen);
 	g_minishell->line = ft_sdpfr(g_tc->cur_history->cmd, g_minishell->line);
 	g_tc->cur_pos = ft_strlen(g_minishell->line);
 	g_tc->rowoffset = (g_tc->cur_pos + g_tc->plen) / g_tc->col;
@@ -35,8 +35,8 @@ void	down_history(void)
 {
 	if (!g_tc->cur_history)
 		return ;
-	g_minishell->line ? empty_space(ft_strlen(g_minishell->line) + g_tc->plen)
-		: 0;
+	if (g_minishell->line)
+		empty_space(ft_strlen(g_minishell->line) + g_tc->plen);
 	if (g_tc->cur_history->prev)
 	{
 		g_tc->cur_history = g_tc->cur_history->prev;
