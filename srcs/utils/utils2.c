@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:30:17 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/09 16:13:12 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/10 15:35:11 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,12 @@ char	*replace_env2(char *str, int *i)
 	ft_bzero(buf, sizeof(buf));
 	while (str[*i] && (ft_isalnum(str[*i]) || is_char_str(str[*i], "?_")))
 	{
-		if (ft_isdigit(str[*i]) && count == 0)
-		{
-			(*i)++;
-			return (new);
-		}
 		buf[count] = str[*i];
 		*i = *i + 1;
+		if (str[*i - 1] == '?' && count == 0)
+			break ;
+		if (ft_isdigit(str[*i - 1]) && count == 0)
+			return (new);
 		count++;
 	}
 	new = ft_strjoin_free(new, get_env(g_minishell, buf));

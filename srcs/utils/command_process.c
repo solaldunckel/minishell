@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/09 16:08:46 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/10 15:35:40 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int		ft_envlen(char *src, int i)
 		if (ft_isdigit(src[i]) && count == 0)
 			return (0);
 		buf[count] = src[i];
+		if (src[i] == '?' && count == 0)
+			break ;
 		i = i + 1;
 		count++;
 	}
@@ -101,12 +103,12 @@ char	*no_quotes(char *src, int *i, int j, int env)
 			free(tmp);
 			continue ;
 		}
-		if ((src[*i] != '\\' || is_escaped(src, *i - 1)) && j < k)
+		if ((src[*i] != '\\' || is_escaped(src, *i - 1)) && j < k && src[*i + 1]
+			!= '$')
 			dest[j++] = src[*i];
 		(*i)++;
 	}
-	dest[j] = '\0';
-	return (dest);
+	return ((dest[j] = '\0') == 0 ? dest : dest);
 }
 
 char	*double_quotes(char *src, int *i, int j, int env)
@@ -131,7 +133,7 @@ char	*double_quotes(char *src, int *i, int j, int env)
 			continue ;
 		}
 		if ((src[*i] != '\\' || is_escaped(src, *i - 1) || (src[*i + 1] != '\"'
-			&& src[*i + 1] != '\\')) && j < k)
+			&& src[*i + 1] != '\\' && src[*i + 1] != '$')) && j < k)
 			dest[j++] = src[*i];
 		(*i)++;
 	}
