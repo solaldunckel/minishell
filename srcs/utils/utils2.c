@@ -19,7 +19,7 @@ char	*replace_env(char *str, int i)
 	char	*tmp;
 	char	*new;
 
-	k = ft_quotelen(str, 4);
+	k = ft_quotelen(str, 4, 1);
 	if (!(new = (char *)ft_calloc(1, k + 1)))
 		exit(1);
 	j = 0;

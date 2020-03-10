@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 04:18:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/09 13:39:00 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/10 02:27:17 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		process_args2(t_cmd *cmd)
 	if (cmd->cmd && cmd->cmd[0] == '$')
 		env = 1;
 	if (cmd->cmd)
-		cmd->cmd = handle_quotes(cmd->cmd);
+		cmd->cmd = handle_quotes(cmd->cmd, 1);
 	if (env)
 	{
 		split = ft_ssplit(cmd->cmd, " \n");
@@ -85,7 +85,7 @@ void		process_args_env(t_cmd *cmd)
 	tmp = cmd->env_list;
 	while (tmp)
 	{
-		tmp->content = handle_quotes(tmp->content);
+		tmp->content = handle_quotes(tmp->content, 1);
 		tmp = tmp->next;
 	}
 }
@@ -102,7 +102,7 @@ void		process_args(t_cmd *cmd)
 		env = 0;
 		if (tmp->word && tmp->word[0] == '$')
 			env = 1;
-		tmp->word = handle_quotes(tmp->word);
+		tmp->word = handle_quotes(tmp->word, 1);
 		if (env)
 		{
 			split = ft_ssplit(tmp->word, " \n");

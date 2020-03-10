@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 13:25:43 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/09 13:38:26 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/09 18:16:13 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**join_args(t_cmd *cmd)
 	return (args);
 }
 
-char	*handle_quotes(char *src)
+char	*handle_quotes(char *src, int env)
 {
 	int		i;
 	char	*dest;
@@ -50,10 +50,13 @@ char	*handle_quotes(char *src)
 		if (src[i] == '\'' && !is_escaped(src, i - 1))
 			dest = ft_strjoin_double_free(dest, simple_quotes(src, &i));
 		else if (src[i] == '\"' && !is_escaped(src, i - 1))
-			dest = ft_strjoin_double_free(dest, double_quotes(src, &i, 0));
+		{
+			i++;
+			dest = ft_strjoin_double_free(dest, double_quotes(src, &i, 0, env));
+		}
 		else
 		{
-			dest = ft_strjoin_double_free(dest, no_quotes(src, &i, 0));
+			dest = ft_strjoin_double_free(dest, no_quotes(src, &i, 0, env));
 			continue ;
 		}
 		src[i] ? i++ : 0;

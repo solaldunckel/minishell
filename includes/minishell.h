@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/06 16:03:19 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/09 18:21:24 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,11 +173,11 @@ void				handle_errno(t_minishell *minishell, char *cmd, int type);
 int					bracket_odd(char *s, int ret);
 void				next_bracket(t_minishell *minishell);
 char				*simple_quotes(char *src, int *i);
-char				*double_quotes(char *src, int *i, int j);
-char				*no_quotes(char *src, int *i, int j);
-char				*handle_quotes(char *src);
+char				*double_quotes(char *src, int *i, int j, int env);
+char				*no_quotes(char *src, int *i, int j, int env);
+char				*handle_quotes(char *src, int env);
 char				**join_args(t_cmd *cmd);
-int					ft_quotelen(char *src, int type);
+int					ft_quotelen(char *src, int type, int env);
 
 /*
 ** TOKEN_LIST
@@ -215,6 +215,7 @@ void				nothing(void *cmd);
 void				process_wildcard(t_token *arg, char *path, int i,
 						char **split);
 char				*create_wildpath(char *s);
+void				handle_wild(t_token *tmp);
 void				and_or_subshell(t_minishell *minishell, t_cmd **tmp);
 void				exec_real_command(t_minishell *minishell, t_cmd **tmp);
 void				wait_for_command_tty(t_minishell *minishell);
@@ -237,9 +238,13 @@ int					is_escaped(char *s, int pos);
 int					in_bracket(char *s, int pos);
 int					is_char_str(char c, char *str);
 void				nothing(void *cmd);
-char				*handle_quotes(char *src);
 char				**join_args(t_cmd *cmd);
 int					freer(void *to_free);
 int					ft_strlen_s(char *s);
+
+/*
+** UTILS
+*/
+void				lol_mdr(char *tmp, char *line, int notenv, int pip[2]);
 
 #endif

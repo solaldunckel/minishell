@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/02/24 14:48:01 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/10 13:32:06 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ int				get_next_line_no_eof(int fd, char **line, int b)
 		if ((buf[ret] = '\0') == 0 && ret == 0 && ft_strlen(s[fd]) == 0
 			&& g_minishell->quit != 4)
 			ctrl_d_exit(b);
+		ft_dprintf(2, "  \b\b");
 		tmp = s[fd];
 		s[fd] = ft_strjoin(s[fd], buf);
 		free(tmp);
-		ft_printf("  \b\b");
 		if (g_minishell->quit != 0 && (g_minishell->quit = 2) == 2)
 			return (0);
 	}

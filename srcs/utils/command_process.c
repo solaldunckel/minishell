@@ -33,7 +33,7 @@ int		ft_envlen(char *src, int i)
 	return (count);
 }
 
-int		ft_quotelen(char *src, int type)
+int		ft_quotelen(char *src, int type, int env)
 {
 	int	i;
 	int	j;
@@ -48,7 +48,8 @@ int		ft_quotelen(char *src, int type)
 			return (i);
 		if (!esc && src[i] == '\'' && type == 0)
 			return (i + j);
-		if (!esc && src[i] == '$' && (type == 0 || type == 1 || type == 4))
+		if (!esc && src[i] == '$' && (type == 0 || type == 1 || type == 4) &&
+			env)
 			j += ft_envlen(src, i);
 		if (!esc && src[i] == '\"' && (type == 0 || type == 1))
 			return (i + j);
@@ -65,7 +66,7 @@ char	*simple_quotes(char *src, int *i)
 	int		j;
 
 	(*i)++;
-	j = ft_quotelen(src + *i, 2);
+	j = ft_quotelen(src + *i, 2, 0);
 	if (!(dest = (char *)ft_calloc(1, j + 1)))
 		exit_cmd(g_minishell);
 	j = 0;
@@ -79,20 +80,20 @@ char	*simple_quotes(char *src, int *i)
 	return (dest);
 }
 
-char	*no_quotes(char *src, int *i, int j)
+char	*no_quotes(char *src, int *i, int j, int env)
 {
 	char	*dest;
 	char	*tmp;
 	int		k;
 
-	k = ft_quotelen(src + *i, 0);
+	k = ft_quotelen(src + *i, 0, env);
 	if (!(dest = (char *)ft_calloc(1, k + 5)))
 		exit_cmd(g_minishell);
 	while (src[*i] && j < k)
 	{
 		if ((src[*i] == '\'' || src[*i] == '\"') && !is_escaped(src, *i - 1))
 			break ;
-		if (src[*i] == '$' && !is_escaped(src, *i - 1)
+		if (src[*i] == '$' && !is_escaped(src, *i - 1) && env
 			&& (ft_isalnum(src[*i + 1]) || is_char_str(src[*i + 1], "?_")))
 		{
 			tmp = replace_env2(src, i);
@@ -108,21 +109,20 @@ char	*no_quotes(char *src, int *i, int j)
 	return (dest);
 }
 
-char	*double_quotes(char *src, int *i, int j)
+char	*double_quotes(char *src, int *i, int j, int env)
 {
 	char	*dest;
 	char	*tmp;
 	int		k;
 
-	(*i)++;
-	k = ft_quotelen(src + *i, 1);
+	k = ft_quotelen(src + *i, 1, env);
 	if (!(dest = (char *)ft_calloc(1, k + 1)))
 		exit_cmd(g_minishell);
 	while (src[*i] && j < k)
 	{
 		if (src[*i] == '\"' && !is_escaped(src, *i - 1))
 			break ;
-		if (src[*i] == '$' && !is_escaped(src, *i - 1)
+		if (src[*i] == '$' && !is_escaped(src, *i - 1) && env
 			&& (ft_isalnum(src[*i + 1]) || is_char_str(src[*i + 1], "?_")))
 		{
 			tmp = replace_env2(src, i);
@@ -130,8 +130,8 @@ char	*double_quotes(char *src, int *i, int j)
 			free(tmp);
 			continue ;
 		}
-		if ((src[*i] != '\\' || is_escaped(src, *i - 1) ||
-			(src[*i + 1] != '\"' && src[*i + 1] != '\\')) && j < k)
+		if ((src[*i] != '\\' || is_escaped(src, *i - 1) || (src[*i + 1] != '\"'
+			&& src[*i + 1] != '\\')) && j < k)
 			dest[j++] = src[*i];
 		(*i)++;
 	}

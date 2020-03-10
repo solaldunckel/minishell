@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 00:21:50 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/09 13:48:15 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/09 18:10:14 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		process_args2(t_cmd *cmd)
 	if (cmd->cmd && cmd->cmd[0] == '$')
 		env = 1;
 	if (cmd->cmd)
-		cmd->cmd = handle_quotes(cmd->cmd);
+		cmd->cmd = handle_quotes(cmd->cmd, 1);
 	if (env)
 	{
 		split = ft_ssplit(cmd->cmd, " \n");
@@ -83,7 +83,7 @@ void		process_args_env(t_cmd *cmd)
 	tmp = cmd->env_list;
 	while (tmp)
 	{
-		tmp->content = handle_quotes(tmp->content);
+		tmp->content = handle_quotes(tmp->content, 1);
 		tmp = tmp->next;
 	}
 }
@@ -92,24 +92,18 @@ void		process_args(t_cmd *cmd)
 {
 	t_token	*tmp;
 	char	**split;
-	char	*tmp2;
 	int		env;
 
 	tmp = cmd->args;
 	while (tmp && (env = 0) == 0)
 	{
 		if (ft_is_in_stri('*', tmp->word) > -1)
-		{
-			split = ft_split(tmp->word, '/');
-			tmp2 = create_wildpath(tmp->word);
-			process_wildcard(tmp, tmp2, 0, split);
-			free(tmp2);
-			ft_free_split(&split);
-		}
+			handle_wild(tmp);
 		tmp->type == 11 ? remove_redirect(tmp, &cmd->args) : 0;
 		if (tmp->word && tmp->word[0] == '$')
 			env = 1;
-		tmp->word = handle_quotes(tmp->word);
+		if (!tmp->prev || !ft_strequ(tmp->prev->word, "<<"))
+			tmp->word = handle_quotes(tmp->word, 1);
 		if (env)
 		{
 			split = ft_ssplit(tmp->word, " \n");

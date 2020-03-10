@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:18:12 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/06 15:55:24 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/10 03:54:03 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int		main(int argc, char **argv, char **env)
 		return (0);
 	close(fd);
 	ft_bzero(&minishell, sizeof(t_minishell));
-	ft_printf("\nMINISHELL 42 by sdunckel & haguerni\n\n");
+	ft_dprintf(2, "\nMINISHELL 42 by sdunckel & haguerni\n\n");
 	minishell.name = ft_strtrim(argv[0], "./");
 	minishell.curdir = getcwd(NULL, 0);
 	env_init(&minishell, env);
