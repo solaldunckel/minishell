@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 19:38:21 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/10 13:32:06 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/10 18:06:05 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ static int		handle_line(char *s[], int fd)
 		ft_strdel(&s[fd]);
 		return (FINISH);
 	}
+	ft_strdel(&s[fd]);
 	return (SUCCESS);
 }
 
-int				ctrl_d_exit(int b)
+int				ctrl_d_exit(int b, char *s)
 {
 	if (b == 1)
 	{
@@ -49,7 +50,10 @@ int				ctrl_d_exit(int b)
 		g_minishell->quit2 = 1;
 	}
 	if (!b)
+	{
+		ft_strdel(&s);
 		exit_cmd4(g_minishell);
+	}
 	return (0);
 }
 
@@ -80,7 +84,7 @@ int				get_next_line_no_eof(int fd, char **line, int b)
 		set_quit(&s[fd], &b);
 		if ((buf[ret] = '\0') == 0 && ret == 0 && ft_strlen(s[fd]) == 0
 			&& g_minishell->quit != 4)
-			ctrl_d_exit(b);
+			ctrl_d_exit(b, s[fd]);
 		ft_dprintf(2, "  \b\b");
 		tmp = s[fd];
 		s[fd] = ft_strjoin(s[fd], buf);
