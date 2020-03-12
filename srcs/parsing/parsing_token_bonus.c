@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 15:13:33 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/03 18:47:51 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/12 14:56:56 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ char	*iter_tokens(t_minishell *minishell)
 			;
 		else
 			tmp->type = T_WORD;
-		if (!check_error(tmp))
+		if (!check_error(tmp) && (minishell->exit = 258))
 			return (tmp->word);
 		tmp = tmp->next;
 	}
