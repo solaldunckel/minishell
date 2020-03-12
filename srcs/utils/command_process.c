@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 17:37:03 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/10 15:35:40 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/12 14:42:34 by haguerni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,7 @@ char	*no_quotes(char *src, int *i, int j, int env)
 			free(tmp);
 			continue ;
 		}
-		if ((src[*i] != '\\' || is_escaped(src, *i - 1)) && j < k && src[*i + 1]
-			!= '$')
+		if ((src[*i] != '\\' || is_escaped(src, *i - 1)) && j < k)
 			dest[j++] = src[*i];
 		(*i)++;
 	}
