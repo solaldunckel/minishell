@@ -6,7 +6,7 @@
 /*   By: haguerni <haguerni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 17:48:54 by haguerni          #+#    #+#             */
-/*   Updated: 2020/03/10 17:55:02 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/11 19:03:56 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	exec_prog(t_minishell *minishell, t_cmd *cmd, int fpip[2], int spip[2])
 		handle_fd(cmd, fpip, spip);
 		exec(minishell, cmd);
 	}
-	else if (pid < 0)
+	else if (pid < 0 && (minishell->exit = 128))
 		strerror(errno);
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 11:17:02 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/09 18:21:24 by haguerni         ###   ########.fr       */
+/*   Updated: 2020/03/11 17:45:21 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct		s_minishell
 {
 	char			*name;
 	char			*curdir;
-	int				exit;
+	long int		exit;
 	char			*line;
 	int				quit;
 	int				quit2;

@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 20:29:29 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/10 04:33:51 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/11 18:37:34 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void	exit_cmd3(t_minishell *minishell, int status)
 
 int		exit_status(t_minishell *minishell, t_cmd *cmd)
 {
-	uint8_t		exit_s;
+	uint8_t			exit_s;
 
 	exit_s = minishell->exit;
 	if (cmd->args)
 	{
 		if (is_only_digit(((t_token*)cmd->args)->word)
-		|| (((t_token*)cmd->args)->word[0] == '-'
-		&& ft_isdigit(((t_token*)cmd->args)->word[1])))
+			|| (((t_token*)cmd->args)->word[0] == '-'
+			&& ft_isdigit(((t_token*)cmd->args)->word[1])))
 			exit_s = ft_atoi(((t_token*)cmd->args)->word);
 		else
 		{

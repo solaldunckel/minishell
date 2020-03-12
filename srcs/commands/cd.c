@@ -6,7 +6,7 @@
 /*   By: sdunckel <sdunckel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 19:38:50 by sdunckel          #+#    #+#             */
-/*   Updated: 2020/03/06 15:05:32 by sdunckel         ###   ########.fr       */
+/*   Updated: 2020/03/11 18:38:30 by sdunckel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	edit_pwd(t_minishell *minishell)
 
 	backup = ft_strdup(minishell->curdir);
 	ft_strdel(&minishell->curdir);
-	set_env(minishell, "OLDPWD", get_env(minishell, "PWD"));
+	if (get_env(minishell, "PWD") && get_env(minishell, "OLDPWD"))
+		set_env(minishell, "OLDPWD", get_env(minishell, "PWD"));
 	minishell->curdir = getcwd(NULL, 0);
 	if (!minishell->curdir)
 	{
@@ -27,7 +28,8 @@ void	edit_pwd(t_minishell *minishell)
 		minishell->curdir = ft_strjoin_free(backup, "/.");
 		return ;
 	}
-	set_env(minishell, "PWD", minishell->curdir);
+	if (get_env(minishell, "PWD"))
+		set_env(minishell, "PWD", minishell->curdir);
 	free(backup);
 }
 
